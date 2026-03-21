@@ -363,6 +363,51 @@ button,select,input,textarea{font-family:inherit}
   /* Orc painel */
   #orc-painel{display:flex!important;flex-direction:column}
 
+  /* ── CALENDÁRIO MOBILE ── */
+  /* Força o calendário caber na tela sem cortar */
+  #cal-grid-head, #cal-grid {
+    display:grid!important;
+    grid-template-columns:repeat(7,1fr)!important;
+    width:100%!important;
+  }
+  .cal-dh{
+    padding:4px 1px!important;
+    font-size:9px!important;
+    font-weight:700!important;
+  }
+  .cal-d{
+    padding:3px 2px!important;
+    min-height:52px!important;
+    font-size:10px!important;
+  }
+  .cal-dn{
+    font-size:11px!important;
+    font-weight:700!important;
+    margin-bottom:1px!important;
+  }
+  .cal-d.today .cal-dn{
+    width:18px!important;
+    height:18px!important;
+    font-size:10px!important;
+  }
+  .cal-ev{
+    font-size:8.5px!important;
+    padding:1px 3px!important;
+    margin-bottom:1px!important;
+    border-radius:3px!important;
+    white-space:nowrap!important;
+    overflow:hidden!important;
+    text-overflow:ellipsis!important;
+    max-width:100%!important;
+  }
+
+  /* Tabela de consultas do dia — colunas essenciais */
+  #agenda-day-body tr td:nth-child(3),
+  #agenda-day-body tr th:nth-child(3),
+  .tbl thead tr th:nth-child(3){display:none}
+  #agenda-day-body tr td:nth-child(4),
+  .tbl thead tr th:nth-child(4){display:none}
+
   /* Spinner */
   .spin-overlay{z-index:9999}
 
@@ -586,7 +631,7 @@ button,select,input,textarea{font-family:inherit}
   </div>
   <div class="card">
     <div class="ch"><div class="ct" id="cal-day-label">Consultas do Dia</div><button class="btn btn-pri btn-sm" onclick="openModal('m-agend')">＋ Agendar</button></div>
-    <div style="padding:0"><table class="tbl"><thead><tr><th>Hora</th><th>Paciente</th><th>Dentista</th><th>Procedimento</th><th>Status</th><th>Ações</th></tr></thead><tbody id="agenda-day-body"></tbody></table></div>
+    <div style="padding:0"><table class="tbl"><thead><tr><th>Hora</th><th>Paciente</th><th class="hide-mobile">Dentista</th><th class="hide-mobile">Procedimento</th><th>Status</th><th>Ações</th></tr></thead><tbody id="agenda-day-body"></tbody></table></div>
   </div>
 </div>
 
@@ -1307,11 +1352,12 @@ async function loadAll() {
 }
 
 function seedDemoData() {
-  PAC = defaultPacs(); AGEND = defaultAgendas(); ATEND = defaultAtend();
-  LANC = defaultLanc(); PROCS = defaultProcs(); ORTO = defaultOrtoLeads();
-  ESTOQ = defaultEstoq(); RECS = []; CAMPS = defaultCamps(); USERS = defaultUsers();
-  const tables = {pacientes:PAC,agendamentos:AGEND,atendimentos:ATEND,lancamentos:LANC,procedimentos:PROCS,orto_leads:ORTO,estoque:ESTOQ,receitas:RECS,campanhas:CAMPS,usuarios:USERS};
-  Object.entries(tables).forEach(([k,v]) => localStorage.setItem('dfp_'+k, JSON.stringify(v)));
+  // Apenas procedimentos padrão — resto começa zerado
+  PAC = []; AGEND = []; ATEND = [];
+  LANC = []; ORTO = []; ESTOQ = [];
+  RECS = []; CAMPS = []; USERS = [];
+  PROCS = defaultProcs();
+  try { localStorage.setItem('dfp_procedimentos', JSON.stringify(PROCS)); } catch(e) {}
 }
 
 // ── CONFIG PERSISTENCE ──
@@ -1722,7 +1768,7 @@ function renderDayAgenda(ds){
   document.getElementById('cal-day-label').textContent='Consultas de '+fmtDate(ds);
   const ags=AGEND.filter(a=>a.data===ds).sort((a,b)=>(a.hora||'').localeCompare(b.hora||''));
   document.getElementById('agenda-day-body').innerHTML=ags.length?ags.map(a=>`
-    <tr><td><b>${a.hora}</b></td><td><b>${a.pac}</b></td><td>${a.dentista}</td><td>${a.proc}</td><td>${statusBadge(a.status)}</td>
+    <tr><td><b>${a.hora}</b></td><td><b>${a.pac}</b></td><td class="hide-mobile">${a.dentista}</td><td class="hide-mobile">${a.proc}</td><td>${statusBadge(a.status)}</td>
     <td style="display:flex;gap:5px;flex-wrap:wrap">
       <button class="btn btn-xs btn-sec" onclick="confirmarAgenda(${a.id})">✓ Confirmar</button>
       <button class="btn btn-xs btn-sec" onclick="faltouAgenda(${a.id})">✗ Faltou</button>
