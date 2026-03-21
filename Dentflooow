@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -1385,7 +1384,8 @@ function showAuthScreen() {
 }
 
 function showConfigScreen() {
-  showConfigScreen();
+  document.getElementById('auth-screen').classList.add('hidden');
+  document.getElementById('config-screen').classList.remove('hidden');
   document.getElementById('app').style.display = 'none';
 }
 
