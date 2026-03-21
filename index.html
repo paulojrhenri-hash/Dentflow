@@ -976,7 +976,7 @@ button,select,input,textarea{font-family:inherit}
       <div class="ph-sub">Gestão comercial e fechamento</div>
     </div>
     <div class="ph-r">
-      <select class="fsel" style="width:auto;padding:7px 12px" id="orc-filter" onchange="renderOrcamentos()">
+      <select class="fsel" id="orc-filter" onchange="renderOrcamentos()">
         <option value="">Todos</option>
         <option value="aberto">Em aberto</option>
         <option value="apresentado">Apresentado</option>
@@ -984,95 +984,93 @@ button,select,input,textarea{font-family:inherit}
         <option value="fechado">Fechado</option>
         <option value="perdido">Perdido</option>
       </select>
-      <input class="fi" style="width:180px;padding:7px 12px" id="orc-search" placeholder="Buscar paciente..." oninput="renderOrcamentos()">
+      <input class="fi" id="orc-search" placeholder="Buscar paciente..." oninput="renderOrcamentos()">
       <button class="btn btn-pri" onclick="abrirNovoOrcamento()">＋ Novo Orçamento</button>
     </div>
   </div>
 
   <!-- KPIs -->
-  <div class="g4" style="margin-bottom:18px" id="orc-kpis"></div>
+  <div class="g4" style="margin-bottom:16px" id="orc-kpis"></div>
 
   <!-- Funil visual -->
-  <div class="card" style="margin-bottom:18px">
+  <div class="card" style="margin-bottom:16px">
     <div class="ch"><div class="ct">📊 Funil Comercial</div></div>
-    <div class="cb" style="padding:14px 20px" id="orc-funil"></div>
+    <div class="cb" style="padding:12px 16px;overflow-x:auto" id="orc-funil"></div>
   </div>
 
-  <div class="g2">
-    <!-- Lista de orçamentos -->
+  <!-- Lista de orçamentos -->
+  <div class="card" style="margin-bottom:16px">
+    <div class="ch"><div class="ct">Orçamentos</div><span class="bdg bdg-gy" id="orc-count">0</span></div>
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <thead><tr><th>Paciente</th><th>Total</th><th>Status</th><th>Ações</th></tr></thead>
+        <tbody id="orc-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Painel de criação / edição — empilhado abaixo -->
+  <div id="orc-painel" style="display:flex;flex-direction:column;gap:14px">
+
+    <!-- Dados -->
     <div class="card">
-      <div class="ch"><div class="ct">Orçamentos</div><span class="bdg bdg-gy" id="orc-count">0</span></div>
+      <div class="ch"><div class="ct" id="orc-painel-title">Novo Orçamento</div></div>
+      <div class="cb">
+        <div class="fr fr1"><div class="fg"><label class="fl">Paciente *</label>
+          <input class="fi" id="orc-pac" placeholder="Buscar paciente..." oninput="searchPac(this,'orc-pac-list')" autocomplete="off">
+          <div id="orc-pac-list" class="autocomplete-list"></div>
+        </div></div>
+        <div class="fr"><div class="fg"><label class="fl">Dentista</label>
+          <select class="fsel" id="orc-dent"></select>
+        </div>
+        <div class="fg"><label class="fl">Status</label>
+          <select class="fsel" id="orc-status">
+            <option value="aberto">Em aberto</option>
+            <option value="apresentado">Apresentado</option>
+            <option value="negociando">Negociando</option>
+            <option value="fechado">Fechado</option>
+            <option value="perdido">Perdido</option>
+          </select>
+        </div></div>
+        <div class="fr fr1"><div class="fg"><label class="fl">Observações / Negociação</label>
+          <textarea class="fta" id="orc-obs" placeholder="Anotações sobre a negociação..." style="min-height:60px"></textarea>
+        </div></div>
+      </div>
+    </div>
+
+    <!-- Odontograma -->
+    <div class="card">
+      <div class="ch">
+        <div class="ct">🦷 Odontograma</div>
+        <div style="font-size:11px;color:var(--tx3)">Clique no dente → selecione procedimento</div>
+      </div>
+      <div style="padding:10px;overflow-x:auto;-webkit-overflow-scrolling:touch">
+        <div id="odontograma-wrap" style="min-width:560px"></div>
+      </div>
+    </div>
+
+    <!-- Itens -->
+    <div class="card">
+      <div class="ch">
+        <div class="ct">Itens do Orçamento</div>
+        <button class="btn btn-sec btn-sm" onclick="addItemManual()">＋ Item manual</button>
+      </div>
       <div class="tbl-wrap">
         <table class="tbl">
-          <thead><tr><th>Paciente</th><th>Procedimentos</th><th>Total</th><th>Status</th><th>Data</th><th>Ações</th></tr></thead>
-          <tbody id="orc-tbody"></tbody>
+          <thead><tr><th>Dente</th><th>Procedimento</th><th>Valor</th><th></th></tr></thead>
+          <tbody id="orc-itens-body"></tbody>
         </table>
       </div>
+      <div style="padding:12px 16px;border-top:1px solid var(--brd);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
+        <div style="font-size:13px;color:var(--tx2)"><span id="orc-itens-count">0</span> procedimento(s)</div>
+        <div style="font-size:18px;font-weight:800;color:var(--blu)">Total: <span id="orc-total">R$ 0,00</span></div>
+      </div>
+      <div style="padding:0 16px 14px;display:flex;gap:10px">
+        <button class="btn btn-sec" style="flex:1;justify-content:center" onclick="limparOrcamento()">🗑 Limpar</button>
+        <button class="btn btn-pri" style="flex:2;justify-content:center" onclick="salvarOrcamento()">💾 Salvar</button>
+      </div>
     </div>
 
-    <!-- Painel de criação / edição -->
-    <div id="orc-painel" style="display:flex;flex-direction:column;gap:14px">
-
-      <!-- Dados do orçamento -->
-      <div class="card">
-        <div class="ch"><div class="ct" id="orc-painel-title">Novo Orçamento</div></div>
-        <div class="cb">
-          <div class="fr fr1"><div class="fg"><label class="fl">Paciente *</label>
-            <input class="fi" id="orc-pac" placeholder="Buscar paciente..." oninput="searchPac(this,'orc-pac-list')" autocomplete="off">
-            <div id="orc-pac-list" class="autocomplete-list"></div>
-          </div></div>
-          <div class="fr"><div class="fg"><label class="fl">Dentista</label>
-            <select class="fsel" id="orc-dent"></select>
-          </div>
-          <div class="fg"><label class="fl">Status</label>
-            <select class="fsel" id="orc-status">
-              <option value="aberto">Em aberto</option>
-              <option value="apresentado">Apresentado</option>
-              <option value="negociando">Negociando</option>
-              <option value="fechado">Fechado</option>
-              <option value="perdido">Perdido</option>
-            </select>
-          </div></div>
-          <div class="fr fr1"><div class="fg"><label class="fl">Observações / Negociação</label>
-            <textarea class="fta" id="orc-obs" placeholder="Anotações sobre a negociação..." style="min-height:60px"></textarea>
-          </div></div>
-        </div>
-      </div>
-
-      <!-- Odontograma -->
-      <div class="card">
-        <div class="ch">
-          <div class="ct">🦷 Odontograma</div>
-          <div style="font-size:12px;color:var(--tx3)">Clique no dente → selecione o procedimento</div>
-        </div>
-        <div class="cb" style="padding:12px 16px">
-          <div id="odontograma-wrap"></div>
-        </div>
-      </div>
-
-      <!-- Itens do orçamento -->
-      <div class="card">
-        <div class="ch">
-          <div class="ct">Itens do Orçamento</div>
-          <button class="btn btn-sec btn-sm" onclick="addItemManual()">＋ Item manual</button>
-        </div>
-        <div style="padding:0">
-          <table class="tbl">
-            <thead><tr><th>Dente</th><th>Procedimento</th><th>Valor</th><th></th></tr></thead>
-            <tbody id="orc-itens-body"></tbody>
-          </table>
-        </div>
-        <div style="padding:12px 20px;border-top:1px solid var(--brd);display:flex;justify-content:space-between;align-items:center">
-          <div style="font-size:13px;color:var(--tx2)"><span id="orc-itens-count">0</span> procedimento(s)</div>
-          <div style="font-size:20px;font-weight:800;color:var(--blu)">Total: <span id="orc-total">R$ 0,00</span></div>
-        </div>
-        <div style="padding:0 20px 16px;display:flex;gap:10px">
-          <button class="btn btn-sec" style="flex:1;justify-content:center" onclick="limparOrcamento()">🗑 Limpar</button>
-          <button class="btn btn-pri" style="flex:2;justify-content:center" onclick="salvarOrcamento()">💾 Salvar Orçamento</button>
-        </div>
-      </div>
-
-    </div>
   </div>
 </div>
 
@@ -2800,18 +2798,15 @@ function renderOrcamentos() {
   // Tabela
   document.getElementById('orc-count').textContent = `${list.length}`;
   document.getElementById('orc-tbody').innerHTML = list.length ? list.map(o => {
-    const procs = (o.itens||[]).map(i=>i.proc).join(', ').slice(0,50) + ((o.itens||[]).length > 2 ? '...' : '');
     return `<tr>
-      <td><b>${o.pac}</b></td>
-      <td style="font-size:12px;color:var(--tx2);max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${procs||'—'}</td>
+      <td><b>${o.pac}</b><div style="font-size:11px;color:var(--tx3)">${fmtDate(o.data)}</div></td>
       <td style="font-weight:700;color:var(--grn)">${fmtVal(o.total)}</td>
       <td>${getOrcStatusBadge(o.status)}</td>
-      <td style="font-size:12px;color:var(--tx3)">${fmtDate(o.data)}</td>
-      <td style="display:flex;gap:5px;flex-wrap:wrap">
-        <button class="btn btn-xs btn-sec" onclick="verDetalheOrc(${o.id})">👁 Ver</button>
+      <td style="display:flex;gap:4px;flex-wrap:wrap">
+        <button class="btn btn-xs btn-sec" onclick="verDetalheOrc(${o.id})">👁</button>
         <button class="btn btn-xs btn-sec" onclick="editarOrcamento(${o.id})">✏️</button>
-        <select class="fsel" style="padding:3px 6px;font-size:11px;border-radius:6px" onchange="mudarStatusOrc(${o.id},this.value)">
-          <option value="">Status...</option>
+        <select class="fsel" style="padding:3px 5px;font-size:11px;border-radius:6px;max-width:90px" onchange="mudarStatusOrc(${o.id},this.value)">
+          <option value="">▼</option>
           <option value="aberto">Em aberto</option>
           <option value="apresentado">Apresentado</option>
           <option value="negociando">Negociando</option>
@@ -2821,7 +2816,7 @@ function renderOrcamentos() {
         <button class="btn btn-xs btn-red" onclick="delOrcamento(${o.id})">🗑</button>
       </td>
     </tr>`;
-  }).join('') : '<tr><td colspan="6" class="empty"><div class="empty-ico">📋</div><div class="empty-txt">Nenhum orçamento encontrado</div></td></tr>';
+  }).join('') : '<tr><td colspan="4" class="empty"><div class="empty-ico">📋</div><div class="empty-txt">Nenhum orçamento encontrado</div></td></tr>';
 }
 
 async function mudarStatusOrc(id, status) {
