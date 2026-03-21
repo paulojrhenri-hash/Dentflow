@@ -259,6 +259,10 @@ button,select,input,textarea{font-family:inherit}
 .chip.on{background:var(--blu-l);border-color:var(--blu);color:var(--blu)}
 @media print{.hdr,.nav-wrap,.btn,.nb,.ov,.spin-overlay,.toast{display:none!important}.main{padding:0!important}}
 
+/* ── NAV BOTTOM (mobile only) ── */
+.nav-bottom{display:none}
+.nav-bottom-in{display:flex}
+
 @media (max-width: 768px) {
   /* ── Prevent horizontal scroll — CRITICAL ── */
   html, body { overflow-x:hidden!important; max-width:100vw!important; }
@@ -276,13 +280,22 @@ button,select,input,textarea{font-family:inherit}
   .hdr-right .btn-pri{font-size:0;padding:8px 9px;border-radius:8px;min-width:unset}
   .hdr-right .btn-pri::before{content:'＋';font-size:16px}
 
-  /* Nav — barra inferior fixa */
-  .nav-wrap{position:fixed!important;top:auto!important;bottom:0!important;left:0;right:0;z-index:300;border-top:1px solid var(--brd);border-bottom:none;box-shadow:0 -2px 12px rgba(0,0,0,.1)}
-  .nav-in{padding:0;gap:0;overflow-x:auto;-webkit-overflow-scrolling:touch;scroll-snap-type:x mandatory}
-  .nav-in::-webkit-scrollbar{height:0}
-  .nb{padding:4px 8px 2px;height:50px;font-size:9.5px;gap:1px;flex-direction:column;flex-shrink:0;min-width:54px;border-bottom:none!important;border-top:2.5px solid transparent}
-  .nb.on{border-top-color:var(--blu);border-bottom:none}
-  .nb .ni{font-size:17px}
+  /* Nav TOP — scroll horizontal compacto */
+  .nav-top{position:sticky!important;top:52px!important;z-index:190;background:var(--surf);border-bottom:1px solid var(--brd)}
+  .nav-top .nav-in{padding:0;overflow-x:auto;-webkit-overflow-scrolling:touch;display:flex;scroll-snap-type:x mandatory}
+  .nav-top .nav-in::-webkit-scrollbar{height:0}
+  .nav-top .nb{padding:0 11px;height:36px;font-size:10px;gap:4px;flex-direction:row;flex-shrink:0;min-width:auto;max-width:none;border-top:none;border-bottom:2.5px solid transparent;scroll-snap-align:start}
+  .nav-top .nb.on{border-bottom-color:var(--blu);border-top:none;background:var(--blu-p)}
+  .nav-top .nb .ni{font-size:13px}
+  .nav-top .nb .nb-txt{font-size:10px;white-space:nowrap}
+
+  /* Nav BOTTOM — barra inferior fixa, 8 abas principais */
+  .nav-bottom{display:flex!important;position:fixed;bottom:0;left:0;right:0;z-index:300;background:var(--surf);border-top:1px solid var(--brd);box-shadow:0 -2px 12px rgba(0,0,0,.1)}
+  .nav-bottom-in{display:flex;width:100%}
+  .nav-bottom .nb{flex:1;padding:5px 2px 2px;height:54px;gap:1px;flex-direction:column;align-items:center;justify-content:center;min-width:0;max-width:none;border-bottom:none!important;border-top:2.5px solid transparent}
+  .nav-bottom .nb.on{border-top-color:var(--blu);background:var(--blu-p)}
+  .nav-bottom .nb .ni{font-size:19px;line-height:1}
+  .nav-bottom .nb .nb-txt{font-size:8px;font-weight:700;white-space:nowrap;text-align:center}
 
   /* Main */
   .main{padding:10px 8px 72px;width:100%;overflow-x:hidden}
@@ -533,24 +546,39 @@ button,select,input,textarea{font-family:inherit}
   </div>
 </header>
 
-<nav class="nav-wrap">
+<!-- Nav superior — abas secundárias (desktop sempre visível, mobile só no topo) -->
+<nav class="nav-wrap nav-top">
   <div class="nav-in">
-    <button class="nb on" data-tab="dashboard" onclick="goTab('dashboard',this)"><span class="ni">📊</span>Dashboard</button>
-    <button class="nb" data-tab="agenda" onclick="goTab('agenda',this)"><span class="ni">📅</span>Agenda</button>
-    <button class="nb" data-tab="followup" onclick="goTab('followup',this)"><span class="ni">🔔</span>Follow-up</button>
-    <button class="nb" data-tab="boletos" onclick="goTab('boletos',this)"><span class="ni">🧾</span>Boletos</button>
-    <button class="nb" data-tab="orcamentos" onclick="goTab('orcamentos',this)"><span class="ni">📋</span>Orçamentos</button>
-    <button class="nb" data-tab="pacientes" onclick="goTab('pacientes',this)"><span class="ni">👥</span>Pacientes</button>
-    <button class="nb" data-tab="financeiro" onclick="goTab('financeiro',this)"><span class="ni">💰</span>Financeiro</button>
-    <button class="nb" data-tab="atendimento" onclick="goTab('atendimento',this)"><span class="ni">💊</span>Atendimento</button>
-    <button class="nb" data-tab="whatsapp" onclick="goTab('whatsapp',this)"><span class="ni">💬</span>WhatsApp</button>
-    <button class="nb" data-tab="ortodontia" onclick="goTab('ortodontia',this)"><span class="ni">🦷</span>Ortodontia</button>
-    <button class="nb" data-tab="procedimentos" onclick="goTab('procedimentos',this)"><span class="ni">🩺</span>Procedimentos</button>
-    <button class="nb" data-tab="estoque" onclick="goTab('estoque',this)"><span class="ni">📦</span>Estoque</button>
-    <button class="nb" data-tab="receituario" onclick="goTab('receituario',this)"><span class="ni">💉</span>Receitas</button>
-    <button class="nb" data-tab="campanhas" onclick="goTab('campanhas',this)"><span class="ni">📣</span>Campanhas</button>
-    <button class="nb" data-tab="cadastro" onclick="goTab('cadastro',this)"><span class="ni">👤</span>Cadastro</button>
-    <button class="nb" data-tab="permissoes" onclick="goTab('permissoes',this)"><span class="ni">🛡</span>Usuários</button>
+    <button class="nb on" data-tab="dashboard" onclick="goTab('dashboard',this)"><span class="ni">📊</span><span class="nb-txt">Dashboard</span></button>
+    <button class="nb" data-tab="agenda" onclick="goTab('agenda',this)"><span class="ni">📅</span><span class="nb-txt">Agenda</span></button>
+    <button class="nb" data-tab="followup" onclick="goTab('followup',this)"><span class="ni">🔔</span><span class="nb-txt">Follow-up</span></button>
+    <button class="nb" data-tab="boletos" onclick="goTab('boletos',this)"><span class="ni">🧾</span><span class="nb-txt">Boletos</span></button>
+    <button class="nb" data-tab="orcamentos" onclick="goTab('orcamentos',this)"><span class="ni">📋</span><span class="nb-txt">Orçamentos</span></button>
+    <button class="nb" data-tab="pacientes" onclick="goTab('pacientes',this)"><span class="ni">👥</span><span class="nb-txt">Pacientes</span></button>
+    <button class="nb" data-tab="financeiro" onclick="goTab('financeiro',this)"><span class="ni">💰</span><span class="nb-txt">Financeiro</span></button>
+    <button class="nb" data-tab="atendimento" onclick="goTab('atendimento',this)"><span class="ni">💊</span><span class="nb-txt">Atendimento</span></button>
+    <button class="nb" data-tab="whatsapp" onclick="goTab('whatsapp',this)"><span class="ni">💬</span><span class="nb-txt">WhatsApp</span></button>
+    <button class="nb" data-tab="ortodontia" onclick="goTab('ortodontia',this)"><span class="ni">🦷</span><span class="nb-txt">Ortodontia</span></button>
+    <button class="nb" data-tab="procedimentos" onclick="goTab('procedimentos',this)"><span class="ni">🩺</span><span class="nb-txt">Procedimentos</span></button>
+    <button class="nb" data-tab="estoque" onclick="goTab('estoque',this)"><span class="ni">📦</span><span class="nb-txt">Estoque</span></button>
+    <button class="nb" data-tab="receituario" onclick="goTab('receituario',this)"><span class="ni">💉</span><span class="nb-txt">Receitas</span></button>
+    <button class="nb" data-tab="campanhas" onclick="goTab('campanhas',this)"><span class="ni">📣</span><span class="nb-txt">Campanhas</span></button>
+    <button class="nb" data-tab="cadastro" onclick="goTab('cadastro',this)"><span class="ni">👤</span><span class="nb-txt">Cadastro</span></button>
+    <button class="nb" data-tab="permissoes" onclick="goTab('permissoes',this)"><span class="ni">🛡</span><span class="nb-txt">Usuários</span></button>
+  </div>
+</nav>
+
+<!-- Nav inferior — apenas no mobile, abas principais -->
+<nav class="nav-bottom">
+  <div class="nav-bottom-in">
+    <button class="nb on" data-tab="dashboard" onclick="goTab('dashboard',this)"><span class="ni">📊</span><span class="nb-txt">Dashboard</span></button>
+    <button class="nb" data-tab="agenda" onclick="goTab('agenda',this)"><span class="ni">📅</span><span class="nb-txt">Agenda</span></button>
+    <button class="nb" data-tab="pacientes" onclick="goTab('pacientes',this)"><span class="ni">👥</span><span class="nb-txt">Pacientes</span></button>
+    <button class="nb" data-tab="financeiro" onclick="goTab('financeiro',this)"><span class="ni">💰</span><span class="nb-txt">Financeiro</span></button>
+    <button class="nb" data-tab="atendimento" onclick="goTab('atendimento',this)"><span class="ni">💊</span><span class="nb-txt">Atendimento</span></button>
+    <button class="nb" data-tab="followup" onclick="goTab('followup',this)"><span class="ni">🔔</span><span class="nb-txt">Follow-up</span></button>
+    <button class="nb" data-tab="orcamentos" onclick="goTab('orcamentos',this)"><span class="ni">📋</span><span class="nb-txt">Orçamentos</span></button>
+    <button class="nb" data-tab="whatsapp" onclick="goTab('whatsapp',this)"><span class="ni">💬</span><span class="nb-txt">WhatsApp</span></button>
   </div>
 </nav>
 
@@ -1644,7 +1672,8 @@ function goTab(tab, btn) {
   document.querySelectorAll('.nb').forEach(b => b.classList.remove('on'));
   document.getElementById('view-' + tab)?.classList.add('on');
   if (btn) btn.classList.add('on');
-  else document.querySelectorAll(`[data-tab="${tab}"]`).forEach(b => b.classList.add('on'));
+  // Sync all buttons with same data-tab across both navs
+  document.querySelectorAll(`[data-tab="${tab}"]`).forEach(b => b.classList.add('on'));
   curTab = tab;
   const renders = { dashboard:renderDash, agenda:renderAgenda, atendimento:renderAtendimento,
     whatsapp:renderWhatsapp, pacientes:renderPacientes, financeiro:renderFinanceiro,
