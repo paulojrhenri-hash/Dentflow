@@ -1049,15 +1049,10 @@ button,select,input,textarea{font-family:inherit}
   <!-- Alertas de vencimento -->
   <div id="bol-alertas" style="margin-bottom:16px"></div>
 
-  <!-- Tabela -->
+  <!-- Lista agrupada por paciente -->
   <div class="card">
-    <div class="ch"><div class="ct">Boletos</div><span class="bdg bdg-gy" id="bol-count">0</span></div>
-    <div class="tbl-wrap">
-      <table class="tbl">
-        <thead><tr><th>Paciente</th><th>Descrição</th><th>Parcela</th><th>Valor</th><th>Vencimento</th><th>Dias</th><th>Status</th><th>Ações</th></tr></thead>
-        <tbody id="bol-tbody"></tbody>
-      </table>
-    </div>
+    <div class="ch"><div class="ct">Boletos por Paciente</div><span class="bdg bdg-gy" id="bol-count">0</span></div>
+    <div id="bol-grupos"></div>
   </div>
 </div>
 
@@ -2723,28 +2718,129 @@ function renderBoletos(){
   if(alertVenc.length)alertHTML+=`<div class="info-box red" style="margin-bottom:8px">🚨 ${alertVenc.length} boleto(s) vencido(s): ${alertVenc.map(b=>`<b>${b.pac.split(' ')[0]}</b> (${fmtVal(b.valor)})`).join(', ')}</div>`;
   if(alertProx.length)alertHTML+=`<div class="info-box yel" style="margin-bottom:8px">⏰ ${alertProx.length} vencendo em 5 dias: ${alertProx.map(b=>`<b>${b.pac.split(' ')[0]}</b> em ${fmtDate(b.vencimento)}`).join(', ')}</div>`;
   document.getElementById('bol-alertas').innerHTML=alertHTML;
-  document.getElementById('bol-count').textContent=`${list.length} boleto(s)`;
-  list=list.sort((a,b)=>(a.vencimento||'').localeCompare(b.vencimento||''));
-  document.getElementById('bol-tbody').innerHTML=list.length?list.map(b=>{
-    const dias=b.status==='pago'?null:diasParaVencer(b.vencimento);
-    const isPago=b.status==='pago';const isVenc=b.status==='vencido';
-    const rowStyle=isVenc?'background:var(--red-l)':(dias!==null&&dias<=5&&!isPago)?'background:var(--yel-l)':'';
-    const p=PAC.find(x=>x.nome===b.pac);const tel=p?.tel||'';
-    return`<tr style="${rowStyle}">
-      <td><b>${b.pac}</b></td>
-      <td style="font-size:12.5px">${b.descricao||'—'}</td>
-      <td style="font-size:12px;color:var(--tx3)">${b.parcela||1}/${b.totalparcelas||1}</td>
-      <td style="font-weight:700">${fmtVal(b.valor)}</td>
-      <td>${fmtDate(b.vencimento)}</td>
-      <td>${diasBadge(dias)}</td>
-      <td>${statusBoletoBadge(b)}</td>
-      <td style="display:flex;gap:5px;flex-wrap:wrap">
-        ${!isPago?`<button class="btn btn-xs btn-grn" onclick="marcarBoletoPago(${b.id})">✓ Pago</button>`:''}
-        ${tel&&!isPago?`<a class="btn btn-xs btn-sec" href="${waLink(tel,'Olá '+b.pac.split(' ')[0]+'! Boleto de '+fmtVal(b.valor)+' vence em '+fmtDate(b.vencimento)+'. 😊')}" target="_blank">💬</a>`:''}
-        <button class="btn btn-xs btn-sec" onclick="abrirEdicaoBoleto(${b.id})">✏️</button>
-        <button class="btn btn-xs btn-red" onclick="delBoleto(${b.id})">🗑</button>
-      </td></tr>`;
-  }).join(''):'<tr><td colspan="8" class="empty"><div class="empty-ico">🧾</div><div class="empty-txt">Nenhum boleto encontrado</div></td></tr>';
+
+  // ── AGRUPADO POR PACIENTE ──────────────────────────
+  // Agrupar lista filtrada por paciente
+  const grupos = {};
+  list.forEach(b => {
+    if (!grupos[b.pac]) grupos[b.pac] = [];
+    grupos[b.pac].push(b);
+  });
+
+  const totalPacs = Object.keys(grupos).length;
+  document.getElementById('bol-count').textContent = `${totalPacs} paciente(s) · ${list.length} boleto(s)`;
+
+  if (!list.length) {
+    document.getElementById('bol-grupos').innerHTML = `
+      <div class="empty" style="padding:40px">
+        <div class="empty-ico">🧾</div>
+        <div class="empty-txt">Nenhum boleto encontrado</div>
+      </div>`;
+    return;
+  }
+
+  document.getElementById('bol-grupos').innerHTML = Object.entries(grupos).map(([pac, boletos]) => {
+    const p = PAC.find(x => x.nome === pac);
+    const tel = p?.tel || '';
+    const totalPac = boletos.reduce((s, b) => s + Number(b.valor), 0);
+    const pagas    = boletos.filter(b => b.status === 'pago').length;
+    const vencidas = boletos.filter(b => b.status === 'vencido').length;
+    const pendentes= boletos.filter(b => b.status === 'pendente').length;
+    const total    = boletos.length;
+    const progPct  = Math.round(pagas / total * 100);
+
+    // Cor do grupo baseada no status geral
+    const grupoColor = vencidas > 0 ? 'var(--red)' : pendentes > 0 ? 'var(--blu)' : 'var(--grn)';
+    const grupoBg    = vencidas > 0 ? 'var(--red-l)' : 'var(--surf2)';
+    const pacSlug    = pac.replace(/\s+/g,'_').replace(/[^a-zA-Z0-9_]/g,'');
+
+    return `
+    <div style="border-bottom:1px solid var(--brd)">
+      <!-- Linha do paciente (clicável) -->
+      <div onclick="bolToggle('${pacSlug}')" style="display:flex;align-items:center;gap:14px;padding:14px 20px;cursor:pointer;transition:background .15s;background:${vencidas>0?'var(--red-l)':''}" onmouseover="this.style.background='var(--surf2)'" onmouseout="this.style.background='${vencidas>0?'var(--red-l)':''}'">
+        
+        <!-- Avatar inicial -->
+        <div style="width:40px;height:40px;border-radius:50%;background:var(--grad);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;color:#fff;flex-shrink:0">
+          ${pac[0].toUpperCase()}
+        </div>
+
+        <!-- Info paciente -->
+        <div style="flex:1;min-width:0">
+          <div style="font-weight:700;font-size:14px">${pac}</div>
+          <div style="font-size:12px;color:var(--tx3);margin-top:2px">
+            ${pagas} pago · ${pendentes} pendente · ${vencidas > 0 ? `<span style="color:var(--red);font-weight:700">${vencidas} vencido</span>` : '0 vencido'}
+          </div>
+          <!-- Barra de progresso -->
+          <div style="margin-top:6px;height:4px;background:var(--brd);border-radius:4px;overflow:hidden;max-width:200px">
+            <div style="height:100%;width:${progPct}%;background:${progPct===100?'var(--grn)':'var(--blu2)'};border-radius:4px;transition:width .4s"></div>
+          </div>
+        </div>
+
+        <!-- Total + badges -->
+        <div style="text-align:right;flex-shrink:0">
+          <div style="font-size:17px;font-weight:800;color:${grupoColor}">${fmtVal(totalPac)}</div>
+          <div style="font-size:11px;color:var(--tx3);margin-top:2px">${pagas}/${total} parcelas pagas</div>
+        </div>
+
+        <!-- Ações rápidas -->
+        <div style="display:flex;gap:6px;flex-shrink:0" onclick="event.stopPropagation()">
+          ${tel ? `<a class="btn btn-xs btn-grn" href="${waLink(tel, `Olá ${pac.split(' ')[0]}! Passando para informar sobre seus boletos. 😊`)}" target="_blank">💬</a>` : ''}
+          <span style="font-size:18px;color:var(--tx3);transition:transform .2s" id="bol-arrow-${pacSlug}">▼</span>
+        </div>
+      </div>
+
+      <!-- Parcelas expandidas (escondidas por padrão) -->
+      <div id="bol-grupo-${pacSlug}" style="display:none;background:var(--surf2);border-top:1px solid var(--brd)">
+        <table class="tbl" style="margin:0">
+          <thead><tr>
+            <th style="padding-left:24px">Parcela</th>
+            <th>Descrição</th>
+            <th>Valor</th>
+            <th>Vencimento</th>
+            <th>Dias</th>
+            <th>Status</th>
+            <th>Ações</th>
+          </tr></thead>
+          <tbody>
+            ${boletos.sort((a,b)=>(a.vencimento||'').localeCompare(b.vencimento||'')).map(b => {
+              const dias = b.status==='pago' ? null : diasParaVencer(b.vencimento);
+              const isPago = b.status==='pago';
+              const isVenc = b.status==='vencido';
+              const rowBg  = isVenc ? 'background:var(--red-l)' : (dias!==null&&dias<=5&&!isPago) ? 'background:var(--yel-l)' : '';
+              return `<tr style="${rowBg}">
+                <td style="padding-left:24px;font-size:12.5px;color:var(--tx3)">${b.parcela||1}/${b.totalparcelas||1}</td>
+                <td style="font-size:12.5px">${b.descricao||'—'}</td>
+                <td style="font-weight:700">${fmtVal(b.valor)}</td>
+                <td style="font-size:12.5px">${fmtDate(b.vencimento)}</td>
+                <td>${diasBadge(dias)}</td>
+                <td>${statusBoletoBadge(b)}</td>
+                <td style="display:flex;gap:4px;flex-wrap:wrap">
+                  ${!isPago?`<button class="btn btn-xs btn-grn" onclick="marcarBoletoPago(${b.id})">✓ Pago</button>`:''}
+                  <button class="btn btn-xs btn-sec" onclick="abrirEdicaoBoleto(${b.id})">✏️</button>
+                  <button class="btn btn-xs btn-red" onclick="delBoleto(${b.id})">🗑</button>
+                </td>
+              </tr>`;
+            }).join('')}
+            <!-- Linha de total do paciente -->
+            <tr style="background:var(--surf3)">
+              <td colspan="2" style="padding-left:24px;font-size:12px;font-weight:700;color:var(--tx3)">TOTAL ${pac.split(' ')[0].toUpperCase()}</td>
+              <td style="font-weight:800;color:var(--grn)">${fmtVal(totalPac)}</td>
+              <td colspan="4" style="font-size:12px;color:var(--tx3)">${pagas} pagas · ${fmtVal(boletos.filter(b=>b.status==='pago').reduce((s,b)=>s+Number(b.valor),0))} recebido</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function bolToggle(slug) {
+  const el    = document.getElementById('bol-grupo-' + slug);
+  const arrow = document.getElementById('bol-arrow-' + slug);
+  if (!el) return;
+  const open = el.style.display === 'block';
+  el.style.display    = open ? 'none'   : 'block';
+  if (arrow) arrow.textContent = open ? '▼' : '▲';
 }
 async function salvarBoleto(){
   const pac=document.getElementById('bol-pac').value.trim();
