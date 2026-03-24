@@ -1374,9 +1374,9 @@ button,select,input,textarea{font-family:inherit}
 <div class="ov" id="m-proc"><div class="mdl">
   <div class="mh"><div class="mt2">🩺 Novo Procedimento</div><button class="cx" onclick="closeModal('m-proc')">✕</button></div>
   <div class="mb2">
-    <div class="fr fr1"><div class="fg"><label class="fl">Nome *</label><input class="fi" id="pr-nome" placeholder="Ex: Manutenção Ortodôntica"></div></div>
-    <div class="fr"><div class="fg"><label class="fl">Especialidade</label><select class="fsel" id="pr-esp"><option>Ortodontia</option><option>Clínica Geral</option><option>Endodontia</option><option>Estética</option></select></div><div class="fg"><label class="fl">Valor (R$) *</label><input class="fi" type="number" id="pr-val" step="0.01" placeholder="0,00"></div></div>
-    <div class="fr"><div class="fg"><label class="fl">Tempo Estimado</label><input class="fi" id="pr-tempo" placeholder="Ex: 30 minutos"></div><div class="fg"><label class="fl">Código</label><input class="fi" id="pr-cod" placeholder="Ex: ORTO-01"></div></div>
+    <div class="fr fr1"><div class="fg"><label class="fl">Nome *</label><input class="fi" id="proc-nome" placeholder="Ex: Manutenção Ortodôntica"></div></div>
+    <div class="fr"><div class="fg"><label class="fl">Especialidade</label><select class="fsel" id="proc-esp"><option>Ortodontia</option><option>Clínica Geral</option><option>Endodontia</option><option>Estética</option></select></div><div class="fg"><label class="fl">Valor (R$) *</label><input class="fi" type="number" id="proc-val" step="0.01" placeholder="0,00"></div></div>
+    <div class="fr"><div class="fg"><label class="fl">Tempo Estimado</label><input class="fi" id="proc-tempo" placeholder="Ex: 30 minutos"></div><div class="fg"><label class="fl">Código</label><input class="fi" id="proc-cod" placeholder="Ex: ORTO-01"></div></div>
   </div>
   <div class="mf"><button class="btn btn-sec" onclick="closeModal('m-proc')">Cancelar</button><button class="btn btn-pri" onclick="salvarProc()">✅ Salvar</button></div>
 </div></div>
@@ -1812,18 +1812,39 @@ function finBadge(s) { const m={pago:'<span class="bdg bdg-grn">Em dia</span>',p
 function statusBadge(s) { const m={confirmado:'<span class="bdg bdg-grn">✓ Confirmado</span>',aguardando:'<span class="bdg bdg-yel">⏳ Aguardando</span>',faltou:'<span class="bdg bdg-red">Faltou</span>',compareceu:'<span class="bdg bdg-blu">Compareceu</span>'}; return m[s]||`<span class="bdg bdg-gy">${s}</span>`; }
 function tagHtml(tag) { const m={quente:'🔥 Quente',frio:'❄ Frio',faltoso:'⚠ Faltoso',vip:'⭐ VIP',novo:'✨ Novo'}; const c={quente:'bdg-red',frio:'bdg-blu',faltoso:'bdg-yel',vip:'bdg-pur',novo:'bdg-grn'}; return tag?`<span class="bdg ${c[tag]||'bdg-gy'}">${m[tag]||tag}</span>`:''; }
 function populateDentistas(selId) { const s=document.getElementById(selId); if(!s)return; s.innerHTML=['Dra. Ana Silva','Dr. Carlos Lima','Dra. Maria Souza'].map(d=>`<option>${d}</option>`).join(''); }
-function populateProcs(selId) { const s=document.getElementById(selId); if(!s)return; s.innerHTML=PROCS.map(p=>`<option value="${p.nome}">${p.nome} — ${fmtVal(p.val)}</option>`).join(''); }
+function populateProcs(selId) {
+  const s=document.getElementById(selId); if(!s)return;
+  if(!PROCS.length){
+    s.innerHTML='<option value="">— Cadastre procedimentos primeiro —</option>';
+    return;
+  }
+  s.innerHTML=PROCS.map(p=>`<option value="${p.nome}">${p.nome} — ${fmtVal(p.val)}</option>`).join('');
+}
 function searchPac(inp, listId) {
   const list = document.getElementById(listId); if (!list) return;
-  const q = inp.value.toLowerCase(); if (q.length < 2) { list.innerHTML=''; return; }
-  const matches = PAC.filter(p => p.nome.toLowerCase().includes(q) || (p.tel||'').includes(q)).slice(0, 6);
-  list.innerHTML = matches.map(p => `<div onclick="selectPac('${inp.id}','${listId}','${p.nome}','${p.tel||''}')">${p.nome} — ${fmtTel(p.tel)}</div>`).join('');
+  const q = inp.value.toLowerCase(); if (q.length < 1) { list.innerHTML=''; return; }
+  const matches = PAC.filter(p =>
+    p.nome.toLowerCase().includes(q) ||
+    (p.tel||'').replace(/\D/g,'').includes(q.replace(/\D/g,''))
+  ).slice(0, 8);
+  if(!matches.length){ list.innerHTML='<div style="padding:10px;color:var(--tx3);font-size:13px">Nenhum paciente encontrado</div>'; return; }
+  // Escape single quotes in name for onclick
+  list.innerHTML = matches.map(p => {
+    const nomeSafe = p.nome.replace(/'/g, "\'");
+    const telSafe  = (p.tel||'').replace(/'/g, "\'");
+    return `<div onclick="selectPac('${inp.id}','${listId}','${nomeSafe}','${telSafe}')">${p.nome} — ${fmtTel(p.tel)}</div>`;
+  }).join('');
 }
 function selectPac(inpId, listId, nome, tel) {
   const inp = document.getElementById(inpId); if (inp) inp.value = nome;
+  // Try to fill tel field with multiple naming patterns
   const prefix = inpId.split('-')[0];
-  const telField = document.getElementById(prefix+'-tel'); if (telField) telField.value = fmtTel(tel);
-  document.getElementById(listId).innerHTML = '';
+  const telField = document.getElementById(prefix+'-tel') ||
+                   document.getElementById(inpId.replace('pac','tel')) ||
+                   document.getElementById(prefix+'tel');
+  if (telField) telField.value = fmtTel(tel);
+  const el = document.getElementById(listId);
+  if (el) el.innerHTML = '';
 }
 function fillWaTel(nome) { const p=PAC.find(x=>x.nome===nome); if(p){ document.getElementById('wa-tel').value=fmtTel(p.tel); } }
 function itab(section, tab, btn) {
@@ -2002,7 +2023,14 @@ async function salvarAgendamento(){
 
 // ════════════════════ ATENDIMENTO ════════════════════
 function renderAtendimento(){
-  populateDentistas('at-dentista'); populateProcs('at-proc'); document.getElementById('at-data').value=todayStr();
+  populateDentistas('at-dentista');
+  // Reload PROCS if empty (Supabase mode)
+  if (PROCS.length === 0 && !isDemo) {
+    DB.getAll('procedimentos').then(data => { PROCS = data; populateProcs('at-proc'); });
+  } else {
+    populateProcs('at-proc');
+  }
+  document.getElementById('at-data').value=todayStr();
   const hoje=todayStr(), atHoje=ATEND.filter(a=>a.data===hoje), totalHj=atHoje.reduce((s,a)=>s+Number(a.val),0);
   const totalMes=ATEND.filter(a=>a.data?.startsWith(mes())).reduce((s,a)=>s+Number(a.val),0);
   document.getElementById('at-stats').innerHTML=`<div class="sc"><div class="sc-lbl">Realizados Hoje</div><div class="sc-val">${atHoje.length}</div></div><div class="sc sc-grad-g"><div class="sc-circle"></div><div class="sc-lbl">Faturado Hoje</div><div class="sc-val">${fmtVal(totalHj)}</div></div><div class="sc sc-grad-b"><div class="sc-circle"></div><div class="sc-lbl">Faturado no Mês</div><div class="sc-val">${fmtVal(totalMes)}</div></div>`;
@@ -2016,7 +2044,7 @@ async function salvarAtendimento(){
   if(at){ATEND.push(at);}
   if(val>0){const lc=await DB.insert('lancamentos',{tipo:'entrada',val,data,descricao:`${proc} — ${pac}`,cat:document.getElementById('at-esp').value,pac,obs:document.getElementById('at-pgto').value});if(lc)LANC.push(lc);}
   const p=PAC.find(x=>x.nome===pac);
-  if(p){await DB.update('pacientes',p.id,{dtult:data,dtprox:document.getElementById('at-ret').value||p.dtprox});p.dtult=data;}
+  if(p){const retVal=document.getElementById('at-ret').value||null; await DB.update('pacientes',p.id,{dtult:data||null,dtprox:retVal||p.dtprox||null});p.dtult=data;}
   const ag=AGEND.find(a=>a.pac===pac&&a.data===data);
   if(ag){await DB.update('agendamentos',ag.id,{status:'compareceu'});ag.status='compareceu';}
 
@@ -2180,7 +2208,8 @@ async function salvarNovoPaciente(){
   const nome=document.getElementById('mp-nome').value.trim(), tel=document.getElementById('mp-tel').value.trim();
   if(!nome||!tel){showToast('Preencha nome e telefone','⚠️');return;}
   showSpinner('Salvando paciente...');
-  const p=await DB.insert('pacientes',{nome,tel:tel.replace(/\D/g,''),nasc:document.getElementById('mp-nasc').value,sexo:'Feminino',email:'',orig:document.getElementById('mp-orig').value,dentista:document.getElementById('mp-dent').value,esp:document.getElementById('mp-esp').value,status:'ativo',finstatus:'pago',alergia:'',obs:document.getElementById('mp-obs').value,evol:[],dtult:'',dtprox:''});
+  const nascVal=document.getElementById('mp-nasc').value;
+  const p=await DB.insert('pacientes',{nome,tel:tel.replace(/\D/g,''),nasc:nascVal||null,sexo:'Feminino',email:'',orig:document.getElementById('mp-orig').value,dentista:document.getElementById('mp-dent').value,esp:document.getElementById('mp-esp').value,status:'ativo',finstatus:'pago',alergia:'',obs:document.getElementById('mp-obs').value,evol:[],dtult:null,dtprox:null});
   hideSpinner(); if(!p)return;
   PAC.push(p); closeModal('m-pac'); showToast(`${nome} cadastrado!`,'✅'); renderPacientes();
 }
@@ -2429,7 +2458,7 @@ function renderOrtoAtivos(q){let list=PAC.filter(p=>p.esp==='Ortodontia');if(q)l
 function renderProcedimentos(){renderProcs('');renderProcHist();}
 function renderProcs(q){let list=PROCS;if(q)list=list.filter(p=>p.nome.toLowerCase().includes(q.toLowerCase()));document.getElementById('proc-tbody').innerHTML=list.map(p=>`<tr><td><b>${p.nome}</b></td><td>${espBadge(p.esp)}</td><td style="font-weight:700;color:var(--grn)">${fmtVal(p.val)}</td><td>${p.tempo||'—'}</td><td><button class="btn btn-xs btn-red" onclick="delProc(${p.id})">🗑</button></td></tr>`).join('')||'<tr><td colspan="5" class="empty">Nenhum procedimento</td></tr>';}
 function renderProcHist(){document.getElementById('proc-hist-tbody').innerHTML=ATEND.slice().reverse().slice(0,10).map(a=>`<tr><td>${fmtDate(a.data)}</td><td><b>${a.pac}</b></td><td>${a.proc}</td><td style="color:var(--grn);font-weight:700">${fmtVal(a.val)}</td></tr>`).join('');}
-async function salvarProc(){const nome=document.getElementById('pr-nome').value.trim(),val=document.getElementById('pr-val').value;if(!nome||!val){showToast('Preencha nome e valor','⚠️');return;}showSpinner('Salvando...');const p=await DB.insert('procedimentos',{nome,esp:document.getElementById('pr-esp').value,val:Number(val),tempo:document.getElementById('pr-tempo').value,cod:document.getElementById('pr-cod').value});hideSpinner();if(!p)return;PROCS.push(p);closeModal('m-proc');showToast(`${nome} adicionado!`,'✅');renderProcs('');}
+async function salvarProc(){const nome=document.getElementById('proc-nome').value.trim(),val=document.getElementById('proc-val').value;if(!nome||!val){showToast('Preencha nome e valor','⚠️');return;}showSpinner('Salvando...');const p=await DB.insert('procedimentos',{nome,esp:document.getElementById('proc-esp').value,val:Number(val),tempo:document.getElementById('proc-tempo')?.value||'',cod:document.getElementById('proc-cod')?.value||''});hideSpinner();if(!p)return;PROCS.push(p);closeModal('m-proc');showToast(`${nome} adicionado!`,'✅');renderProcs('');}
 async function delProc(id){if(!confirm('Remover procedimento?'))return;await DB.delete('procedimentos',id);PROCS=PROCS.filter(p=>p.id!==id);showToast('Removido','🗑');renderProcs('');}
 
 // ════════════════════ ESTOQUE ════════════════════
@@ -2475,7 +2504,8 @@ async function salvarPaciente(){
   const nome=document.getElementById('cad-nome').value.trim(),tel=document.getElementById('cad-tel').value.trim();
   if(!nome||!tel){showToast('Preencha nome e telefone','⚠️');return;}
   showSpinner('Salvando paciente...');
-  const p=await DB.insert('pacientes',{nome,tel:tel.replace(/\D/g,''),nasc:document.getElementById('cad-nasc')?.value||'',sexo:document.getElementById('cad-sexo')?.value||'',email:document.getElementById('cad-email').value,orig:document.getElementById('cad-orig')?.value||'',dentista:document.getElementById('cad-dent').value,esp:document.getElementById('cad-esp')?.value||'Clínica Geral',status:'ativo',finstatus:document.getElementById('cad-fin')?.value||'pago',alergia:document.getElementById('cad-alergia').value,obs:document.getElementById('cad-obs').value,evol:[],dtult:'',dtprox:''});
+  const nascCad=document.getElementById('cad-nasc')?.value||null;
+  const p=await DB.insert('pacientes',{nome,tel:tel.replace(/\D/g,''),nasc:nascCad||null,sexo:document.getElementById('cad-sexo')?.value||'',email:document.getElementById('cad-email').value,orig:document.getElementById('cad-orig')?.value||'',dentista:document.getElementById('cad-dent').value,esp:document.getElementById('cad-esp')?.value||'Clínica Geral',status:'ativo',finstatus:document.getElementById('cad-fin')?.value||'pago',alergia:document.getElementById('cad-alergia').value,obs:document.getElementById('cad-obs').value,evol:[],dtult:null,dtprox:null});
   hideSpinner();if(!p)return;PAC.push(p);clearCad();showToast(`${nome} cadastrado com sucesso!`,'✅');renderDash();
 }
 
