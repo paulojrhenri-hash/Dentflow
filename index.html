@@ -562,38 +562,43 @@ button,select,input,textarea{font-family:inherit}
   </div>
 </header>
 
-<!-- Nav superior -->
+<!-- Nav superior — abas secundárias (desktop sempre visível, mobile só no topo) -->
 <nav class="nav-wrap nav-top">
   <div class="nav-in">
     <button class="nb on" data-tab="dashboard" onclick="goTab('dashboard',this)"><span class="ni">📊</span><span class="nb-txt">Dashboard</span></button>
     <button class="nb" data-tab="agenda" onclick="goTab('agenda',this)"><span class="ni">📅</span><span class="nb-txt">Agenda</span></button>
-    <button class="nb" data-tab="pacientes" onclick="goTab('pacientes',this)"><span class="ni">👥</span><span class="nb-txt">Pacientes</span></button>
-    <button class="nb" data-tab="prontuario" onclick="goTab('prontuario',this)"><span class="ni">📋</span><span class="nb-txt">Prontuário</span></button>
-    <button class="nb" data-tab="financeiro" onclick="goTab('financeiro',this)"><span class="ni">💰</span><span class="nb-txt">Financeiro</span></button>
     <button class="nb" data-tab="followup" onclick="goTab('followup',this)"><span class="ni">🔔</span><span class="nb-txt">Follow-up</span></button>
     <button class="nb" data-tab="boletos" onclick="goTab('boletos',this)"><span class="ni">🧾</span><span class="nb-txt">Boletos</span></button>
+    <button class="nb" data-tab="orcamentos" onclick="goTab('orcamentos',this)"><span class="ni">📋</span><span class="nb-txt">Orçamentos</span></button>
+    <button class="nb" data-tab="pacientes" onclick="goTab('pacientes',this)"><span class="ni">👥</span><span class="nb-txt">Pacientes</span></button>
+    <button class="nb" data-tab="financeiro" onclick="goTab('financeiro',this)"><span class="ni">💰</span><span class="nb-txt">Financeiro</span></button>
+    <button class="nb" data-tab="prontuario" onclick="goTab('prontuario',this)"><span class="ni">📋</span><span class="nb-txt">Prontuário</span></button>
     <button class="nb" data-tab="contratos" onclick="goTab('contratos',this)"><span class="ni">📄</span><span class="nb-txt">Contratos</span></button>
+    <button class="nb" data-tab="atendimento" onclick="goTab('atendimento',this)"><span class="ni">💊</span><span class="nb-txt">Atendimento</span></button>
     <button class="nb" data-tab="whatsapp" onclick="goTab('whatsapp',this)"><span class="ni">💬</span><span class="nb-txt">WhatsApp</span></button>
     <button class="nb" data-tab="ortodontia" onclick="goTab('ortodontia',this)"><span class="ni">🦷</span><span class="nb-txt">Ortodontia</span></button>
     <button class="nb" data-tab="procedimentos" onclick="goTab('procedimentos',this)"><span class="ni">🩺</span><span class="nb-txt">Procedimentos</span></button>
     <button class="nb" data-tab="estoque" onclick="goTab('estoque',this)"><span class="ni">📦</span><span class="nb-txt">Estoque</span></button>
+    <button class="nb" data-tab="receituario" onclick="goTab('receituario',this)"><span class="ni">💉</span><span class="nb-txt">Receitas</span></button>
     <button class="nb" data-tab="campanhas" onclick="goTab('campanhas',this)"><span class="ni">📣</span><span class="nb-txt">Campanhas</span></button>
     <button class="nb" data-tab="cadastro" onclick="goTab('cadastro',this)"><span class="ni">👤</span><span class="nb-txt">Cadastro</span></button>
     <button class="nb" data-tab="permissoes" onclick="goTab('permissoes',this)"><span class="ni">🛡</span><span class="nb-txt">Usuários</span></button>
   </div>
 </nav>
 
-<!-- Nav inferior mobile -->
+<!-- Nav inferior — apenas no mobile, abas principais -->
 <nav class="nav-bottom">
   <div class="nav-bottom-in">
-    <button class="nb on" data-tab="dashboard" onclick="goTab('dashboard',this)"><span class="ni">📊</span><span class="nb-txt">Home</span></button>
+    <button class="nb on" data-tab="dashboard" onclick="goTab('dashboard',this)"><span class="ni">📊</span><span class="nb-txt">Dashboard</span></button>
     <button class="nb" data-tab="agenda" onclick="goTab('agenda',this)"><span class="ni">📅</span><span class="nb-txt">Agenda</span></button>
     <button class="nb" data-tab="pacientes" onclick="goTab('pacientes',this)"><span class="ni">👥</span><span class="nb-txt">Pacientes</span></button>
-    <button class="nb" data-tab="prontuario" onclick="goTab('prontuario',this)"><span class="ni">📋</span><span class="nb-txt">Prontuário</span></button>
     <button class="nb" data-tab="financeiro" onclick="goTab('financeiro',this)"><span class="ni">💰</span><span class="nb-txt">Financeiro</span></button>
-    <button class="nb" data-tab="followup" onclick="goTab('followup',this)"><span class="ni">🔔</span><span class="nb-txt">Follow-up</span></button>
-    <button class="nb" data-tab="whatsapp" onclick="goTab('whatsapp',this)"><span class="ni">💬</span><span class="nb-txt">WhatsApp</span></button>
+    <button class="nb" data-tab="prontuario" onclick="goTab('prontuario',this)"><span class="ni">📋</span><span class="nb-txt">Prontuário</span></button>
     <button class="nb" data-tab="contratos" onclick="goTab('contratos',this)"><span class="ni">📄</span><span class="nb-txt">Contratos</span></button>
+    <button class="nb" data-tab="prontuario" onclick="goTab('prontuario',this)"><span class="ni">📋</span><span class="nb-txt">Prontuário</span></button>
+    <button class="nb" data-tab="followup" onclick="goTab('followup',this)"><span class="ni">🔔</span><span class="nb-txt">Follow-up</span></button>
+    <button class="nb" data-tab="orcamentos" onclick="goTab('orcamentos',this)"><span class="ni">📋</span><span class="nb-txt">Orçamentos</span></button>
+    <button class="nb" data-tab="whatsapp" onclick="goTab('whatsapp',this)"><span class="ni">💬</span><span class="nb-txt">WhatsApp</span></button>
   </div>
 </nav>
 
@@ -679,199 +684,626 @@ button,select,input,textarea{font-family:inherit}
 </div>
 
 <!-- ATENDIMENTO -->
-<!-- ══════════════ PRONTUÁRIO ══════════════ -->
-<div id="view-prontuario" class="view">
-  <div class="ph">
-    <div class="ph-l">
-      <div class="ph-title">📋 Prontuário</div>
-      <div class="ph-sub" id="pront-pac-nome">Selecione um paciente para começar</div>
+<div id="view-atendimento" class="view">
+  <div class="ph"><div class="ph-l"><div class="ph-title">💊 Lançamento de Atendimento</div><div class="ph-sub">Registre procedimentos realizados</div></div></div>
+  <div class="g2">
+    <div class="card">
+      <div class="ch"><div class="ct">Novo Atendimento</div></div>
+      <div class="cb">
+        <div class="fr fr1"><div class="fg"><label class="fl">Paciente *</label><input class="fi" id="at-pac" placeholder="Buscar paciente..." oninput="searchPac(this,'at-pac-list')" autocomplete="off"><div id="at-pac-list" class="autocomplete-list"></div></div></div>
+        <div class="fr"><div class="fg"><label class="fl">Data *</label><input class="fi" type="date" id="at-data"></div><div class="fg"><label class="fl">Horário</label><input class="fi" type="time" id="at-hora"></div></div>
+        <div class="fr"><div class="fg"><label class="fl">Dentista</label><select class="fsel" id="at-dentista"></select></div><div class="fg"><label class="fl">Especialidade</label><select class="fsel" id="at-esp"><option>Ortodontia</option><option>Clínica Geral</option><option>Endodontia</option><option>Estética</option><option>Periodontia</option></select></div></div>
+        <div class="fr fr1"><div class="fg"><label class="fl">Procedimento *</label><select class="fsel" id="at-proc"></select></div></div>
+        <div class="fr"><div class="fg"><label class="fl">Valor (R$)</label><input class="fi" type="number" id="at-val" step="0.01" placeholder="0,00"></div><div class="fg"><label class="fl">Forma de Pagamento</label><select class="fsel" id="at-pgto"><option>Pix</option><option>Dinheiro</option><option>Cartão de débito</option><option>Cartão de crédito</option><option>Boleto</option><option>A prazo</option></select></div></div>
+        <div class="fr fr1"><div class="fg"><label class="fl">Observações Clínicas</label><textarea class="fta" id="at-obs" placeholder="O que foi realizado..."></textarea></div></div>
+        <div class="fr"><div class="fg"><label class="fl">Próximo Retorno</label><input class="fi" type="date" id="at-ret"></div><div class="fg"><label class="fl">Horário Retorno</label><input class="fi" type="time" id="at-ret-h"></div></div>
+        <button class="btn btn-pri" style="width:100%;justify-content:center;padding:12px" onclick="salvarAtendimento()">✅ Salvar Atendimento</button>
+      </div>
     </div>
+    <div style="display:flex;flex-direction:column;gap:16px">
+      <div class="g3" id="at-stats"></div>
+      <div class="card">
+        <div class="ch"><div class="ct">Últimos Atendimentos</div></div>
+        <div style="padding:0"><table class="tbl"><thead><tr><th>Data</th><th>Paciente</th><th>Proc.</th><th>Valor</th></tr></thead><tbody id="at-hist"></tbody></table></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- WHATSAPP -->
+<div id="view-whatsapp" class="view">
+  <div class="ph"><div class="ph-l"><div class="ph-title">💬 WhatsApp</div><div class="ph-sub">Comunicação com pacientes</div></div></div>
+  <div class="g2">
+    <div style="display:flex;flex-direction:column;gap:16px">
+      <div class="card">
+        <div class="ch"><div class="ct">Enviar Mensagem Individual</div></div>
+        <div class="cb">
+          <div class="fr fr1"><div class="fg"><label class="fl">Paciente</label><input class="fi" id="wa-pac" placeholder="Buscar paciente..." oninput="searchPac(this,'wa-pac-list');fillWaTel(this.value)" autocomplete="off"><div id="wa-pac-list" class="autocomplete-list"></div></div></div>
+          <div class="fr fr1"><div class="fg"><label class="fl">Telefone</label><input class="fi" id="wa-tel" placeholder="(65) 99999-9999"></div></div>
+          <div class="fr fr1"><div class="fg"><label class="fl">Modelo</label><select class="fsel" id="wa-model" onchange="applyWaModel()"><option value="confirm">Confirmação de consulta</option><option value="lembrete">Lembrete de retorno</option><option value="cobranca">Cobrança amigável</option><option value="boas">Boas-vindas</option><option value="aniver">Parabéns aniversário</option><option value="livre">Mensagem livre</option></select></div></div>
+          <div class="fr fr1"><div class="fg"><label class="fl">Mensagem</label><textarea class="fta" id="wa-msg" style="min-height:120px"></textarea></div></div>
+          <button class="btn btn-grn" style="width:100%;justify-content:center" onclick="enviarWA()">💬 Abrir no WhatsApp</button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="ch"><div class="ct">Envio em Massa</div><span class="bdg bdg-ora">PRO</span></div>
+        <div class="cb">
+          <div class="fr fr1"><div class="fg"><label class="fl">Segmento</label><select class="fsel" id="wa-seg" onchange="calcWaSeg()"><option value="todos">Todos os pacientes</option><option value="amanha">Consultas amanhã</option><option value="inad">Inadimplentes</option><option value="inat">Inativos +6 meses</option><option value="aniver">Aniversariantes do mês</option></select></div></div>
+          <div class="info-box blu" id="wa-seg-info">📱 Calculando...</div>
+          <div class="fr fr1" style="margin-top:12px"><div class="fg"><label class="fl">Mensagem</label><textarea class="fta" id="wa-mass-msg" style="min-height:90px">Olá [NOME]! 😊 </textarea></div></div>
+          <button class="btn btn-pri" style="width:100%;justify-content:center;margin-top:8px" onclick="enviarMassa()">🚀 Enviar Campanha</button>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ch"><div class="ct">Histórico de Envios</div></div>
+      <div style="padding:0"><table class="tbl"><thead><tr><th>Data/Hora</th><th>Paciente</th><th>Tipo</th><th>Status</th></tr></thead><tbody id="wa-hist"></tbody></table></div>
+    </div>
+  </div>
+</div>
+
+<!-- PACIENTES -->
+<div id="view-pacientes" class="view">
+  <div class="ph">
+    <div class="ph-l"><div class="ph-title">👥 Pacientes</div><div class="ph-sub">Cadastro e prontuários</div></div>
     <div class="ph-r">
-      <input class="fi" id="pront-busca" placeholder="Buscar paciente..." oninput="searchPacPront(this.value)" style="width:220px">
-      <div id="pront-busca-list" class="autocomplete-list" style="position:absolute;z-index:999;width:220px"></div>
+      <input class="fi" style="width:220px;padding:7px 12px" id="pac-search" placeholder="Buscar..." oninput="renderPacientes()">
+      <select class="fsel" style="width:auto;padding:7px 12px" id="pac-filter" onchange="renderPacientes()"><option value="">Todos</option><option value="ativo">Ativos</option><option value="inativo">Inativos</option><option value="atrasado">Inadimplentes</option></select>
+      <button class="btn btn-pri" onclick="openModal('m-pac')">＋ Novo Paciente</button>
+    </div>
+  </div>
+  <div class="card" style="margin-bottom:16px">
+    <div class="ch"><div class="ct" id="pac-count-label">Pacientes</div></div>
+    <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Nome</th><th>Telefone</th><th>Dentista</th><th>Última Consulta</th><th>Próximo Retorno</th><th>Financeiro</th><th>Status</th><th>Ações</th></tr></thead><tbody id="pac-tbody"></tbody></table></div>
+  </div>
+  <!-- Prontuário -->
+  <div class="card" id="pront-card" style="display:none">
+    <div class="ch">
+      <div style="display:flex;align-items:center;gap:12px"><div class="ct">📋 Prontuário — <span id="pront-title"></span></div><span class="bdg" id="pront-status-bdg"></span></div>
+      <button class="btn btn-sec btn-sm" onclick="closePront()">✕ Fechar</button>
+    </div>
+    <div class="cb">
+      <div class="itabs">
+        <button class="itab on" onclick="itab('pront','dados',this)">Dados</button>
+        <button class="itab" onclick="itab('pront','evolucao',this)">Evolução Clínica</button>
+        <button class="itab" onclick="itab('pront','financ',this)">Financeiro</button>
+        <button class="itab" onclick="itab('pront','agenda',this)">Agendamentos</button>
+      </div>
+      <div id="pront-dados" class="itp on"></div>
+      <div id="pront-evolucao" class="itp">
+        <button class="btn btn-pri btn-sm" style="margin-bottom:14px" onclick="openModal('m-evol')">＋ Registrar Evolução</button>
+        <div class="tl" id="pront-tl"></div>
+      </div>
+      <div id="pront-financ" class="itp"><div id="pront-fin-body"></div></div>
+      <div id="pront-agenda" class="itp"><div id="pront-ag-body"></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- FINANCEIRO -->
+<div id="view-financeiro" class="view">
+  <div class="ph">
+    <div class="ph-l"><div class="ph-title">💰 Gestão Financeira</div><div class="ph-sub" id="fin-sub">Fluxo de caixa completo</div></div>
+    <div class="ph-r" style="flex-wrap:wrap;gap:8px">
+      <div style="display:flex;background:var(--surf2);border:1.5px solid var(--brd);border-radius:10px;overflow:hidden">
+        <button class="fin-period-btn on" onclick="setFinPeriod('dia',this)" style="padding:7px 16px;border:none;background:transparent;font-size:13px;font-weight:600;cursor:pointer;color:var(--tx2);transition:all .15s">Dia</button>
+        <button class="fin-period-btn" onclick="setFinPeriod('mes',this)" style="padding:7px 16px;border:none;background:transparent;font-size:13px;font-weight:600;cursor:pointer;color:var(--tx2);transition:all .15s">Mês</button>
+        <button class="fin-period-btn" onclick="setFinPeriod('ano',this)" style="padding:7px 16px;border:none;background:transparent;font-size:13px;font-weight:600;cursor:pointer;color:var(--tx2);transition:all .15s">Ano</button>
+      </div>
+      <input type="date" class="fsel" id="fin-dia" style="width:auto;padding:7px 12px;display:none" onchange="renderFinanceiro()">
+      <select class="fsel" style="width:auto;padding:7px 12px" id="fin-mes" onchange="renderFinanceiro()"></select>
+      <select class="fsel" style="width:auto;padding:7px 12px;display:none" id="fin-ano" onchange="renderFinanceiro()"></select>
+      <button class="btn btn-pri" onclick="openModal('m-caixa')">＋ Lançar</button>
     </div>
   </div>
 
-  <!-- Seleção de paciente -->
-  <div id="pront-sem-pac" class="card" style="text-align:center;padding:48px 20px">
+  <!-- KPIs Dia/Mês/Ano -->
+  <div id="fin-kpis" style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:18px"></div>
+
+  <!-- Resumo visual por período -->
+  <div class="g3" style="margin-bottom:18px" id="fin-resumo-wrap">
+    <div class="card">
+      <div class="ch"><div class="ct">📅 Recebimentos por Dia</div></div>
+      <div class="cb" id="fin-por-dia"></div>
+    </div>
+    <div class="card">
+      <div class="ch"><div class="ct">📆 Recebimentos por Mês</div></div>
+      <div class="cb" id="fin-por-mes"></div>
+    </div>
+    <div class="card">
+      <div class="ch"><div class="ct">📊 Por Especialidade</div></div>
+      <div class="cb" id="fin-esp"></div>
+    </div>
+  </div>
+
+  <div class="g2">
+    <div class="card">
+      <div class="ch">
+        <div class="ct">Lançamentos</div>
+        <div style="display:flex;gap:6px">
+          <button class="chip on" onclick="setFinFilter('todos',this)">Todos</button>
+          <button class="chip" onclick="setFinFilter('entrada',this)">Entradas</button>
+          <button class="chip" onclick="setFinFilter('saida',this)">Saídas</button>
+        </div>
+      </div>
+      <div class="tbl-wrap"><table class="tbl">
+        <thead><tr><th>Data</th><th>Descrição</th><th>Paciente</th><th>Cat.</th><th>Tipo</th><th>Valor</th><th></th></tr></thead>
+        <tbody id="fin-tbody"></tbody>
+      </table></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:16px">
+      <div class="card">
+        <div class="ch"><div class="ct">⚠️ Inadimplentes</div><span class="bdg bdg-red" id="inad-count">0</span></div>
+        <div style="padding:0"><table class="tbl"><thead><tr><th>Paciente</th><th>Status</th><th>Contato</th></tr></thead><tbody id="inad-tbody"></tbody></table></div>
+      </div>
+      <div class="card">
+        <div class="ch"><div class="ct">🏆 Top categorias do mês</div></div>
+        <div class="cb" id="fin-top-cat"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ORTODONTIA -->
+<div id="view-ortodontia" class="view">
+  <div class="ph">
+    <div class="ph-l"><div class="ph-title">🦷 Módulo Ortodontia</div><div class="ph-sub">Funil de leads e pacientes em tratamento</div></div>
+    <div class="ph-r"><button class="btn btn-pri" onclick="openModal('m-orto-lead')">＋ Novo Lead</button></div>
+  </div>
+  <div class="g4" style="margin-bottom:18px" id="orto-kpis"></div>
+  <div class="card" style="margin-bottom:16px">
+    <div class="ch"><div class="ct">Funil de Leads</div></div>
+    <div class="cb"><div class="kb" id="orto-kb"></div></div>
+  </div>
+  <div class="card">
+    <div class="ch"><div class="ct">Pacientes em Tratamento</div><input class="fi" style="width:200px;padding:6px 12px" placeholder="Buscar..." oninput="renderOrtoAtivos(this.value)"></div>
+    <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Paciente</th><th>Aparelho</th><th>Início</th><th>Última</th><th>Próxima</th><th>Mensalidade</th><th>Financeiro</th><th></th></tr></thead><tbody id="orto-tbody"></tbody></table></div>
+  </div>
+</div>
+
+<!-- PROCEDIMENTOS -->
+<div id="view-procedimentos" class="view">
+  <div class="ph">
+    <div class="ph-l"><div class="ph-title">🩺 Procedimentos</div><div class="ph-sub">Tabela de preços e histórico</div></div>
+    <div class="ph-r"><button class="btn btn-pri" onclick="openModal('m-proc')">＋ Novo Procedimento</button></div>
+  </div>
+  <div class="g2">
+    <div class="card">
+      <div class="ch"><div class="ct">Tabela de Preços</div><input class="fi" style="width:160px;padding:6px 12px" placeholder="Buscar..." oninput="renderProcs(this.value)"></div>
+      <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Procedimento</th><th>Especialidade</th><th>Valor</th><th>Tempo</th><th></th></tr></thead><tbody id="proc-tbody"></tbody></table></div>
+    </div>
+    <div class="card">
+      <div class="ch"><div class="ct">Histórico Recente</div></div>
+      <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Data</th><th>Paciente</th><th>Procedimento</th><th>Valor</th></tr></thead><tbody id="proc-hist-tbody"></tbody></table></div>
+    </div>
+  </div>
+</div>
+
+<!-- ESTOQUE -->
+<div id="view-estoque" class="view">
+  <div class="ph">
+    <div class="ph-l"><div class="ph-title">📦 Estoque</div><div class="ph-sub">Materiais e suprimentos</div></div>
+    <div class="ph-r"><button class="btn btn-pri" onclick="openModal('m-estoque')">＋ Entrada de Material</button></div>
+  </div>
+  <div class="g4" style="margin-bottom:18px" id="estoq-kpis"></div>
+  <div class="card">
+    <div class="ch"><div class="ct">Materiais</div>
+      <div style="display:flex;gap:8px">
+        <input class="fi" style="width:180px;padding:6px 12px" placeholder="Buscar..." oninput="renderEstoque(this.value)">
+        <select class="fsel" style="width:auto;padding:6px 12px" id="estoq-filter" onchange="renderEstoque()"><option value="">Todos</option><option value="baixo">Estoque baixo</option><option value="zero">Sem estoque</option></select>
+      </div>
+    </div>
+    <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Material</th><th>Categoria</th><th>Qtd</th><th>Mínimo</th><th>Valor Unit.</th><th>Validade</th><th>Status</th><th>Ações</th></tr></thead><tbody id="estoq-tbody"></tbody></table></div>
+  </div>
+</div>
+
+<!-- RECEITUÁRIO -->
+<div id="view-receituario" class="view">
+  <div class="ph"><div class="ph-l"><div class="ph-title">💉 Receituário</div><div class="ph-sub">Prescrições médicas</div></div></div>
+  <div class="g2">
+    <div class="card">
+      <div class="ch"><div class="ct">Nova Receita</div></div>
+      <div class="cb">
+        <div class="fr"><div class="fg"><label class="fl">Paciente *</label><input class="fi" id="rec-pac" placeholder="Buscar paciente..." oninput="searchPac(this,'rec-pac-list')" autocomplete="off"><div id="rec-pac-list" class="autocomplete-list"></div></div>
+        <div class="fg"><label class="fl">Dentista</label><select class="fsel" id="rec-dent"></select></div></div>
+        <div class="fr"><div class="fg"><label class="fl">Data</label><input class="fi" type="date" id="rec-data"></div>
+        <div class="fg"><label class="fl">Tipo</label><select class="fsel" id="rec-tipo"><option>Receita Simples</option><option>Receita Especial</option><option>Atestado</option></select></div></div>
+        <div class="sep">Medicamentos</div>
+        <div id="meds-list"></div>
+        <button class="btn btn-sec btn-sm" onclick="addMed()" style="margin-bottom:12px">＋ Adicionar Medicamento</button>
+        <div class="fr fr1"><div class="fg"><label class="fl">Observações</label><textarea class="fta" id="rec-obs" placeholder="Instruções especiais..."></textarea></div></div>
+        <div style="display:flex;gap:10px">
+          <button class="btn btn-pri" style="flex:1;justify-content:center" onclick="salvarReceita()">💾 Salvar</button>
+          <button class="btn btn-sec" onclick="imprimirReceita()">🖨️ Imprimir</button>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ch"><div class="ct">Receitas Emitidas</div><input class="fi" style="width:150px;padding:6px 12px" placeholder="Buscar..." oninput="renderReceitas(this.value)"></div>
+      <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Data</th><th>Paciente</th><th>Dentista</th><th>Medicamentos</th><th></th></tr></thead><tbody id="rec-tbody"></tbody></table></div>
+    </div>
+  </div>
+</div>
+
+<!-- CAMPANHAS -->
+<div id="view-campanhas" class="view">
+  <div class="ph">
+    <div class="ph-l"><div class="ph-title">📣 Campanhas</div><div class="ph-sub">Marketing e comunicação</div></div>
+    <div class="ph-r"><button class="btn btn-pri" onclick="openModal('m-camp')">＋ Nova Campanha</button></div>
+  </div>
+  <div class="g3" style="margin-bottom:18px" id="camp-ativos"></div>
+  <div class="card">
+    <div class="ch"><div class="ct">Histórico de Campanhas</div></div>
+    <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Campanha</th><th>Data</th><th>Segmento</th><th>Enviados</th><th>Conversão</th><th>Status</th></tr></thead><tbody id="camp-tbody"></tbody></table></div>
+  </div>
+</div>
+
+<!-- CADASTRO -->
+<div id="view-cadastro" class="view">
+  <div class="ph"><div class="ph-l"><div class="ph-title">👤 Cadastro de Paciente</div><div class="ph-sub">Novo paciente ou editar existente</div></div></div>
+  <div class="card">
+    <div class="ch"><div class="ct">Dados do Paciente</div></div>
+    <div class="cb">
+      <div class="sep">Informações Pessoais</div>
+      <div class="fr fr3"><div class="fg"><label class="fl">Nome Completo *</label><input class="fi" id="cad-nome" placeholder="Nome completo"></div><div class="fg"><label class="fl">CPF</label><input class="fi" id="cad-cpf" placeholder="000.000.000-00"></div><div class="fg"><label class="fl">Data de Nascimento</label><input class="fi" type="date" id="cad-nasc"></div></div>
+      <div class="fr fr3"><div class="fg"><label class="fl">Telefone / WhatsApp *</label><input class="fi" id="cad-tel" placeholder="(65) 99999-9999"></div><div class="fg"><label class="fl">E-mail</label><input class="fi" id="cad-email" type="email" placeholder="email@exemplo.com"></div><div class="fg"><label class="fl">Sexo</label><select class="fsel" id="cad-sexo"><option>Feminino</option><option>Masculino</option><option>Outro</option></select></div></div>
+      <div class="fr"><div class="fg"><label class="fl">Responsável (se menor)</label><input class="fi" id="cad-resp" placeholder="Nome do responsável"></div><div class="fg"><label class="fl">Origem</label><select class="fsel" id="cad-orig"><option>Instagram</option><option>Indicação</option><option>Google</option><option>Facebook</option><option>Outro</option></select></div></div>
+      <div class="sep">Informações Clínicas</div>
+      <div class="fr fr3"><div class="fg"><label class="fl">Dentista Responsável</label><select class="fsel" id="cad-dent"></select></div><div class="fg"><label class="fl">Especialidade</label><select class="fsel" id="cad-esp"><option>Ortodontia</option><option>Clínica Geral</option><option>Endodontia</option><option>Estética</option></select></div><div class="fg"><label class="fl">Status Financeiro</label><select class="fsel" id="cad-fin"><option value="pago">Em dia</option><option value="pendente">Pendente</option><option value="atrasado">Atrasado</option></select></div></div>
+      <div class="fr fr1"><div class="fg"><label class="fl">Alergias / Condições Especiais</label><input class="fi" id="cad-alergia" placeholder="Ex: Alérgico à Penicilina, Diabético..."></div></div>
+      <div class="fr fr1"><div class="fg"><label class="fl">Observações Gerais</label><textarea class="fta" id="cad-obs" placeholder="Histórico relevante, observações importantes..."></textarea></div></div>
+      <div style="display:flex;gap:10px;justify-content:flex-end">
+        <button class="btn btn-sec" onclick="clearCad()">Limpar</button>
+        <button class="btn btn-pri" onclick="salvarPaciente()">✅ Salvar Paciente</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PERMISSÕES -->
+<div id="view-permissoes" class="view">
+  <div class="ph">
+    <div class="ph-l"><div class="ph-title">🛡 Usuários e Permissões</div><div class="ph-sub">Controle de acesso</div></div>
+    <div class="ph-r"><button class="btn btn-pri" onclick="openModal('m-user')">＋ Novo Usuário</button></div>
+  </div>
+  <div class="g2">
+    <div class="card">
+      <div class="ch"><div class="ct">Usuários</div></div>
+      <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Usuário</th><th>Perfil</th><th>Status</th><th></th></tr></thead><tbody id="user-tbody"></tbody></table></div>
+    </div>
+    <div class="card">
+      <div class="ch"><div class="ct">Níveis de Acesso</div></div>
+      <div class="cb" id="roles-body"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ FOLLOW-UP ══════════════ -->
+<div id="view-followup" class="view">
+  <div class="ph">
+    <div class="ph-l">
+      <div class="ph-title">🔔 Follow-up de Pacientes</div>
+      <div class="ph-sub">Acompanhamento pós-atendimento e pacientes pendentes</div>
+    </div>
+    <div class="ph-r">
+      <select class="fsel" style="width:auto;padding:7px 12px" id="fu-filter" onchange="renderFollowup()">
+        <option value="">Todos</option>
+        <option value="pendente">Pendentes</option>
+        <option value="contatado">Contatados</option>
+        <option value="agendado">Agendados</option>
+        <option value="concluido">Concluídos</option>
+      </select>
+      <select class="fsel" style="width:auto;padding:7px 12px" id="fu-tipo-filter" onchange="renderFollowup()">
+        <option value="">Todos os tipos</option>
+        <option value="limpeza">Limpeza sem reagendamento</option>
+        <option value="retorno">Retorno pendente</option>
+        <option value="orcamento">Orçamento não fechado</option>
+        <option value="manutencao">Manutenção futura</option>
+        <option value="continuidade">Sem continuidade</option>
+      </select>
+      <button class="btn btn-pri" onclick="openModal('m-followup')">＋ Novo Follow-up</button>
+    </div>
+  </div>
+
+  <!-- KPIs -->
+  <div class="g4" style="margin-bottom:18px" id="fu-kpis"></div>
+
+  <!-- Lista -->
+  <div class="card">
+    <div class="ch">
+      <div class="ct">Lista de Follow-ups</div>
+      <input class="fi" style="width:220px;padding:6px 12px" placeholder="Buscar paciente..." id="fu-search" oninput="renderFollowup()">
+    </div>
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <thead><tr><th>Paciente</th><th>Tipo</th><th>Motivo</th><th>Data ideal contato</th><th>Último atendimento</th><th>Status</th><th>Ações</th></tr></thead>
+        <tbody id="fu-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ BOLETOS ══════════════ -->
+<div id="view-boletos" class="view">
+  <div class="ph">
+    <div class="ph-l">
+      <div class="ph-title">🧾 Gestão de Boletos</div>
+      <div class="ph-sub">Controle de cobranças e parcelas</div>
+    </div>
+    <div class="ph-r">
+      <select class="fsel" style="width:auto;padding:7px 12px" id="bol-filter" onchange="renderBoletos()">
+        <option value="">Todos</option>
+        <option value="pendente">Pendentes</option>
+        <option value="vencendo">Vencendo em 5 dias</option>
+        <option value="vencido">Vencidos</option>
+        <option value="pago">Pagos</option>
+      </select>
+      <input class="fi" style="width:180px;padding:7px 12px" placeholder="Buscar paciente..." id="bol-search" oninput="renderBoletos()">
+      <button class="btn btn-pri" onclick="openModal('m-boleto')">＋ Lançar Boleto</button>
+    </div>
+  </div>
+
+  <!-- KPIs -->
+  <div class="g4" style="margin-bottom:18px" id="bol-kpis"></div>
+
+  <!-- Alertas de vencimento -->
+  <div id="bol-alertas" style="margin-bottom:16px"></div>
+
+  <!-- Tabela -->
+  <div class="card">
+    <div class="ch"><div class="ct">Boletos</div><span class="bdg bdg-gy" id="bol-count">0</span></div>
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <thead><tr><th>Paciente</th><th>Descrição</th><th>Parcela</th><th>Valor</th><th>Vencimento</th><th>Dias</th><th>Status</th><th>Ações</th></tr></thead>
+        <tbody id="bol-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ ORÇAMENTOS ══════════════ -->
+<div id="view-orcamentos" class="view">
+  <div class="ph">
+    <div class="ph-l">
+      <div class="ph-title">📋 Orçamentos</div>
+      <div class="ph-sub">Gestão comercial e fechamento</div>
+    </div>
+    <div class="ph-r">
+      <select class="fsel" id="orc-filter" onchange="renderOrcamentos()">
+        <option value="">Todos</option>
+        <option value="aberto">Em aberto</option>
+        <option value="apresentado">Apresentado</option>
+        <option value="negociando">Negociando</option>
+        <option value="fechado">Fechado</option>
+        <option value="perdido">Perdido</option>
+      </select>
+      <input class="fi" id="orc-search" placeholder="Buscar paciente..." oninput="renderOrcamentos()">
+      <button class="btn btn-pri" onclick="abrirNovoOrcamento()">＋ Novo Orçamento</button>
+    </div>
+  </div>
+
+  <!-- KPIs -->
+  <div class="g4" style="margin-bottom:16px" id="orc-kpis"></div>
+
+  <!-- Funil visual -->
+  <div class="card" style="margin-bottom:16px">
+    <div class="ch"><div class="ct">📊 Funil Comercial</div></div>
+    <div class="cb" style="padding:12px 16px;overflow-x:auto" id="orc-funil"></div>
+  </div>
+
+  <!-- Lista de orçamentos -->
+  <div class="card" style="margin-bottom:16px">
+    <div class="ch"><div class="ct">Orçamentos</div><span class="bdg bdg-gy" id="orc-count">0</span></div>
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <thead><tr><th>Paciente</th><th>Total</th><th>Status</th><th>Ações</th></tr></thead>
+        <tbody id="orc-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Painel de criação / edição — empilhado abaixo -->
+  <div id="orc-painel" style="display:flex;flex-direction:column;gap:14px">
+
+    <!-- Dados -->
+    <div class="card">
+      <div class="ch"><div class="ct" id="orc-painel-title">Novo Orçamento</div></div>
+      <div class="cb">
+        <div class="fr fr1"><div class="fg"><label class="fl">Paciente *</label>
+          <input class="fi" id="orc-pac" placeholder="Buscar paciente..." oninput="searchPac(this,'orc-pac-list')" autocomplete="off">
+          <div id="orc-pac-list" class="autocomplete-list"></div>
+        </div></div>
+        <div class="fr"><div class="fg"><label class="fl">Dentista</label>
+          <select class="fsel" id="orc-dent"></select>
+        </div>
+        <div class="fg"><label class="fl">Status</label>
+          <select class="fsel" id="orc-status">
+            <option value="aberto">Em aberto</option>
+            <option value="apresentado">Apresentado</option>
+            <option value="negociando">Negociando</option>
+            <option value="fechado">Fechado</option>
+            <option value="perdido">Perdido</option>
+          </select>
+        </div></div>
+        <div class="fr fr1"><div class="fg"><label class="fl">Observações / Negociação</label>
+          <textarea class="fta" id="orc-obs" placeholder="Anotações sobre a negociação..." style="min-height:60px"></textarea>
+        </div></div>
+      </div>
+    </div>
+
+    <!-- Odontograma -->
+    <div class="card">
+      <div class="ch">
+        <div class="ct">🦷 Odontograma</div>
+        <div style="font-size:11px;color:var(--tx3)">Clique no dente → selecione procedimento</div>
+      </div>
+      <div style="padding:10px;overflow-x:auto;-webkit-overflow-scrolling:touch">
+        <div id="odontograma-wrap" style="min-width:560px"></div>
+      </div>
+    </div>
+
+    <!-- Itens -->
+    <div class="card">
+      <div class="ch">
+        <div class="ct">Itens do Orçamento</div>
+        <button class="btn btn-sec btn-sm" onclick="addItemManual()">＋ Item manual</button>
+      </div>
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <thead><tr><th>Dente</th><th>Procedimento</th><th>Valor</th><th></th></tr></thead>
+          <tbody id="orc-itens-body"></tbody>
+        </table>
+      </div>
+      <div style="padding:12px 16px;border-top:1px solid var(--brd);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
+        <div style="font-size:13px;color:var(--tx2)"><span id="orc-itens-count">0</span> procedimento(s)</div>
+        <div style="font-size:18px;font-weight:800;color:var(--blu)">Total: <span id="orc-total">R$ 0,00</span></div>
+      </div>
+      <div style="padding:0 16px 14px;display:flex;gap:10px">
+        <button class="btn btn-sec" style="flex:1;justify-content:center" onclick="limparOrcamento()">🗑 Limpar</button>
+        <button class="btn btn-pri" style="flex:2;justify-content:center" onclick="salvarOrcamento()">💾 Salvar</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════ PRONTUÁRIO ══════════ -->
+<div id="view-prontuario" class="view">
+  <div class="ph">
+    <div class="ph-l"><div class="ph-title">📋 Prontuário</div><div class="ph-sub" id="pr-sub">Selecione um paciente</div></div>
+    <div class="ph-r" style="position:relative">
+      <input class="fi" id="pr-busca" placeholder="Buscar paciente..." oninput="prBusca(this.value)" autocomplete="off">
+      <div id="pr-busca-list" class="autocomplete-list" style="width:220px"></div>
+    </div>
+  </div>
+
+  <div id="pr-vazio" class="card" style="text-align:center;padding:48px 20px">
     <div style="font-size:48px;margin-bottom:12px">👤</div>
     <div style="font-size:18px;font-weight:700;margin-bottom:8px">Nenhum paciente selecionado</div>
-    <div style="color:var(--tx3);margin-bottom:20px">Busque um paciente acima ou clique em um da lista de Pacientes</div>
+    <div style="color:var(--tx3);margin-bottom:20px">Busque pelo nome acima ou acesse pela aba Pacientes</div>
     <button class="btn btn-pri" onclick="goTab('pacientes')">👥 Ver Pacientes</button>
   </div>
 
-  <!-- Conteúdo do prontuário -->
-  <div id="pront-conteudo" style="display:none">
-
-    <!-- Info do paciente -->
-    <div class="card" style="margin-bottom:16px;padding:14px 20px;display:flex;align-items:center;gap:16px;flex-wrap:wrap">
-      <div style="width:48px;height:48px;background:var(--grad);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:800;color:#fff;flex-shrink:0" id="pront-avatar">?</div>
-      <div style="flex:1;min-width:160px">
-        <div style="font-size:18px;font-weight:800" id="pront-nome-hdr">—</div>
-        <div style="font-size:12.5px;color:var(--tx3)" id="pront-info-hdr">—</div>
+  <div id="pr-body" style="display:none">
+    <!-- Card resumo paciente -->
+    <div class="card" style="margin-bottom:16px;padding:14px 20px;display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+      <div id="pr-avatar" style="width:46px;height:46px;background:var(--grad);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:800;color:#fff;flex-shrink:0">?</div>
+      <div style="flex:1;min-width:140px">
+        <div style="font-size:17px;font-weight:800" id="pr-nome">—</div>
+        <div style="font-size:12px;color:var(--tx3)" id="pr-info">—</div>
       </div>
-      <div style="display:flex;gap:8px;flex-wrap:wrap">
-        <span class="bdg bdg-blu" id="pront-esp-bdg">—</span>
-        <span class="bdg" id="pront-fin-bdg">—</span>
-        <button class="btn btn-sec btn-sm" onclick="goTab('pacientes')" id="pront-wa-btn">💬 WhatsApp</button>
+      <div style="display:flex;gap:7px;flex-wrap:wrap;align-items:center">
+        <span class="bdg bdg-blu" id="pr-esp">—</span>
+        <span class="bdg" id="pr-fin">—</span>
+        <button class="btn btn-sec btn-sm" id="pr-wa">💬 WA</button>
+        <button class="btn btn-pri btn-sm" onclick="goTab('atendimento')">＋ Atendimento</button>
       </div>
     </div>
 
     <!-- Abas internas -->
-    <div class="itabs" style="background:var(--surf);border-radius:12px 12px 0 0;border:1px solid var(--brd);border-bottom:none;padding:0 16px;overflow-x:auto">
-      <button class="itab on" onclick="pronTab('avaliacao',this)">🩺 Avaliação</button>
-      <button class="itab" onclick="pronTab('odontograma',this)">🦷 Odontograma</button>
-      <button class="itab" onclick="pronTab('orcamento',this)">💰 Orçamento</button>
-      <button class="itab" onclick="pronTab('evolucao',this)">📈 Evolução</button>
-      <button class="itab" onclick="pronTab('fotos',this)">📷 Fotos</button>
+    <div class="card">
+      <div class="itabs" style="padding:0 16px;overflow-x:auto">
+        <button class="itab on" id="pr-tab-aval"   onclick="prTab('aval',this)">🩺 Avaliação</button>
+        <button class="itab"    id="pr-tab-odont"  onclick="prTab('odont',this)">🦷 Odontograma</button>
+        <button class="itab"    id="pr-tab-orc"    onclick="prTab('orc',this)">💰 Orçamento</button>
+        <button class="itab"    id="pr-tab-evol"   onclick="prTab('evol',this)">📈 Evolução</button>
+      </div>
+      <div class="cb">
+
+        <!-- AVALIAÇÃO -->
+        <div id="pr-aval" class="itp on">
+          <div class="g2" style="margin-bottom:12px">
+            <div class="fg"><label class="fl">Queixa Principal</label>
+              <textarea class="fta" id="pr-queixa" placeholder="Descreva a queixa do paciente..." style="min-height:80px"></textarea>
+            </div>
+            <div class="fg"><label class="fl">Observações Clínicas</label>
+              <textarea class="fta" id="pr-obs-clin" placeholder="Achados, exame clínico..." style="min-height:80px"></textarea>
+            </div>
+          </div>
+          <div class="g2" style="margin-bottom:12px">
+            <div class="fg"><label class="fl">Alergias</label><input class="fi" id="pr-alergia" placeholder="Penicilina, látex..."></div>
+            <div class="fg"><label class="fl">Doenças Sistêmicas</label><input class="fi" id="pr-doencas" placeholder="Diabetes, hipertensão..."></div>
+          </div>
+          <div class="g2" style="margin-bottom:12px">
+            <div class="fg"><label class="fl">Medicamentos em Uso</label><input class="fi" id="pr-meds" placeholder="Ex: Metformina 500mg..."></div>
+            <div class="fg"><label class="fl">Histórico Odontológico</label><input class="fi" id="pr-historico" placeholder="Tratamentos anteriores..."></div>
+          </div>
+          <button class="btn btn-pri" onclick="salvarAvaliacaoPront()">💾 Salvar Avaliação</button>
+        </div>
+
+        <!-- ODONTOGRAMA -->
+        <div id="pr-odont" class="itp">
+          <div style="font-size:12.5px;color:var(--tx3);margin-bottom:10px">Clique em um dente para registrar condição ou procedimento</div>
+          <div style="overflow-x:auto;-webkit-overflow-scrolling:touch">
+            <div id="pr-odont-wrap" style="min-width:560px"></div>
+          </div>
+          <div style="margin-top:14px" id="pr-odont-lista"></div>
+        </div>
+
+        <!-- ORÇAMENTO -->
+        <div id="pr-orc" class="itp">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px">
+            <div style="font-weight:700">Orçamentos do Paciente</div>
+            <button class="btn btn-pri btn-sm" onclick="prNovoOrc()">＋ Novo Orçamento</button>
+          </div>
+          <div id="pr-orc-lista"></div>
+          <div id="pr-orc-form" style="display:none;margin-top:14px;border:1.5px solid var(--blu-l);border-radius:12px;padding:16px;background:var(--blu-p)">
+            <div style="font-weight:700;color:var(--blu);margin-bottom:12px">Novo Orçamento</div>
+            <div class="fr fr1" style="margin-bottom:10px"><div class="fg">
+              <label class="fl">Descrição</label>
+              <input class="fi" id="pr-orc-desc" placeholder="Ex: Tratamento ortodôntico">
+            </div></div>
+            <div class="fg" style="margin-bottom:10px">
+              <label class="fl">Procedimentos</label>
+              <div id="pr-orc-itens"></div>
+              <button class="btn btn-sec btn-sm" style="margin-top:6px" onclick="prAddProc()">＋ Procedimento</button>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-top:1px solid var(--blu-l);margin-top:8px">
+              <span style="font-size:13px;color:var(--tx2)"><span id="pr-orc-count">0</span> itens</span>
+              <span style="font-size:18px;font-weight:800;color:var(--blu)">Total: <span id="pr-orc-total">R$ 0,00</span></span>
+            </div>
+            <div class="fr" style="margin-top:10px">
+              <div class="fg"><label class="fl">Status</label>
+                <select class="fsel" id="pr-orc-status">
+                  <option value="aberto">Em aberto</option>
+                  <option value="aprovado">Aprovado</option>
+                  <option value="em_andamento">Em andamento</option>
+                  <option value="finalizado">Finalizado</option>
+                </select>
+              </div>
+              <div class="fg"><label class="fl">Obs</label><input class="fi" id="pr-orc-obs" placeholder="Opcional..."></div>
+            </div>
+            <div style="display:flex;gap:8px;margin-top:12px">
+              <button class="btn btn-sec" style="flex:1;justify-content:center" onclick="prCancelarOrc()">Cancelar</button>
+              <button class="btn btn-pri" style="flex:2;justify-content:center" onclick="prSalvarOrc()">💾 Salvar</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- EVOLUÇÃO -->
+        <div id="pr-evol" class="itp">
+          <button class="btn btn-pri btn-sm" style="margin-bottom:14px" onclick="openModal('m-evol')">＋ Registrar Sessão</button>
+          <div class="tl" id="pr-evol-lista"></div>
+        </div>
+
+      </div>
     </div>
-
-    <div style="background:var(--surf);border:1px solid var(--brd);border-top:none;border-radius:0 0 12px 12px;padding:20px">
-
-      <!-- ABA: AVALIAÇÃO -->
-      <div id="pron-avaliacao" class="itp on">
-        <div class="g2" style="margin-bottom:14px">
-          <div class="fg">
-            <label class="fl">Queixa Principal</label>
-            <textarea class="fta" id="pr-queixa" placeholder="Ex: Dor ao mastigar no lado direito..." style="min-height:80px"></textarea>
-          </div>
-          <div class="fg">
-            <label class="fl">Observações Clínicas</label>
-            <textarea class="fta" id="pr-obs-clin" placeholder="Achados clínicos, exame físico..." style="min-height:80px"></textarea>
-          </div>
-        </div>
-        <div class="sep">Anamnese</div>
-        <div class="g2" style="margin-bottom:14px">
-          <div class="fg">
-            <label class="fl">Alergias</label>
-            <input class="fi" id="pr-alergia" placeholder="Ex: Penicilina, látex...">
-          </div>
-          <div class="fg">
-            <label class="fl">Doenças Sistêmicas</label>
-            <input class="fi" id="pr-doencas" placeholder="Ex: Diabetes, hipertensão...">
-          </div>
-        </div>
-        <div class="g2" style="margin-bottom:14px">
-          <div class="fg">
-            <label class="fl">Medicamentos em Uso</label>
-            <input class="fi" id="pr-meds" placeholder="Ex: Metformina 500mg...">
-          </div>
-          <div class="fg">
-            <label class="fl">Última Visita ao Dentista</label>
-            <input class="fi" type="date" id="pr-ultima-visita">
-          </div>
-        </div>
-        <div class="fg" style="margin-bottom:14px">
-          <label class="fl">Histórico Odontológico</label>
-          <textarea class="fta" id="pr-historico" placeholder="Tratamentos anteriores, extrações, próteses..." style="min-height:60px"></textarea>
-        </div>
-        <button class="btn btn-pri" onclick="salvarAvaliacao()">💾 Salvar Avaliação</button>
-      </div>
-
-      <!-- ABA: ODONTOGRAMA -->
-      <div id="pron-odontograma" class="itp">
-        <div style="margin-bottom:12px;font-size:13px;color:var(--tx3)">Clique em um dente para registrar procedimento ou condição</div>
-        <div style="overflow-x:auto;-webkit-overflow-scrolling:touch">
-          <div id="odontograma-pront" style="min-width:560px"></div>
-        </div>
-        <div style="margin-top:16px" id="odont-registros">
-          <div class="sep">Registros por Dente</div>
-          <div id="odont-lista"></div>
-        </div>
-      </div>
-
-      <!-- ABA: ORÇAMENTO -->
-      <div id="pron-orcamento" class="itp">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:8px">
-          <div style="font-size:15px;font-weight:700">Orçamentos do Paciente</div>
-          <button class="btn btn-pri btn-sm" onclick="novoOrcamentoPront()">＋ Novo Orçamento</button>
-        </div>
-        <div id="orc-lista-pront"></div>
-
-        <!-- Form novo orçamento (escondido por padrão) -->
-        <div id="orc-form-pront" style="display:none;margin-top:16px;border:1.5px solid var(--blu-l);border-radius:12px;padding:16px;background:var(--blu-p)">
-          <div style="font-size:14px;font-weight:700;margin-bottom:12px;color:var(--blu)">📋 Novo Orçamento</div>
-          <div class="fr fr1" style="margin-bottom:10px">
-            <div class="fg">
-              <label class="fl">Descrição do Tratamento</label>
-              <input class="fi" id="orc-p-desc" placeholder="Ex: Tratamento ortodôntico completo">
-            </div>
-          </div>
-          <div class="fg" style="margin-bottom:10px">
-            <label class="fl">Procedimentos</label>
-            <div id="orc-p-itens-list"></div>
-            <button class="btn btn-sec btn-sm" style="margin-top:6px" onclick="addItemOrcPront()">＋ Adicionar Procedimento</button>
-          </div>
-          <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-top:1px solid var(--blu-l);margin-top:8px">
-            <div style="font-size:13px;color:var(--tx2)"><span id="orc-p-count">0</span> procedimento(s)</div>
-            <div style="font-size:20px;font-weight:800;color:var(--blu)">Total: <span id="orc-p-total">R$ 0,00</span></div>
-          </div>
-          <div class="fr" style="margin-top:10px">
-            <div class="fg">
-              <label class="fl">Status</label>
-              <select class="fsel" id="orc-p-status">
-                <option value="aberto">Em aberto</option>
-                <option value="aprovado">Aprovado</option>
-                <option value="em_andamento">Em andamento</option>
-                <option value="finalizado">Finalizado</option>
-              </select>
-            </div>
-            <div class="fg">
-              <label class="fl">Observações</label>
-              <input class="fi" id="orc-p-obs" placeholder="Opcional...">
-            </div>
-          </div>
-          <div style="display:flex;gap:8px;margin-top:12px">
-            <button class="btn btn-sec" style="flex:1;justify-content:center" onclick="cancelarOrcPront()">Cancelar</button>
-            <button class="btn btn-pri" style="flex:2;justify-content:center" onclick="salvarOrcPront()">💾 Salvar Orçamento</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- ABA: EVOLUÇÃO -->
-      <div id="pron-evolucao" class="itp">
-        <button class="btn btn-pri btn-sm" style="margin-bottom:14px" onclick="openModal('m-evol')">＋ Registrar Sessão</button>
-        <div class="tl" id="pront-tl-view"></div>
-      </div>
-
-      <!-- ABA: FOTOS -->
-      <div id="pron-fotos" class="itp">
-        <div style="text-align:center;padding:32px;color:var(--tx3)">
-          <div style="font-size:40px;margin-bottom:10px">📷</div>
-          <div style="font-weight:700;margin-bottom:6px">Upload de Fotos</div>
-          <div style="font-size:13px;margin-bottom:16px">Organize imagens clínicas por data</div>
-          <label style="cursor:pointer" class="btn btn-sec">
-            📁 Selecionar Fotos
-            <input type="file" accept="image/*" multiple style="display:none" onchange="uploadFotosPront(this)">
-          </label>
-        </div>
-        <div id="fotos-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px;margin-top:16px"></div>
-      </div>
-
-    </div><!-- /tabs content -->
-  </div><!-- /pront-conteudo -->
+  </div>
 </div>
 
-<!-- ══════════════ CONTRATOS ══════════════ -->
+<!-- ══════════ CONTRATOS ══════════ -->
 <div id="view-contratos" class="view">
   <div class="ph">
-    <div class="ph-l">
-      <div class="ph-title">📄 Contratos</div>
-      <div class="ph-sub">Contratos gerados a partir dos orçamentos aprovados</div>
-    </div>
+    <div class="ph-l"><div class="ph-title">📄 Contratos</div><div class="ph-sub">Contratos gerados a partir de orçamentos aprovados</div></div>
     <div class="ph-r">
       <select class="fsel" id="cont-filter" onchange="renderContratos()">
-        <option value="">Todos</option>
-        <option value="ativo">Ativos</option>
-        <option value="atrasado">Atrasados</option>
-        <option value="finalizado">Finalizados</option>
+        <option value="">Todos</option><option value="ativo">Ativos</option>
+        <option value="atrasado">Atrasados</option><option value="finalizado">Finalizados</option>
       </select>
       <input class="fi" id="cont-search" placeholder="Buscar paciente..." oninput="renderContratos()">
     </div>
   </div>
-
   <div class="g4" style="margin-bottom:16px" id="cont-kpis"></div>
-
   <div class="card">
     <div class="ch"><div class="ct">Contratos</div><span class="bdg bdg-gy" id="cont-count">0</span></div>
     <div class="tbl-wrap">
@@ -1411,11 +1843,12 @@ function goTab(tab, btn) {
   // Sync all buttons with same data-tab across both navs
   document.querySelectorAll(`[data-tab="${tab}"]`).forEach(b => b.classList.add('on'));
   curTab = tab;
-  const renders = { dashboard:renderDash, agenda:renderAgenda, prontuario:renderProntuario, contratos:renderContratos,
+  const renders = { dashboard:renderDash, agenda:renderAgenda, atendimento:renderAtendimento,
     whatsapp:renderWhatsapp, pacientes:renderPacientes, financeiro:renderFinanceiro,
     ortodontia:renderOrtodontia, procedimentos:renderProcedimentos, estoque:renderEstoque,
-    campanhas:renderCampanhas, cadastro:()=>{ populateDentistas('cad-dent'); },
-    permissoes:renderPermissoes, followup:renderFollowup, boletos:renderBoletos, contratos:renderContratos };
+    receituario:renderReceituario, campanhas:renderCampanhas, cadastro:()=>{ populateDentistas('cad-dent'); },
+    permissoes:renderPermissoes, followup:renderFollowup, boletos:renderBoletos, orcamentos:renderOrcamentos,
+    prontuario:renderProntuario, contratos:renderContratos };
   if (renders[tab]) renders[tab]();
 }
 function globalSearch(q) {
@@ -2660,86 +3093,66 @@ function verDetalheOrc(id) {
   openModal('m-orc-detalhe');
 }
 
-// ════════════════════════════════════════════════════
-// PRONTUÁRIO UNIFICADO
-// ════════════════════════════════════════════════════
-let prontPacId = null; // paciente ativo no prontuário
+// ═══════════ PRONTUÁRIO UNIFICADO ═══════════
+let prPacId = null;
+let prOrcItens = [];
 
 function renderProntuario() {
-  if (prontPacId) {
-    abrirProntuarioPac(prontPacId);
-  }
+  if (prPacId) abrirPront(prPacId);
 }
 
-function searchPacPront(q) {
-  const list = document.getElementById('pront-busca-list');
-  if (!list) return;
-  if (q.length < 2) { list.innerHTML = ''; return; }
+function prBusca(q) {
+  const el = document.getElementById('pr-busca-list');
+  if (!el) return;
+  if (q.length < 2) { el.innerHTML = ''; return; }
   const matches = PAC.filter(p => p.nome.toLowerCase().includes(q.toLowerCase())).slice(0, 6);
-  list.innerHTML = matches.map(p =>
-    `<div onclick="abrirProntuarioPac(${p.id});document.getElementById('pront-busca').value='${p.nome}';document.getElementById('pront-busca-list').innerHTML=''">
+  el.innerHTML = matches.map(p =>
+    `<div onclick="abrirPront(${p.id});document.getElementById('pr-busca').value='${p.nome}';document.getElementById('pr-busca-list').innerHTML=''">
       ${p.nome} — ${fmtTel(p.tel)}
     </div>`
   ).join('');
 }
 
-function abrirProntuarioPac(id) {
-  const p = PAC.find(x => x.id === id); if (!p) return;
-  prontPacId = id;
-
-  document.getElementById('pront-sem-pac').style.display = 'none';
-  document.getElementById('pront-conteudo').style.display = 'block';
-  document.getElementById('pront-pac-nome').textContent = p.nome;
-
-  // Header info
-  const nome = p.nome;
-  document.getElementById('pront-avatar').textContent = nome[0].toUpperCase();
-  document.getElementById('pront-nome-hdr').textContent = nome;
-  document.getElementById('pront-info-hdr').textContent =
-    `${fmtTel(p.tel)} · ${p.email || '—'} · Nasc: ${fmtDate(p.nasc)}`;
-  document.getElementById('pront-esp-bdg').textContent = p.esp || '—';
-  const finEl = document.getElementById('pront-fin-bdg');
-  finEl.textContent = {pago:'Em dia',pendente:'Pendente',atrasado:'Atrasado'}[p.finstatus] || '—';
-  finEl.className = 'bdg ' + ({pago:'bdg-grn',pendente:'bdg-yel',atrasado:'bdg-red'}[p.finstatus] || 'bdg-gy');
-
-  const tel = p.tel || '';
-  document.getElementById('pront-wa-btn').onclick = () =>
-    window.open(waLink(tel, `Olá ${nome.split(' ')[0]}! 😊`), '_blank');
-
-  // Preencher anamnese se existir
-  if (p.avaliacao) {
-    document.getElementById('pr-queixa').value      = p.avaliacao.queixa || '';
-    document.getElementById('pr-obs-clin').value    = p.avaliacao.obsClin || '';
-    document.getElementById('pr-alergia').value     = p.alergia || '';
-    document.getElementById('pr-doencas').value     = p.avaliacao.doencas || '';
-    document.getElementById('pr-meds').value        = p.avaliacao.meds || '';
-    document.getElementById('pr-historico').value   = p.avaliacao.historico || '';
-  } else {
-    document.getElementById('pr-queixa').value    = '';
-    document.getElementById('pr-obs-clin').value  = '';
-    document.getElementById('pr-alergia').value   = p.alergia || '';
-    document.getElementById('pr-doencas').value   = '';
-    document.getElementById('pr-meds').value      = '';
-    document.getElementById('pr-historico').value = '';
-  }
-
-  buildOdontogramaPront();
-  renderOrcListaPront();
-  renderEvolucaoPront(p);
-  renderFotosPront(p);
+function abrirPront(id) {
+  const p = PAC.find(x => x.id === id);
+  if (!p) return;
+  prPacId = id;
+  document.getElementById('pr-vazio').style.display = 'none';
+  document.getElementById('pr-body').style.display  = 'block';
+  document.getElementById('pr-sub').textContent = p.nome;
+  document.getElementById('pr-avatar').textContent = p.nome[0].toUpperCase();
+  document.getElementById('pr-nome').textContent = p.nome;
+  document.getElementById('pr-info').textContent = `${fmtTel(p.tel)} · ${p.email || '—'}`;
+  document.getElementById('pr-esp').textContent  = p.esp || '—';
+  const finEl = document.getElementById('pr-fin');
+  finEl.textContent  = {pago:'Em dia', pendente:'Pendente', atrasado:'Atrasado'}[p.finstatus] || '—';
+  finEl.className    = 'bdg ' + ({pago:'bdg-grn', pendente:'bdg-yel', atrasado:'bdg-red'}[p.finstatus] || 'bdg-gy');
+  document.getElementById('pr-wa').onclick = () => window.open(waLink(p.tel, `Olá ${p.nome.split(' ')[0]}! 😊`), '_blank');
+  // Fill avaliacao
+  const av = p.avaliacao || {};
+  document.getElementById('pr-queixa').value    = av.queixa || '';
+  document.getElementById('pr-obs-clin').value  = av.obsClin || '';
+  document.getElementById('pr-alergia').value   = p.alergia || '';
+  document.getElementById('pr-doencas').value   = av.doencas || '';
+  document.getElementById('pr-meds').value      = av.meds || '';
+  document.getElementById('pr-historico').value = av.historico || '';
+  // Also set currentPacId for evolution modal
+  currentPacId = id;
+  prBuildOdont();
+  prRenderOrcLista();
+  prRenderEvol(p);
 }
 
-function pronTab(tab, btn) {
-  document.querySelectorAll('#pront-conteudo .itab').forEach(b => b.classList.remove('on'));
-  document.querySelectorAll('#pront-conteudo .itp').forEach(p => p.classList.remove('on'));
+function prTab(tab, btn) {
+  document.querySelectorAll('#pr-body .itab').forEach(b => b.classList.remove('on'));
+  document.querySelectorAll('#pr-body .itp').forEach(p => p.classList.remove('on'));
   btn.classList.add('on');
-  document.getElementById('pron-' + tab)?.classList.add('on');
+  document.getElementById('pr-' + tab)?.classList.add('on');
 }
 
-async function salvarAvaliacao() {
-  if (!prontPacId) { showToast('Selecione um paciente','⚠️'); return; }
-  const p = PAC.find(x => x.id === prontPacId); if (!p) return;
-  const aval = {
+async function salvarAvaliacaoPront() {
+  const p = PAC.find(x => x.id === prPacId); if (!p) return;
+  const av = {
     queixa:   document.getElementById('pr-queixa').value,
     obsClin:  document.getElementById('pr-obs-clin').value,
     doencas:  document.getElementById('pr-doencas').value,
@@ -2747,396 +3160,300 @@ async function salvarAvaliacao() {
     historico:document.getElementById('pr-historico').value,
   };
   const alergia = document.getElementById('pr-alergia').value;
-  showSpinner('Salvando avaliação...');
-  await DB.update('pacientes', prontPacId, { avaliacao: aval, alergia });
-  p.avaliacao = aval; p.alergia = alergia;
+  showSpinner('Salvando...');
+  await DB.update('pacientes', prPacId, { avaliacao: av, alergia });
+  p.avaliacao = av; p.alergia = alergia;
   hideSpinner();
   showToast('Avaliação salva!', '✅');
 }
 
-// ── ODONTOGRAMA DO PRONTUÁRIO ──────────────────────
-function buildOdontogramaPront() {
-  const wrap = document.getElementById('odontograma-pront');
-  if (!wrap) return;
-  const p = PAC.find(x => x.id === prontPacId);
-  const dentesComProc = (p?.odontograma || []).map(d => d.dente);
-
-  function rowHtml(dentes) {
-    return `<div style="display:flex;justify-content:center;gap:3px;margin-bottom:4px">` +
+// Odontograma do Prontuário
+function prBuildOdont() {
+  const wrap = document.getElementById('pr-odont-wrap'); if (!wrap) return;
+  const p = PAC.find(x => x.id === prPacId);
+  const com = (p?.odontograma || []).map(d => d.dente);
+  function row(dentes) {
+    return `<div style="display:flex;justify-content:center;gap:3px;margin-bottom:3px">` +
       dentes.map(n => {
-        const tem = dentesComProc.includes(n);
-        return `<button onclick="clicarDentePront(${n})" title="Dente ${n}"
-          style="width:32px;height:40px;border-radius:6px;border:1.5px solid ${tem ? 'var(--grn)' : 'var(--brd2)'};
-          background:${tem ? 'var(--grn-l)' : 'var(--surf)'};cursor:pointer;font-size:9px;font-weight:700;
-          color:var(--tx2);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;
-          transition:all .15s" id="dp-${n}">
-          <span style="font-size:12px">🦷</span>${n}
-        </button>`;
-      }).join('') + `</div>`;
+        const t = com.includes(n);
+        return `<button onclick="prDente(${n})" style="width:32px;height:40px;border-radius:6px;
+          border:1.5px solid ${t?'var(--grn)':'var(--brd2)'};
+          background:${t?'var(--grn-l)':'var(--surf)'};cursor:pointer;font-size:9px;font-weight:700;
+          color:var(--tx2);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px">
+          <span style="font-size:11px">🦷</span>${n}</button>`;
+      }).join('') + '</div>';
   }
-
   wrap.innerHTML = `
-    <div style="text-align:center;font-size:10px;color:var(--tx3);margin-bottom:4px;font-weight:600">◄ DIREITO — SUPERIOR — ESQUERDO ►</div>
-    <div style="display:flex;justify-content:center;gap:0">
-      ${rowHtml([18,17,16,15,14,13,12,11])}
-      <div style="width:2px;background:var(--brd2);margin:0 4px;border-radius:2px"></div>
-      ${rowHtml([21,22,23,24,25,26,27,28])}
-    </div>
+    <div style="text-align:center;font-size:10px;color:var(--tx3);margin-bottom:4px">◄ DIREITO — SUPERIOR — ESQUERDO ►</div>
+    <div style="display:flex;justify-content:center">${row([18,17,16,15,14,13,12,11])}<div style="width:2px;background:var(--brd2);margin:0 4px"></div>${row([21,22,23,24,25,26,27,28])}</div>
     <div style="height:8px;border-bottom:1px dashed var(--brd2);margin:4px 0 6px"></div>
-    <div style="display:flex;justify-content:center;gap:0">
-      ${rowHtml([48,47,46,45,44,43,42,41])}
-      <div style="width:2px;background:var(--brd2);margin:0 4px;border-radius:2px"></div>
-      ${rowHtml([31,32,33,34,35,36,37,38])}
-    </div>
-    <div style="text-align:center;font-size:10px;color:var(--tx3);margin-top:4px;font-weight:600">◄ DIREITO — INFERIOR — ESQUERDO ►</div>`;
-
-  renderOdontListaPront();
+    <div style="display:flex;justify-content:center">${row([48,47,46,45,44,43,42,41])}<div style="width:2px;background:var(--brd2);margin:0 4px"></div>${row([31,32,33,34,35,36,37,38])}</div>
+    <div style="text-align:center;font-size:10px;color:var(--tx3);margin-top:4px">◄ DIREITO — INFERIOR — ESQUERDO ►</div>`;
+  prRenderOdontLista();
 }
 
-let denteProntSel = null;
-function clicarDentePront(n) {
-  denteProntSel = n;
-  const p = PAC.find(x => x.id === prontPacId);
-  const existing = (p?.odontograma || []).find(d => d.dente === n);
-  const proc = existing ? existing.proc : '';
-  const cond = existing ? existing.cond : '';
-  const obs  = existing ? existing.obs  : '';
-
-  const modal = document.createElement('div');
-  modal.className = 'ov on';
-  modal.id = 'modal-dente-pront';
-  modal.innerHTML = `<div class="mdl" style="width:420px">
-    <div class="mh"><div class="mt2">🦷 Dente ${n}</div><button class="cx" onclick="document.getElementById('modal-dente-pront').remove()">✕</button></div>
+function prDente(n) {
+  const p = PAC.find(x => x.id === prPacId);
+  const ex = (p?.odontograma || []).find(d => d.dente === n) || {};
+  const m = document.createElement('div');
+  m.className = 'ov on'; m.id = 'pr-dente-modal';
+  m.innerHTML = `<div class="mdl" style="width:400px">
+    <div class="mh"><div class="mt2">🦷 Dente ${n}</div><button class="cx" onclick="document.getElementById('pr-dente-modal').remove()">✕</button></div>
     <div class="mb2">
       <div class="fr fr1"><div class="fg"><label class="fl">Procedimento</label>
-        <select class="fsel" id="dp-proc-sel">
-          <option value="">— Selecione —</option>
-          ${PROCS.map(pr => `<option value="${pr.nome}" ${pr.nome===proc?'selected':''}>${pr.nome} — ${fmtVal(pr.val)}</option>`).join('')}
-        </select>
+        <select class="fsel" id="pd-proc">${PROCS.map(pr=>`<option value="${pr.nome}" ${pr.nome===ex.proc?'selected':''}>${pr.nome}</option>`).join('')}</select>
       </div></div>
       <div class="fr fr1"><div class="fg"><label class="fl">Condição</label>
-        <select class="fsel" id="dp-cond-sel">
+        <select class="fsel" id="pd-cond">
           <option value="">Sem registro</option>
-          <option value="carie" ${cond==='carie'?'selected':''}>Cárie</option>
-          <option value="restaurado" ${cond==='restaurado'?'selected':''}>Restaurado</option>
-          <option value="extraido" ${cond==='extraido'?'selected':''}>Extraído/Ausente</option>
-          <option value="implante" ${cond==='implante'?'selected':''}>Implante</option>
-          <option value="canal" ${cond==='canal'?'selected':''}>Canal</option>
-          <option value="coroa" ${cond==='coroa'?'selected':''}>Coroa</option>
-          <option value="fraturado" ${cond==='fraturado'?'selected':''}>Fraturado</option>
+          <option value="carie" ${ex.cond==='carie'?'selected':''}>Cárie</option>
+          <option value="restaurado" ${ex.cond==='restaurado'?'selected':''}>Restaurado</option>
+          <option value="extraido" ${ex.cond==='extraido'?'selected':''}>Extraído</option>
+          <option value="canal" ${ex.cond==='canal'?'selected':''}>Canal</option>
+          <option value="coroa" ${ex.cond==='coroa'?'selected':''}>Coroa</option>
+          <option value="implante" ${ex.cond==='implante'?'selected':''}>Implante</option>
         </select>
       </div></div>
       <div class="fr fr1"><div class="fg"><label class="fl">Obs</label>
-        <input class="fi" id="dp-obs-inp" value="${obs}" placeholder="Observação...">
+        <input class="fi" id="pd-obs" value="${ex.obs||''}" placeholder="Observação...">
       </div></div>
     </div>
     <div class="mf">
-      <button class="btn btn-sec" onclick="document.getElementById('modal-dente-pront').remove()">Cancelar</button>
-      <button class="btn btn-red btn-sm" onclick="removerDentePront(${n})">🗑 Remover</button>
-      <button class="btn btn-pri" onclick="salvarDentePront(${n})">💾 Salvar</button>
-    </div>
-  </div>`;
-  document.body.appendChild(modal);
+      <button class="btn btn-sec" onclick="document.getElementById('pr-dente-modal').remove()">Cancelar</button>
+      <button class="btn btn-red btn-sm" onclick="prRemDente(${n})">🗑 Remover</button>
+      <button class="btn btn-pri" onclick="prSalvaDente(${n})">💾 Salvar</button>
+    </div></div>`;
+  document.body.appendChild(m);
 }
 
-async function salvarDentePront(n) {
-  const p = PAC.find(x => x.id === prontPacId); if (!p) return;
+async function prSalvaDente(n) {
+  const p = PAC.find(x => x.id === prPacId); if (!p) return;
   if (!p.odontograma) p.odontograma = [];
-  const proc = document.getElementById('dp-proc-sel')?.value || '';
-  const cond = document.getElementById('dp-cond-sel')?.value || '';
-  const obs  = document.getElementById('dp-obs-inp')?.value  || '';
+  const proc = document.getElementById('pd-proc')?.value || '';
+  const cond = document.getElementById('pd-cond')?.value || '';
+  const obs  = document.getElementById('pd-obs')?.value  || '';
   p.odontograma = p.odontograma.filter(d => d.dente !== n);
-  if (proc || cond) p.odontograma.push({ dente: n, proc, cond, obs });
-  await DB.update('pacientes', prontPacId, { odontograma: p.odontograma });
-  document.getElementById('modal-dente-pront')?.remove();
-  showToast(`Dente ${n} atualizado!`, '✅');
-  buildOdontogramaPront();
+  if (proc || cond) p.odontograma.push({ dente:n, proc, cond, obs });
+  await DB.update('pacientes', prPacId, { odontograma: p.odontograma });
+  document.getElementById('pr-dente-modal')?.remove();
+  showToast(`Dente ${n} salvo!`, '✅');
+  prBuildOdont();
 }
 
-async function removerDentePront(n) {
-  const p = PAC.find(x => x.id === prontPacId); if (!p) return;
-  p.odontograma = (p.odontograma || []).filter(d => d.dente !== n);
-  await DB.update('pacientes', prontPacId, { odontograma: p.odontograma });
-  document.getElementById('modal-dente-pront')?.remove();
+async function prRemDente(n) {
+  const p = PAC.find(x => x.id === prPacId); if (!p) return;
+  p.odontograma = (p.odontograma||[]).filter(d => d.dente !== n);
+  await DB.update('pacientes', prPacId, { odontograma: p.odontograma });
+  document.getElementById('pr-dente-modal')?.remove();
   showToast(`Dente ${n} removido`, '🗑');
-  buildOdontogramaPront();
+  prBuildOdont();
 }
 
-function renderOdontListaPront() {
-  const p = PAC.find(x => x.id === prontPacId);
+function prRenderOdontLista() {
+  const p = PAC.find(x => x.id === prPacId);
   const lista = p?.odontograma || [];
-  const condLabel = {carie:'🔴 Cárie',restaurado:'🟢 Restaurado',extraido:'⬛ Extraído',implante:'🔵 Implante',canal:'🟡 Canal',coroa:'👑 Coroa',fraturado:'⚠️ Fraturado'};
-  document.getElementById('odont-lista').innerHTML = lista.length
-    ? lista.map(d => `<div class="li">
-        <div><b>Dente ${d.dente}</b> ${d.cond ? `<span class="bdg bdg-blu">${condLabel[d.cond]||d.cond}</span>` : ''}
-          ${d.proc ? `<div style="font-size:12px;color:var(--tx3)">${d.proc}</div>` : ''}
-          ${d.obs  ? `<div style="font-size:12px;color:var(--tx3)">${d.obs}</div>` : ''}
+  const condL = {carie:'🔴 Cárie',restaurado:'🟢 Restaurado',extraido:'⬛ Extraído',canal:'🟡 Canal',coroa:'👑 Coroa',implante:'🔵 Implante'};
+  const el = document.getElementById('pr-odont-lista'); if (!el) return;
+  el.innerHTML = lista.length
+    ? `<div class="sep">Registros</div>` + lista.map(d => `
+      <div class="li">
+        <div><b>Dente ${d.dente}</b> ${d.cond?`<span class="bdg bdg-blu">${condL[d.cond]||d.cond}</span>`:''}
+          ${d.proc?`<div style="font-size:12px;color:var(--tx3)">${d.proc}</div>`:''}
         </div>
-        <button class="btn btn-xs btn-sec" onclick="clicarDentePront(${d.dente})">✏️</button>
+        <button class="btn btn-xs btn-sec" onclick="prDente(${d.dente})">✏️</button>
       </div>`).join('')
-    : '<div style="color:var(--tx3);font-size:13px;padding:12px 0">Nenhum registro no odontograma</div>';
+    : '<div style="color:var(--tx3);font-size:13px;padding:8px 0">Nenhum registro</div>';
 }
 
-// ── ORÇAMENTO NO PRONTUÁRIO ────────────────────────
-function renderOrcListaPront() {
-  const p = PAC.find(x => x.id === prontPacId);
+// Orçamento do Prontuário
+function prRenderOrcLista() {
+  const p = PAC.find(x => x.id === prPacId);
   const orcs = ORCAMENTOS.filter(o => o.pac === p?.nome);
-  const statusLabel = {aberto:'Em aberto',aprovado:'Aprovado',em_andamento:'Em andamento',finalizado:'Finalizado'};
-  const statusCls   = {aberto:'bdg-blu',aprovado:'bdg-grn',em_andamento:'bdg-yel',finalizado:'bdg-gy'};
-
-  document.getElementById('orc-lista-pront').innerHTML = orcs.length
-    ? orcs.map(o => `<div class="card" style="margin-bottom:10px">
-        <div class="ch" style="padding:12px 16px">
-          <div>
-            <div style="font-weight:700">${o.desc || 'Orçamento'}</div>
-            <div style="font-size:12px;color:var(--tx3)">${fmtDate(o.data)} · ${(o.itens||[]).length} procedimento(s)</div>
-          </div>
-          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
-            <span style="font-weight:800;color:var(--grn)">${fmtVal(o.total)}</span>
-            <span class="bdg ${statusCls[o.status]||'bdg-gy'}">${statusLabel[o.status]||o.status}</span>
-            ${o.status !== 'aprovado' && o.status !== 'finalizado' ?
-              `<button class="btn btn-xs btn-grn" onclick="aprovarOrcPront(${o.id})">✓ Aprovar</button>` : ''}
-            <button class="btn btn-xs btn-sec" onclick="verDetOrcPront(${o.id})">👁</button>
-            <button class="btn btn-xs btn-red" onclick="delOrcPront(${o.id})">🗑</button>
-          </div>
+  const sLbl = {aberto:'Em aberto', aprovado:'Aprovado', em_andamento:'Em andamento', finalizado:'Finalizado'};
+  const sCls = {aberto:'bdg-blu', aprovado:'bdg-grn', em_andamento:'bdg-yel', finalizado:'bdg-gy'};
+  const el = document.getElementById('pr-orc-lista'); if (!el) return;
+  el.innerHTML = orcs.length ? orcs.map(o => `
+    <div class="card" style="margin-bottom:8px">
+      <div class="ch" style="padding:10px 14px">
+        <div>
+          <div style="font-weight:700">${o.desc||o.descricao||'Orçamento'}</div>
+          <div style="font-size:12px;color:var(--tx3)">${fmtDate(o.data)} · ${(o.itens||[]).length} procedimento(s)</div>
         </div>
-        ${o.itens?.length ? `<div style="padding:0 16px 12px">
-          <table class="tbl" style="margin:0"><tbody>
-            ${o.itens.map(i=>`<tr><td style="font-size:12px">${i.dente!=='—'?`Dente ${i.dente}`:''}</td><td style="font-size:12.5px">${i.proc}</td><td style="font-weight:700;color:var(--grn)">${fmtVal(i.val)}</td></tr>`).join('')}
-          </tbody></table>
-        </div>` : ''}
-      </div>`).join('')
-    : '<div style="color:var(--tx3);font-size:13px;padding:12px 0;text-align:center">Nenhum orçamento para este paciente</div>';
+        <div style="display:flex;align-items:center;gap:7px;flex-wrap:wrap">
+          <span style="font-weight:800;color:var(--grn)">${fmtVal(o.total)}</span>
+          <span class="bdg ${sCls[o.status]||'bdg-gy'}">${sLbl[o.status]||o.status}</span>
+          ${o.status==='aberto'?`<button class="btn btn-xs btn-grn" onclick="prAprovarOrc(${o.id})">✓ Aprovar</button>`:''}
+          <button class="btn btn-xs btn-red" onclick="prDelOrc(${o.id})">🗑</button>
+        </div>
+      </div>
+    </div>`).join('')
+    : '<div style="color:var(--tx3);font-size:13px;padding:8px 0;text-align:center">Nenhum orçamento</div>';
 }
 
-function novoOrcamentoPront() {
-  orcProntItens = [];
-  document.getElementById('orc-form-pront').style.display = 'block';
-  document.getElementById('orc-p-desc').value = '';
-  document.getElementById('orc-p-obs').value = '';
-  document.getElementById('orc-p-status').value = 'aberto';
-  renderOrcItensPront();
-  document.getElementById('orc-form-pront').scrollIntoView({ behavior: 'smooth' });
+function prNovoOrc() {
+  prOrcItens = [];
+  document.getElementById('pr-orc-form').style.display = 'block';
+  document.getElementById('pr-orc-desc').value = '';
+  document.getElementById('pr-orc-obs').value  = '';
+  document.getElementById('pr-orc-status').value = 'aberto';
+  prRenderItens();
+  document.getElementById('pr-orc-form').scrollIntoView({ behavior:'smooth' });
 }
 
-function cancelarOrcPront() {
-  orcProntItens = [];
-  document.getElementById('orc-form-pront').style.display = 'none';
+function prCancelarOrc() {
+  prOrcItens = [];
+  document.getElementById('pr-orc-form').style.display = 'none';
 }
 
-function addItemOrcPront() {
-  const selHtml = PROCS.map(p => `<option value="${p.id}" data-nome="${p.nome}" data-val="${p.val}">${p.nome} — ${fmtVal(p.val)}</option>`).join('');
-  const idx = orcProntItens.length;
-  orcProntItens.push({ proc: PROCS[0]?.nome || '', val: PROCS[0]?.val || 0, dente: '—' });
-  renderOrcItensPront();
+function prAddProc() {
+  if (PROCS.length === 0) { showToast('Cadastre procedimentos primeiro','⚠️'); return; }
+  prOrcItens.push({ proc: PROCS[0].nome, val: PROCS[0].val });
+  prRenderItens();
 }
 
-function renderOrcItensPront() {
-  const total = orcProntItens.reduce((s, i) => s + Number(i.val), 0);
-  document.getElementById('orc-p-count').textContent = orcProntItens.length;
-  document.getElementById('orc-p-total').textContent = fmtVal(total);
-  document.getElementById('orc-p-itens-list').innerHTML = orcProntItens.map((item, idx) => `
-    <div style="display:flex;gap:8px;align-items:center;margin-bottom:8px;flex-wrap:wrap">
-      <select class="fsel" style="flex:2;min-width:160px" onchange="updateOrcItemPront(${idx},'proc',this.options[this.selectedIndex].dataset.nome);updateOrcItemPront(${idx},'val',this.options[this.selectedIndex].dataset.val)">
-        ${PROCS.map(p => `<option data-nome="${p.nome}" data-val="${p.val}" ${p.nome===item.proc?'selected':''}>${p.nome} — ${fmtVal(p.val)}</option>`).join('')}
+function prRenderItens() {
+  const total = prOrcItens.reduce((s, i) => s + Number(i.val||0), 0);
+  document.getElementById('pr-orc-count').textContent = prOrcItens.length;
+  document.getElementById('pr-orc-total').textContent = fmtVal(total);
+  const el = document.getElementById('pr-orc-itens'); if (!el) return;
+  el.innerHTML = prOrcItens.length ? prOrcItens.map((item, idx) => `
+    <div style="display:flex;gap:6px;align-items:center;margin-bottom:6px;flex-wrap:wrap">
+      <select class="fsel" style="flex:2;min-width:140px" onchange="prUpdateItem(${idx},'proc',this.options[this.selectedIndex].dataset.nome);prUpdateItem(${idx},'val',this.options[this.selectedIndex].dataset.val)">
+        ${PROCS.map(pr=>`<option data-nome="${pr.nome}" data-val="${pr.val}" ${pr.nome===item.proc?'selected':''}>${pr.nome} — ${fmtVal(pr.val)}</option>`).join('')}
       </select>
-      <input class="fi" type="number" value="${item.val}" style="width:90px;flex-shrink:0" onchange="updateOrcItemPront(${idx},'val',this.value)" placeholder="Valor">
-      <button class="btn btn-xs btn-red" onclick="removeOrcItemPront(${idx})">✕</button>
-    </div>`).join('') || '<div style="color:var(--tx3);font-size:13px">Nenhum procedimento adicionado</div>';
+      <input class="fi" type="number" value="${item.val}" style="width:85px;flex-shrink:0" onchange="prUpdateItem(${idx},'val',this.value)">
+      <button class="btn btn-xs btn-red" onclick="prRemItem(${idx})">✕</button>
+    </div>`).join('')
+    : '<div style="color:var(--tx3);font-size:13px">Nenhum procedimento</div>';
 }
 
-function updateOrcItemPront(idx, field, val) {
-  if (orcProntItens[idx]) {
-    orcProntItens[idx][field] = field === 'val' ? Number(val) : val;
-    const total = orcProntItens.reduce((s, i) => s + Number(i.val), 0);
-    document.getElementById('orc-p-count').textContent = orcProntItens.length;
-    document.getElementById('orc-p-total').textContent = fmtVal(total);
-  }
+function prUpdateItem(idx, field, val) {
+  if (!prOrcItens[idx]) return;
+  prOrcItens[idx][field] = field==='val' ? Number(val) : val;
+  const total = prOrcItens.reduce((s,i) => s+Number(i.val||0), 0);
+  document.getElementById('pr-orc-count').textContent = prOrcItens.length;
+  document.getElementById('pr-orc-total').textContent = fmtVal(total);
 }
 
-function removeOrcItemPront(idx) {
-  orcProntItens.splice(idx, 1);
-  renderOrcItensPront();
-}
+function prRemItem(idx) { prOrcItens.splice(idx,1); prRenderItens(); }
 
-async function salvarOrcPront() {
-  const p = PAC.find(x => x.id === prontPacId);
-  if (!p) { showToast('Nenhum paciente selecionado', '⚠️'); return; }
-  const desc = document.getElementById('orc-p-desc').value.trim() || 'Orçamento';
-  const total = orcProntItens.reduce((s, i) => s + Number(i.val), 0);
+async function prSalvarOrc() {
+  const p = PAC.find(x => x.id === prPacId);
+  if (!p) { showToast('Selecione um paciente','⚠️'); return; }
+  const total = prOrcItens.reduce((s,i) => s+Number(i.val||0), 0);
   const payload = {
-    pac:     p.nome,
-    desc,
-    status:  document.getElementById('orc-p-status').value,
-    obs:     document.getElementById('orc-p-obs').value,
+    pac:    p.nome,
+    desc:   document.getElementById('pr-orc-desc').value.trim() || 'Orçamento',
+    status: document.getElementById('pr-orc-status').value,
+    obs:    document.getElementById('pr-orc-obs').value,
     total,
-    itens:   orcProntItens.map(i => ({ ...i, dente: '—' })),
-    data:    todayStr()
+    itens:  prOrcItens.map(i => ({dente:'—', proc:i.proc, val:Number(i.val||0)})),
+    data:   todayStr()
   };
   showSpinner('Salvando orçamento...');
   try {
     const o = await DB.insert('orcamentos', payload);
     if (o) ORCAMENTOS.push(o);
-    cancelarOrcPront();
-    renderOrcListaPront();
+    prCancelarOrc();
+    prRenderOrcLista();
     showToast(`Orçamento de ${fmtVal(total)} criado!`, '✅');
   } catch(e) {
-    showToast('Erro ao salvar orçamento', '❌');
-    console.error(e);
-  } finally {
-    hideSpinner();
-  }
+    console.error('Erro orçamento:', e);
+    showToast('Erro ao salvar. Tente novamente.', '❌');
+  } finally { hideSpinner(); }
 }
 
-async function aprovarOrcPront(id) {
-  await DB.update('orcamentos', id, { status: 'aprovado' });
-  const o = ORCAMENTOS.find(x => x.id === id);
-  if (o) {
-    o.status = 'aprovado';
-    // Gerar contrato automaticamente
-    const p = PAC.find(x => x.nome === o.pac);
-    const contrato = await DB.insert('contratos', {
-      pac: o.pac, pac_id: p?.id || null,
-      tratamento: o.desc || 'Tratamento',
-      valor: o.total, orc_id: id,
-      status: 'ativo', inicio: todayStr(), obs: o.obs || ''
-    });
-    if (contrato) CONTRATOS.push(contrato);
-    showToast(`Orçamento aprovado! Contrato criado automaticamente.`, '✅');
-  }
-  renderOrcListaPront();
+async function prAprovarOrc(id) {
+  const o = ORCAMENTOS.find(x => x.id === id); if (!o) return;
+  await DB.update('orcamentos', id, { status:'aprovado' });
+  o.status = 'aprovado';
+  const ct = await DB.insert('contratos', {
+    pac: o.pac, tratamento: o.desc||o.descricao||'Tratamento',
+    valor: o.total, orc_id: id, status:'ativo', inicio:todayStr(), obs:o.obs||''
+  });
+  if (ct) CONTRATOS.push(ct);
+  showToast('Aprovado! Contrato criado.', '✅');
+  prRenderOrcLista();
 }
 
-async function delOrcPront(id) {
+async function prDelOrc(id) {
   if (!confirm('Remover orçamento?')) return;
   await DB.delete('orcamentos', id);
   ORCAMENTOS = ORCAMENTOS.filter(x => x.id !== id);
   showToast('Removido', '🗑');
-  renderOrcListaPront();
+  prRenderOrcLista();
 }
 
-function verDetOrcPront(id) {
-  const o = ORCAMENTOS.find(x => x.id === id); if (!o) return;
-  const statusLabel = {aberto:'Em aberto',aprovado:'Aprovado',em_andamento:'Em andamento',finalizado:'Finalizado'};
-  alert(`Orçamento: ${o.desc||'—'}\nTotal: ${fmtVal(o.total)}\nStatus: ${statusLabel[o.status]||o.status}\nData: ${fmtDate(o.data)}`);
-}
-
-// ── EVOLUÇÃO NO PRONTUÁRIO ─────────────────────────
-function renderEvolucaoPront(p) {
+function prRenderEvol(p) {
   const evol = p?.evol || [];
-  const el = document.getElementById('pront-tl-view');
-  if (!el) return;
-  if (!evol.length) {
-    el.innerHTML = '<div style="color:var(--tx3);font-size:13px;padding:12px 0">Nenhuma evolução registrada</div>';
-    return;
-  }
-  el.innerHTML = evol.slice().reverse().map((e, i) => `
+  const el = document.getElementById('pr-evol-lista'); if (!el) return;
+  if (!evol.length) { el.innerHTML='<div style="color:var(--tx3);font-size:13px">Nenhuma evolução registrada</div>'; return; }
+  el.innerHTML = evol.slice().reverse().map((e,i) => `
     <div class="tli">
-      <div class="tl-dot-wrap"><div class="tl-dot"></div>${i < evol.length-1 ? '<div class="tl-line"></div>' : ''}</div>
+      <div class="tl-dot-wrap"><div class="tl-dot"></div>${i<evol.length-1?'<div class="tl-line"></div>':''}</div>
       <div class="tl-body">
         <div class="tl-date">${fmtDate(e.data)}</div>
         <div class="tl-proc">${e.proc}</div>
         <div class="tl-obs">${e.obs}</div>
-        ${e.prox ? `<div style="font-size:12px;color:var(--tx3);margin-top:4px">📌 Próximo: <b>${e.prox}</b></div>` : ''}
-        ${e.ret  ? `<div style="font-size:12px;color:var(--tx3)">📅 Retorno: <b>${fmtDate(e.ret)}</b></div>` : ''}
+        ${e.prox?`<div style="font-size:12px;color:var(--tx3);margin-top:3px">📌 ${e.prox}</div>`:''}
       </div>
     </div>`).join('');
 }
 
-// ── FOTOS NO PRONTUÁRIO ────────────────────────────
-function renderFotosPront(p) {
-  const fotos = p?.fotos || [];
-  const grid = document.getElementById('fotos-grid');
-  if (!grid) return;
-  grid.innerHTML = fotos.map(f => `
-    <div style="border-radius:8px;overflow:hidden;border:1px solid var(--brd);aspect-ratio:1;background:var(--surf2);display:flex;align-items:center;justify-content:center">
-      <img src="${f.url}" style="width:100%;height:100%;object-fit:cover" alt="Foto ${fmtDate(f.data)}">
-    </div>`).join('');
-}
-
-async function uploadFotosPront(input) {
-  const p = PAC.find(x => x.id === prontPacId); if (!p) return;
-  if (!p.fotos) p.fotos = [];
-  const files = Array.from(input.files);
-  for (const file of files) {
-    const reader = new FileReader();
-    reader.onload = async (e) => {
-      p.fotos.push({ url: e.target.result, data: todayStr() });
-      await DB.update('pacientes', prontPacId, { fotos: p.fotos });
-      renderFotosPront(p);
-    };
-    reader.readAsDataURL(file);
-  }
-  showToast(`${files.length} foto(s) adicionada(s)`, '📷');
-}
-
-// Abrir prontuário a partir de outros lugares
+// Abrir prontuário a partir de outros contextos
 function abrirProntDe(pacId) {
   goTab('prontuario');
-  setTimeout(() => abrirProntuarioPac(pacId), 100);
+  setTimeout(() => abrirPront(pacId), 150);
 }
 
-// ════════════════════════════════════════════════════
-// CONTRATOS
-// ════════════════════════════════════════════════════
-let CONTRATOS = [];
-
+// ═══════════ CONTRATOS ═══════════
 function renderContratos() {
-  const q     = (document.getElementById('cont-search')?.value || '').toLowerCase();
-  const stFil = document.getElementById('cont-filter')?.value || '';
-  let list = CONTRATOS.filter(c => {
-    const matchQ  = !q || c.pac.toLowerCase().includes(q);
-    const matchSt = !stFil || c.status === stFil;
-    return matchQ && matchSt;
+  const q     = (document.getElementById('cont-search')?.value||'').toLowerCase();
+  const stFil = document.getElementById('cont-filter')?.value||'';
+  const list  = CONTRATOS.filter(ct => {
+    const mQ = !q || ct.pac.toLowerCase().includes(q);
+    const mS = !stFil || ct.status===stFil;
+    return mQ && mS;
   });
-
-  const ativos     = CONTRATOS.filter(c => c.status === 'ativo').length;
-  const atrasados  = CONTRATOS.filter(c => c.status === 'atrasado').length;
-  const finalizados= CONTRATOS.filter(c => c.status === 'finalizado').length;
-  const totalValor = CONTRATOS.reduce((s, c) => s + Number(c.valor || 0), 0);
-
+  const ativos     = CONTRATOS.filter(ct=>ct.status==='ativo').length;
+  const atrasados  = CONTRATOS.filter(ct=>ct.status==='atrasado').length;
+  const finalizados= CONTRATOS.filter(ct=>ct.status==='finalizado').length;
+  const totalValor = CONTRATOS.reduce((s,ct)=>s+Number(ct.valor||0),0);
   document.getElementById('cont-kpis').innerHTML = `
-    <div class="sc sc-grad-b"><div class="sc-circle"></div><div class="sc-lbl">Total em Contratos</div><div class="sc-val">${fmtVal(totalValor)}</div></div>
+    <div class="sc sc-grad-b"><div class="sc-circle"></div><div class="sc-lbl">Valor Total</div><div class="sc-val">${fmtVal(totalValor)}</div></div>
     <div class="sc sc-grad-g"><div class="sc-circle"></div><div class="sc-lbl">Ativos</div><div class="sc-val">${ativos}</div></div>
     <div class="sc sc-red"><div class="sc-circle"></div><div class="sc-lbl">Atrasados</div><div class="sc-val">${atrasados}</div></div>
     <div class="sc"><div class="sc-lbl">Finalizados</div><div class="sc-val">${finalizados}</div></div>`;
-
   document.getElementById('cont-count').textContent = list.length;
-  document.getElementById('cont-tbody').innerHTML = list.length ? list.map(ct => `
-    <tr>
-      <td><b>${ct.pac}</b></td>
-      <td style="font-size:12.5px">${ct.tratamento || '—'}</td>
-      <td style="font-weight:700;color:var(--grn)">${fmtVal(ct.valor)}</td>
-      <td><span class="bdg ${ct.status==='ativo'?'bdg-grn':ct.status==='atrasado'?'bdg-red':'bdg-gy'}">${ct.status}</span></td>
-      <td style="font-size:12px;color:var(--tx3)">${fmtDate(ct.inicio)}</td>
-      <td style="display:flex;gap:5px">
-        <select class="fsel" style="padding:3px 6px;font-size:11px;border-radius:6px" onchange="mudarStatusContrato(${ct.id},this.value)">
-          <option value="">Status...</option>
-          <option value="ativo">Ativo</option>
-          <option value="atrasado">Atrasado</option>
-          <option value="finalizado">Finalizado</option>
-        </select>
-        <button class="btn btn-xs btn-red" onclick="delContrato(${ct.id})">🗑</button>
-      </td>
-    </tr>`).join('')
-    : '<tr><td colspan="6" class="empty"><div class="empty-ico">📄</div><div class="empty-txt">Nenhum contrato encontrado</div></td></tr>';
+  document.getElementById('cont-tbody').innerHTML = list.length ? list.map(ct=>`<tr>
+    <td><b>${ct.pac}</b></td>
+    <td style="font-size:12.5px">${ct.tratamento||'—'}</td>
+    <td style="font-weight:700;color:var(--grn)">${fmtVal(ct.valor)}</td>
+    <td><span class="bdg ${ct.status==='ativo'?'bdg-grn':ct.status==='atrasado'?'bdg-red':'bdg-gy'}">${ct.status}</span></td>
+    <td style="font-size:12px;color:var(--tx3)">${fmtDate(ct.inicio)}</td>
+    <td style="display:flex;gap:5px">
+      <select class="fsel" style="padding:3px 6px;font-size:11px;border-radius:6px" onchange="contStatus(${ct.id},this.value)">
+        <option value="">Status...</option>
+        <option value="ativo">Ativo</option>
+        <option value="atrasado">Atrasado</option>
+        <option value="finalizado">Finalizado</option>
+      </select>
+      <button class="btn btn-xs btn-red" onclick="contDel(${ct.id})">🗑</button>
+    </td></tr>`).join('')
+    : '<tr><td colspan="6" class="empty"><div class="empty-ico">📄</div><div class="empty-txt">Nenhum contrato</div></td></tr>';
 }
 
-async function mudarStatusContrato(id, status) {
+async function contStatus(id, status) {
   if (!status) return;
   await DB.update('contratos', id, { status });
-  const ct = CONTRATOS.find(x => x.id === id);
-  if (ct) ct.status = status;
-  showToast('Status atualizado!', '✅');
-  renderContratos();
+  const ct = CONTRATOS.find(x=>x.id===id); if(ct) ct.status=status;
+  showToast('Status atualizado!','✅'); renderContratos();
 }
-
-async function delContrato(id) {
+async function contDel(id) {
   if (!confirm('Remover contrato?')) return;
   await DB.delete('contratos', id);
-  CONTRATOS = CONTRATOS.filter(x => x.id !== id);
-  showToast('Removido', '🗑');
-  renderContratos();
+  CONTRATOS = CONTRATOS.filter(x=>x.id!==id);
+  showToast('Removido','🗑'); renderContratos();
 }
 </script>
 <!-- Modal Follow-up -->
