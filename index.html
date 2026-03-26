@@ -267,7 +267,41 @@ button,select,input,textarea{font-family:inherit}
 .cal-ev.red{background:var(--red-l);color:var(--red)}
 .chip{padding:5px 13px;border-radius:20px;font-size:12.5px;font-weight:600;cursor:pointer;border:1.5px solid var(--brd);background:var(--surf2);color:var(--tx2);transition:all .15s;font-family:inherit}
 .chip.on{background:var(--blu-l);border-color:var(--blu);color:var(--blu)}
-@media print{.hdr,.nav-wrap,.btn,.nb,.ov,.spin-overlay,.toast{display:none!important}.main{padding:0!important}}
+@media print {
+  * { -webkit-print-color-adjust:exact!important; print-color-adjust:exact!important; }
+  .hdr,.nav-wrap,.btn,.nb,.ov,.spin-overlay,.toast,.nav-bottom,
+  .ph-r,.cx,.mf,.mh .cx { display:none!important; }
+  .main { padding:0!important; }
+  body { background:#fff!important; font-family:Georgia, serif; }
+  /* Receita impressão */
+  #receita-print-area {
+    display:block!important;
+    max-width:700px;
+    margin:0 auto;
+    padding:40px;
+    font-family:Georgia, serif;
+    font-size:13.5px;
+    line-height:1.8;
+    color:#000;
+  }
+  .receita-header { border-bottom:2px solid #000; padding-bottom:16px; margin-bottom:24px; }
+  .receita-title  { font-size:22px; font-weight:700; text-align:center; }
+  .receita-sub    { font-size:12px; text-align:center; color:#444; }
+  .receita-body   { margin:20px 0; }
+  .receita-footer { border-top:1px solid #000; margin-top:40px; padding-top:16px; text-align:center; font-size:12px; }
+  /* Contrato impressão */
+  #contrato-print-area {
+    display:block!important;
+    max-width:700px;
+    margin:0 auto;
+    padding:48px;
+    font-family:Georgia, serif;
+    font-size:13.5px;
+    line-height:1.9;
+    color:#000;
+    white-space:pre-wrap;
+  }
+}
 
 /* ── NAV MEDIUM (tablets e notebooks pequenos) ── */
 @media (max-width: 1200px) and (min-width: 769px) {
@@ -1061,19 +1095,18 @@ button,select,input,textarea{font-family:inherit}
   <div class="ph">
     <div class="ph-l">
       <div class="ph-title">📋 Orçamentos</div>
-      <div class="ph-sub">Gestão comercial e fechamento</div>
+      <div class="ph-sub">Todos os orçamentos — clique no paciente para abrir o prontuário</div>
     </div>
     <div class="ph-r">
       <select class="fsel" id="orc-filter" onchange="renderOrcamentos()">
         <option value="">Todos</option>
         <option value="aberto">Em aberto</option>
-        <option value="apresentado">Apresentado</option>
-        <option value="negociando">Negociando</option>
-        <option value="fechado">Fechado</option>
-        <option value="perdido">Perdido</option>
+        <option value="aprovado">Aprovado</option>
+        <option value="em_andamento">Em andamento</option>
+        <option value="finalizado">Finalizado</option>
       </select>
       <input class="fi" id="orc-search" placeholder="Buscar paciente..." oninput="renderOrcamentos()">
-      <button class="btn btn-pri" onclick="abrirNovoOrcamento()">＋ Novo Orçamento</button>
+      <button class="btn btn-pri" onclick="orcNovoComBusca()">＋ Novo Orçamento</button>
     </div>
   </div>
 
@@ -1086,79 +1119,30 @@ button,select,input,textarea{font-family:inherit}
     <div class="cb" style="padding:12px 16px;overflow-x:auto" id="orc-funil"></div>
   </div>
 
-  <!-- Lista de orçamentos -->
-  <div class="card" style="margin-bottom:16px">
-    <div class="ch"><div class="ct">Orçamentos</div><span class="bdg bdg-gy" id="orc-count">0</span></div>
-    <div class="tbl-wrap">
-      <table class="tbl">
-        <thead><tr><th>Paciente</th><th>Total</th><th>Status</th><th>Ações</th></tr></thead>
-        <tbody id="orc-tbody"></tbody>
-      </table>
+  <!-- Seletor de paciente para novo orçamento (escondido por padrão) -->
+  <div id="orc-novo-wrap" style="display:none;margin-bottom:16px">
+    <div class="card" style="border:2px solid var(--blu-l)">
+      <div class="ch" style="background:var(--blu-p)">
+        <div class="ct" style="color:var(--blu)">Selecione o paciente para o orçamento</div>
+        <button class="btn btn-sec btn-sm" onclick="document.getElementById('orc-novo-wrap').style.display='none'">✕ Cancelar</button>
+      </div>
+      <div class="cb">
+        <div class="fg" style="position:relative;max-width:400px">
+          <label class="fl">Paciente *</label>
+          <input class="fi" id="orc-novo-pac" placeholder="Digite o nome do paciente..." oninput="searchPac(this,'orc-novo-pac-list')" autocomplete="off">
+          <div id="orc-novo-pac-list" class="autocomplete-list"></div>
+        </div>
+        <div style="margin-top:12px;font-size:13px;color:var(--tx3)">
+          Após selecionar, você será redirecionado ao Prontuário do paciente onde poderá criar o orçamento completo.
+        </div>
+      </div>
     </div>
   </div>
 
-  <!-- Painel de criação / edição — empilhado abaixo -->
-  <div id="orc-painel" style="display:flex;flex-direction:column;gap:14px">
-
-    <!-- Dados -->
-    <div class="card">
-      <div class="ch"><div class="ct" id="orc-painel-title">Novo Orçamento</div></div>
-      <div class="cb">
-        <div class="fr fr1"><div class="fg"><label class="fl">Paciente *</label>
-          <input class="fi" id="orc-pac" placeholder="Buscar paciente..." oninput="searchPac(this,'orc-pac-list')" autocomplete="off">
-          <div id="orc-pac-list" class="autocomplete-list"></div>
-        </div></div>
-        <div class="fr"><div class="fg"><label class="fl">Dentista</label>
-          <select class="fsel" id="orc-dent"></select>
-        </div>
-        <div class="fg"><label class="fl">Status</label>
-          <select class="fsel" id="orc-status">
-            <option value="aberto">Em aberto</option>
-            <option value="apresentado">Apresentado</option>
-            <option value="negociando">Negociando</option>
-            <option value="fechado">Fechado</option>
-            <option value="perdido">Perdido</option>
-          </select>
-        </div></div>
-        <div class="fr fr1"><div class="fg"><label class="fl">Observações / Negociação</label>
-          <textarea class="fta" id="orc-obs" placeholder="Anotações sobre a negociação..." style="min-height:60px"></textarea>
-        </div></div>
-      </div>
-    </div>
-
-    <!-- Odontograma -->
-    <div class="card">
-      <div class="ch">
-        <div class="ct">🦷 Odontograma</div>
-        <div style="font-size:11px;color:var(--tx3)">Clique no dente → selecione procedimento</div>
-      </div>
-      <div style="padding:10px;overflow-x:auto;-webkit-overflow-scrolling:touch">
-        <div id="odontograma-wrap" style="min-width:560px"></div>
-      </div>
-    </div>
-
-    <!-- Itens -->
-    <div class="card">
-      <div class="ch">
-        <div class="ct">Itens do Orçamento</div>
-        <button class="btn btn-sec btn-sm" onclick="addItemManual()">＋ Item manual</button>
-      </div>
-      <div class="tbl-wrap">
-        <table class="tbl">
-          <thead><tr><th>Dente</th><th>Procedimento</th><th>Valor</th><th></th></tr></thead>
-          <tbody id="orc-itens-body"></tbody>
-        </table>
-      </div>
-      <div style="padding:12px 16px;border-top:1px solid var(--brd);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
-        <div style="font-size:13px;color:var(--tx2)"><span id="orc-itens-count">0</span> procedimento(s)</div>
-        <div style="font-size:18px;font-weight:800;color:var(--blu)">Total: <span id="orc-total">R$ 0,00</span></div>
-      </div>
-      <div style="padding:0 16px 14px;display:flex;gap:10px">
-        <button class="btn btn-sec" style="flex:1;justify-content:center" onclick="limparOrcamento()">🗑 Limpar</button>
-        <button class="btn btn-pri" style="flex:2;justify-content:center" onclick="salvarOrcamento()">💾 Salvar</button>
-      </div>
-    </div>
-
+  <!-- Lista de orçamentos agrupada por paciente -->
+  <div class="card">
+    <div class="ch"><div class="ct">Orçamentos</div><span class="bdg bdg-gy" id="orc-count">0</span></div>
+    <div id="orc-lista-grupos"></div>
   </div>
 </div>
 
@@ -1289,26 +1273,89 @@ button,select,input,textarea{font-family:inherit}
 <!-- ══════════ CONTRATOS ══════════ -->
 <div id="view-contratos" class="view">
   <div class="ph">
-    <div class="ph-l"><div class="ph-title">📄 Contratos</div><div class="ph-sub">Contratos gerados a partir de orçamentos aprovados</div></div>
+    <div class="ph-l">
+      <div class="ph-title">📄 Contratos</div>
+      <div class="ph-sub">Biblioteca de modelos reutilizáveis</div>
+    </div>
     <div class="ph-r">
-      <select class="fsel" id="cont-filter" onchange="renderContratos()">
-        <option value="">Todos</option><option value="ativo">Ativos</option>
-        <option value="atrasado">Atrasados</option><option value="finalizado">Finalizados</option>
-      </select>
-      <input class="fi" id="cont-search" placeholder="Buscar paciente..." oninput="renderContratos()">
+      <button class="btn btn-pri" onclick="abrirModalModelo()">＋ Novo Modelo</button>
     </div>
   </div>
-  <div class="g4" style="margin-bottom:16px" id="cont-kpis"></div>
+
+  <!-- Modelos prontos -->
+  <div class="g3" style="margin-bottom:18px" id="cont-modelos-grid"></div>
+
+  <!-- Lista de modelos cadastrados -->
   <div class="card">
-    <div class="ch"><div class="ct">Contratos</div><span class="bdg bdg-gy" id="cont-count">0</span></div>
-    <div class="tbl-wrap">
-      <table class="tbl">
-        <thead><tr><th>Paciente</th><th>Tratamento</th><th>Valor</th><th>Status</th><th>Início</th><th>Ações</th></tr></thead>
-        <tbody id="cont-tbody"></tbody>
-      </table>
+    <div class="ch">
+      <div class="ct">Meus Modelos de Contrato</div>
+      <span class="bdg bdg-gy" id="cont-count">0</span>
     </div>
+    <div id="cont-lista"></div>
   </div>
 </div>
+
+<!-- Modal: criar/editar modelo de contrato -->
+<div class="ov" id="m-cont-modelo"><div class="mdl" style="width:680px;max-height:90vh">
+  <div class="mh">
+    <div class="mt2" id="m-cont-titulo">Novo Modelo de Contrato</div>
+    <button class="cx" onclick="closeModal('m-cont-modelo')">✕</button>
+  </div>
+  <div class="mb2">
+    <input type="hidden" id="cont-edit-id">
+    <div class="fr"><div class="fg"><label class="fl">Título do Modelo *</label>
+      <input class="fi" id="cont-titulo" placeholder="Ex: Contrato de Prestação de Serviços Ortodônticos">
+    </div>
+    <div class="fg" style="max-width:180px"><label class="fl">Tipo</label>
+      <select class="fsel" id="cont-tipo">
+        <option value="servico">Prestação de Serviço</option>
+        <option value="protese">Prótese</option>
+        <option value="boleto">Parcelamento / Boleto</option>
+        <option value="outros">Outros</option>
+      </select>
+    </div></div>
+    <div class="fg" style="margin-top:10px">
+      <label class="fl">Conteúdo do Contrato</label>
+      <div style="font-size:11.5px;color:var(--tx3);margin-bottom:6px">
+        Use: <code>[NOME]</code> = paciente · <code>[DATA]</code> = data atual · <code>[VALOR]</code> = valor · <code>[CLINICA]</code> = clínica
+      </div>
+      <textarea class="fta" id="cont-corpo" style="min-height:300px;font-family:Georgia,serif;font-size:13px;line-height:1.7" placeholder="Digite o texto do contrato aqui..."></textarea>
+    </div>
+  </div>
+  <div class="mf">
+    <button class="btn btn-sec" onclick="closeModal('m-cont-modelo')">Cancelar</button>
+    <button class="btn btn-sec" onclick="previewContrato()">👁 Preview</button>
+    <button class="btn btn-pri" onclick="salvarModelo()">💾 Salvar Modelo</button>
+  </div>
+</div></div>
+
+<!-- Modal: preview/imprimir contrato preenchido -->
+<div class="ov" id="m-cont-preview"><div class="mdl" style="width:720px;max-height:92vh">
+  <div class="mh">
+    <div class="mt2">📄 Preview do Contrato</div>
+    <button class="cx" onclick="closeModal('m-cont-preview')">✕</button>
+  </div>
+  <div class="mb2">
+    <!-- Preencher variáveis -->
+    <div style="background:var(--surf2);border-radius:10px;padding:14px;margin-bottom:16px">
+      <div style="font-size:12px;font-weight:700;color:var(--tx3);margin-bottom:10px">PREENCHER DADOS DO CONTRATO</div>
+      <div class="g2">
+        <div class="fg"><label class="fl">Paciente</label>
+          <input class="fi" id="prev-nome" placeholder="Nome completo do paciente">
+        </div>
+        <div class="fg"><label class="fl">Valor</label>
+          <input class="fi" id="prev-valor" placeholder="Ex: R$ 2.500,00">
+        </div>
+      </div>
+    </div>
+    <!-- Contrato renderizado -->
+    <div id="cont-preview-body" style="font-family:Georgia,serif;font-size:13.5px;line-height:1.8;padding:24px;border:1px solid var(--brd);border-radius:10px;background:#fff;min-height:400px;white-space:pre-wrap"></div>
+  </div>
+  <div class="mf">
+    <button class="btn btn-sec" onclick="closeModal('m-cont-preview')">Fechar</button>
+    <button class="btn btn-pri" onclick="imprimirContrato()">🖨️ Imprimir</button>
+  </div>
+</div></div>
 
 </div><!-- /main -->
 
@@ -1451,8 +1498,17 @@ button,select,input,textarea{font-family:inherit}
 // ════════════════════════════════════════════════════
 // SUPABASE CONFIG & AUTH
 // ════════════════════════════════════════════════════
-const { createClient } = supabase;
-let sb = null;        // Supabase client (null = demo mode)
+let _createClient = null;
+let sb = null;
+// Lazy init to avoid crash if CDN fails
+function getCreateClient() {
+  if (_createClient) return _createClient;
+  if (typeof supabase !== 'undefined' && supabase.createClient) {
+    _createClient = supabase.createClient;
+    return _createClient;
+  }
+  return null;
+}        // Supabase client (null = demo mode)
 let currentUser = null;
 let currentClinica = null;
 let isDemo = false;
@@ -1519,7 +1575,7 @@ const DB = {
 };
 
 // ── IN-MEMORY CACHE ──
-let PAC = [], AGEND = [], ATEND = [], LANC = [], PROCS = [], ORTO = [], ESTOQ = [], RECS = [], CAMPS = [], USERS = [], FOLLOWUP = [], BOLETOS = [], ORCAMENTOS = [], CONTRATOS = [];
+let PAC = [], AGEND = [], ATEND = [], LANC = [], PROCS = [], ORTO = [], ESTOQ = [], RECS = [], CAMPS = [], USERS = [], FOLLOWUP = [], BOLETOS = [], ORCAMENTOS = [], CONTRATOS = [], MODELOS_CONT = [];
 
 async function loadAll() {
   showSpinner('Carregando dados...');
@@ -1529,9 +1585,9 @@ async function loadAll() {
       DB.getAll('pacientes'), DB.getAll('agendamentos'), DB.getAll('atendimentos'),
       DB.getAll('lancamentos'), DB.getAll('procedimentos'), DB.getAll('orto_leads'),
       DB.getAll('estoque'), DB.getAll('receitas'), DB.getAll('campanhas'), DB.getAll('usuarios'),
-      DB.getAll('followup'), DB.getAll('boletos'), DB.getAll('orcamentos'), DB.getAll('contratos')
+      DB.getAll('followup'), DB.getAll('boletos'), DB.getAll('orcamentos'), DB.getAll('contratos'), DB.getAll('modelos_contratos')
     ]);
-    [PAC, AGEND, ATEND, LANC, PROCS, ORTO, ESTOQ, RECS, CAMPS, USERS, FOLLOWUP, BOLETOS, ORCAMENTOS, CONTRATOS] =
+    [PAC, AGEND, ATEND, LANC, PROCS, ORTO, ESTOQ, RECS, CAMPS, USERS, FOLLOWUP, BOLETOS, ORCAMENTOS, CONTRATOS, MODELOS_CONT] =
       results.map(r => r.status === 'fulfilled' ? r.value : []);
 
     if (isDemo && PAC.length === 0) seedDemoData();
@@ -1581,7 +1637,9 @@ function useDemo() {
 
 function initSupabase(url, key) {
   try {
-    sb = createClient(url, key);
+    const cc = getCreateClient();
+    if (!cc) { throw new Error('Supabase SDK não carregou. Verifique sua conexão.'); }
+    sb = cc(url, key);
     isDemo = false;
 
     // Listener só para logout
@@ -2483,7 +2541,40 @@ async function salvarReceita(){
 }
 function renderReceitas(q){let list=RECS;if(q)list=list.filter(r=>r.pac.toLowerCase().includes(q.toLowerCase()));document.getElementById('rec-tbody').innerHTML=list.slice().reverse().map(r=>`<tr><td>${fmtDate(r.data)}</td><td><b>${r.pac}</b></td><td>${r.dent}</td><td>${r.meds.map(m=>m.nome).join(', ')}</td><td><button class="btn btn-xs btn-sec" onclick="printReceita(${r.id})">🖨️</button></td></tr>`).join('')||'<tr><td colspan="5" class="empty">Nenhuma receita</td></tr>';}
 function imprimirReceita(){const pac=document.getElementById('rec-pac').value;if(!pac){showToast('Salve a receita primeiro','⚠️');return;}salvarReceita().then(()=>{const r=RECS[RECS.length-1];if(r)printReceita(r.id);});}
-function printReceita(id){const r=RECS.find(x=>x.id===id);if(!r)return;document.getElementById('rec-print-body').innerHTML=`<div style="text-align:center;margin-bottom:20px;padding-bottom:16px;border-bottom:2px solid var(--brd)"><div style="font-size:22px;font-weight:800">🦷 DentalFlow Pro</div><div style="color:var(--tx2)">${r.dent} · CRO-MT 00000</div></div><div class="g2" style="margin-bottom:18px"><div><b>Paciente:</b> ${r.pac}</div><div><b>Data:</b> ${fmtDate(r.data)}</div></div><div style="font-weight:700;margin-bottom:10px">Prescrição:</div>${r.meds.map((m,i)=>`<div style="padding:12px;border:1px solid var(--brd);border-radius:9px;margin-bottom:8px"><div style="font-weight:700">${i+1}. ${m.nome}</div><div style="color:var(--tx2);font-size:13px">Posologia: ${m.dose||'—'}</div></div>`).join('')}${r.obs?`<div style="margin-top:14px;padding:12px;background:var(--surf2);border-radius:9px"><b>Obs:</b> ${r.obs}</div>`:''}<div style="margin-top:40px;text-align:center;border-top:1px solid var(--brd);padding-top:14px;color:var(--tx3);font-size:12px">Assinatura e carimbo do profissional</div>`;openModal('m-rec-print');}
+function printReceita(id){
+  const r = RECS.find(x=>x.id===id); if(!r)return;
+  const clinica = document.getElementById('clinica-name')?.textContent || 'Clínica Odontológica';
+  document.getElementById('rec-print-body').innerHTML = `
+    <div id="receita-print-area">
+      <div class="receita-header">
+        <div class="receita-title">🦷 ${clinica}</div>
+        <div class="receita-sub">${r.dent} · CRO-MT 00000</div>
+        <div class="receita-sub" style="margin-top:4px">Alta Floresta - MT</div>
+      </div>
+      <div style="display:flex;justify-content:space-between;margin-bottom:20px;font-size:13px">
+        <div><b>Paciente:</b> ${r.pac}</div>
+        <div><b>Data:</b> ${fmtDate(r.data)}</div>
+      </div>
+      <div style="text-align:center;font-size:16px;font-weight:700;letter-spacing:1px;border:2px solid #000;padding:6px;margin-bottom:20px">
+        ${r.tipo || 'RECEITA MÉDICA'}
+      </div>
+      <div class="receita-body">
+        ${r.meds.map((m,i) => `
+          <div style="margin-bottom:20px">
+            <div style="font-weight:700;font-size:14px">${i+1}. ${m.nome}</div>
+            <div style="padding-left:20px;margin-top:4px">Posologia: ${m.dose||'—'}</div>
+            ${m.dur ? `<div style="padding-left:20px;color:#555">Duração: ${m.dur}</div>` : ''}
+          </div>`).join('')}
+        ${r.obs ? `<div style="margin-top:16px;border-top:1px solid #ccc;padding-top:12px"><i>Obs: ${r.obs}</i></div>` : ''}
+      </div>
+      <div class="receita-footer">
+        <div style="margin-bottom:40px">_______________________________</div>
+        <div>${r.dent}</div>
+        <div>CRO-MT 00000</div>
+      </div>
+    </div>`;
+  openModal('m-rec-print');
+}
 
 // ════════════════════ CAMPANHAS ════════════════════
 function renderCampanhas(){
@@ -2554,6 +2645,12 @@ window.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('input[type=date]').forEach(i => { if (!i.value) i.value = todayStr(); });
 
   // ── Credenciais embutidas — ninguém precisa configurar ──
+  // Safety: if Supabase SDK didn't load, go to demo mode
+  if (typeof supabase === 'undefined') {
+    console.warn('Supabase SDK not loaded, starting demo mode');
+    startDemoMode();
+    return;
+  }
   const FIXED_URL = 'https://mpgcobzhifvhywwofkul.supabase.co';
   const FIXED_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1wZ2NvYnpoaWZ2aHl3d29ma3VsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM5NTY5MjgsImV4cCI6MjA4OTUzMjkyOH0.ogKrIeyMn7enjEIqK6hH3mFEwro1q1d1h0I-BalynFM';
 
@@ -3107,479 +3204,353 @@ async function salvarOrcamento() {
 
 // ── RENDER LISTA ─────────────────────────────────────────
 function renderOrcamentos() {
-  populateDentistas('orc-dent');
-  buildOdontograma();
-
   const q     = (document.getElementById('orc-search')?.value || '').toLowerCase();
   const stFil = document.getElementById('orc-filter')?.value || '';
+
   let list = ORCAMENTOS.filter(o => {
-    const matchQ  = !q || o.pac.toLowerCase().includes(q);
-    const matchSt = !stFil || o.status === stFil;
-    return matchQ && matchSt;
-  }).sort((a,b) => (b.data||'').localeCompare(a.data||''));
+    const mQ = !q || o.pac.toLowerCase().includes(q);
+    const mS = !stFil || o.status === stFil;
+    return mQ && mS;
+  }).sort((a, b) => (b.data||'').localeCompare(a.data||''));
 
   // KPIs
-  const tots = s => ORCAMENTOS.filter(o=>o.status===s).reduce((a,o)=>a+Number(o.total),0);
+  const tots = s => ORCAMENTOS.filter(o=>o.status===s).reduce((a,o)=>a+Number(o.total||0),0);
   const cnts = s => ORCAMENTOS.filter(o=>o.status===s).length;
-  const txConv = ORCAMENTOS.length
-    ? Math.round(cnts('fechado') / ORCAMENTOS.length * 100) : 0;
+  const txConv = ORCAMENTOS.length ? Math.round(cnts('finalizado')/ORCAMENTOS.length*100) : 0;
+  const kpiEl = document.getElementById('orc-kpis');
+  if (kpiEl) kpiEl.innerHTML = `
+    <div class="sc sc-grad-b"><div class="sc-circle"></div><div class="sc-lbl">Em Aberto</div><div class="sc-val">${fmtVal(tots('aberto')+tots('aprovado')+tots('em_andamento'))}</div><div class="sc-sub">${cnts('aberto')+cnts('aprovado')+cnts('em_andamento')} orçamentos</div></div>
+    <div class="sc sc-grad-g"><div class="sc-circle"></div><div class="sc-lbl">Finalizados</div><div class="sc-val">${fmtVal(tots('finalizado'))}</div><div class="sc-sub">${cnts('finalizado')} orçamentos</div></div>
+    <div class="sc"><div class="sc-lbl">Conversão</div><div class="sc-val" style="color:var(--blu)">${txConv}%</div></div>
+    <div class="sc sc-red"><div class="sc-circle"></div><div class="sc-lbl">Perdidos</div><div class="sc-val">${cnts('perdido')}</div></div>`;
 
-  document.getElementById('orc-kpis').innerHTML = `
-    <div class="sc sc-grad-b"><div class="sc-circle"></div><div class="sc-lbl">Em Aberto</div><div class="sc-val">${fmtVal(tots('aberto')+tots('apresentado')+tots('negociando'))}</div><div class="sc-sub">${cnts('aberto')+cnts('apresentado')+cnts('negociando')} orçamentos</div></div>
-    <div class="sc sc-grad-g"><div class="sc-circle"></div><div class="sc-lbl">Fechados</div><div class="sc-val">${fmtVal(tots('fechado'))}</div><div class="sc-sub">${cnts('fechado')} orçamentos</div></div>
-    <div class="sc"><div class="sc-lbl">Taxa de Conversão</div><div class="sc-val" style="color:var(--blu)">${txConv}%</div><div class="sc-sub">fechados / total</div></div>
-    <div class="sc sc-red"><div class="sc-circle"></div><div class="sc-lbl">Perdidos</div><div class="sc-val">${fmtVal(tots('perdido'))}</div><div class="sc-sub">${cnts('perdido')} orçamentos</div></div>`;
+  // Funil
+  const funilEl = document.getElementById('orc-funil');
+  const funil = [{s:'aberto',l:'Aberto',c:'var(--blu2)'},{s:'aprovado',l:'Aprovado',c:'var(--tea)'},{s:'em_andamento',l:'Em andamento',c:'var(--yel)'},{s:'finalizado',l:'Finalizado',c:'var(--grn)'},{s:'perdido',l:'Perdido',c:'var(--red)'}];
+  const maxF = Math.max(...funil.map(f=>cnts(f.s)),1);
+  if (funilEl) funilEl.innerHTML = `<div style="display:flex;gap:8px;align-items:flex-end;height:80px">
+    ${funil.map(f=>{const n=cnts(f.s);const pct=Math.round(n/maxF*100);
+      return `<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer" onclick="document.getElementById('orc-filter').value='${f.s}';renderOrcamentos()">
+        <div style="font-size:13px;font-weight:800;color:${f.c}">${n}</div>
+        <div style="width:100%;height:${Math.max(pct*0.6,4)}px;background:${f.c};border-radius:4px 4px 0 0;opacity:.85"></div>
+        <div style="font-size:10px;font-weight:700;color:var(--tx3);text-align:center">${f.l}</div>
+      </div>`}).join('')}
+  </div>`;
 
-  // Funil visual
-  const funil = [
-    {s:'aberto',     l:'Em aberto',   c:'var(--blu2)'},
-    {s:'apresentado',l:'Apresentado', c:'var(--tea)'},
-    {s:'negociando', l:'Negociando',  c:'var(--yel)'},
-    {s:'fechado',    l:'Fechado',     c:'var(--grn)'},
-    {s:'perdido',    l:'Perdido',     c:'var(--red)'},
-  ];
-  const maxFunil = Math.max(...funil.map(f => cnts(f.s)), 1);
-  document.getElementById('orc-funil').innerHTML = `
-    <div style="display:flex;gap:8px;align-items:flex-end;height:80px">
-      ${funil.map(f => {
-        const n   = cnts(f.s);
-        const pct = Math.round(n / maxFunil * 100);
-        return `<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer" onclick="document.getElementById('orc-filter').value='${f.s}';renderOrcamentos()">
-          <div style="font-size:13px;font-weight:800;color:${f.c}">${n}</div>
-          <div style="width:100%;height:${Math.max(pct*0.6,4)}px;background:${f.c};border-radius:4px 4px 0 0;opacity:.8;transition:height .4s"></div>
-          <div style="font-size:10.5px;font-weight:700;color:var(--tx3);text-align:center">${f.l}</div>
-        </div>`;
-      }).join('')}
-    </div>`;
+  // Lista agrupada por paciente
+  const countEl = document.getElementById('orc-count');
+  if (countEl) countEl.textContent = list.length;
 
-  // Tabela
-  document.getElementById('orc-count').textContent = `${list.length}`;
-  document.getElementById('orc-tbody').innerHTML = list.length ? list.map(o => {
-    return `<tr>
-      <td><b>${o.pac}</b><div style="font-size:11px;color:var(--tx3)">${fmtDate(o.data)}</div></td>
-      <td style="font-weight:700;color:var(--grn)">${fmtVal(o.total)}</td>
-      <td>${getOrcStatusBadge(o.status)}</td>
-      <td style="display:flex;gap:4px;flex-wrap:wrap">
-        <button class="btn btn-xs btn-sec" onclick="verDetalheOrc(${o.id})">👁</button>
-        <button class="btn btn-xs btn-sec" onclick="editarOrcamento(${o.id})">✏️</button>
-        <select class="fsel" style="padding:3px 5px;font-size:11px;border-radius:6px;max-width:90px" onchange="mudarStatusOrc(${o.id},this.value)">
-          <option value="">▼</option>
-          <option value="aberto">Em aberto</option>
-          <option value="apresentado">Apresentado</option>
-          <option value="negociando">Negociando</option>
-          <option value="fechado">Fechado ✓</option>
-          <option value="perdido">Perdido</option>
-        </select>
-        <button class="btn btn-xs btn-red" onclick="delOrcamento(${o.id})">🗑</button>
-      </td>
-    </tr>`;
-  }).join('') : '<tr><td colspan="4" class="empty"><div class="empty-ico">📋</div><div class="empty-txt">Nenhum orçamento encontrado</div></td></tr>';
-}
+  const listaEl = document.getElementById('orc-lista-grupos');
+  if (!listaEl) return;
 
-async function mudarStatusOrc(id, status) {
-  if (!status) return;
-  await DB.update('orcamentos', id, { status });
-  const o = ORCAMENTOS.find(x => x.id === id);
-  if (o) o.status = status;
-  showToast(`Status atualizado: ${getOrcStatusLabel(status)}`, '✅');
-  renderOrcamentos();
-}
-
-async function delOrcamento(id) {
-  if (!confirm('Remover orçamento?')) return;
-  await DB.delete('orcamentos', id);
-  ORCAMENTOS = ORCAMENTOS.filter(x => x.id !== id);
-  showToast('Removido', '🗑');
-  renderOrcamentos();
-}
-
-function verDetalheOrc(id) {
-  const o = ORCAMENTOS.find(x => x.id === id); if (!o) return;
-  document.getElementById('m-orc-det-title').textContent = `Orçamento — ${o.pac}`;
-  document.getElementById('m-orc-det-body').innerHTML = `
-    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:16px">
-      <div style="background:var(--surf2);border-radius:10px;padding:12px"><div style="font-size:10.5px;font-weight:700;color:var(--tx3);margin-bottom:3px">PACIENTE</div><div style="font-weight:700">${o.pac}</div></div>
-      <div style="background:var(--surf2);border-radius:10px;padding:12px"><div style="font-size:10.5px;font-weight:700;color:var(--tx3);margin-bottom:3px">TOTAL</div><div style="font-weight:800;color:var(--grn);font-size:18px">${fmtVal(o.total)}</div></div>
-      <div style="background:var(--surf2);border-radius:10px;padding:12px"><div style="font-size:10.5px;font-weight:700;color:var(--tx3);margin-bottom:3px">STATUS</div><div>${getOrcStatusBadge(o.status)}</div></div>
-    </div>
-    <table class="tbl"><thead><tr><th>Dente</th><th>Procedimento</th><th>Obs</th><th>Valor</th></tr></thead>
-    <tbody>${(o.itens||[]).map(i=>`
-      <tr>
-        <td>${i.dente!=='—'?`<span class="bdg bdg-blu">Dente ${i.dente}</span>`:'<span class="bdg bdg-gy">Geral</span>'}</td>
-        <td><b>${i.proc}</b></td><td style="font-size:12px;color:var(--tx3)">${i.obs||'—'}</td>
-        <td style="font-weight:700;color:var(--grn)">${fmtVal(i.val)}</td>
-      </tr>`).join('')}
-    </tbody></table>
-    ${o.obs ? `<div style="margin-top:14px;padding:12px;background:var(--yel-l);border-radius:9px;font-size:13px"><b>Anotações:</b> ${o.obs}</div>` : ''}
-    <div style="margin-top:12px;font-size:12px;color:var(--tx3)">Criado em ${fmtDate(o.data)} · Dentista: ${o.dentista||'—'}</div>`;
-  document.getElementById('m-orc-det-foot').innerHTML = `
-    <button class="btn btn-sec" onclick="closeModal('m-orc-detalhe')">Fechar</button>
-    <button class="btn btn-sec" onclick="closeModal('m-orc-detalhe');editarOrcamento(${o.id})">✏️ Editar</button>
-    <button class="btn btn-grn" onclick="mudarStatusOrc(${o.id},'fechado');closeModal('m-orc-detalhe')">✓ Marcar como Fechado</button>`;
-  openModal('m-orc-detalhe');
-}
-
-// ═══════════ PRONTUÁRIO UNIFICADO ═══════════
-let prPacId = null;
-let prOrcItens = [];
-
-function renderProntuario() {
-  if (prPacId) abrirPront(prPacId);
-}
-
-function prBusca(q) {
-  const el = document.getElementById('pr-busca-list');
-  if (!el) return;
-  if (q.length < 2) { el.innerHTML = ''; return; }
-  const matches = PAC.filter(p => p.nome.toLowerCase().includes(q.toLowerCase())).slice(0, 6);
-  el.innerHTML = matches.map(p =>
-    `<div onclick="abrirPront(${p.id});document.getElementById('pr-busca').value='${p.nome}';document.getElementById('pr-busca-list').innerHTML=''">
-      ${p.nome} — ${fmtTel(p.tel)}
-    </div>`
-  ).join('');
-}
-
-function abrirPront(id) {
-  const p = PAC.find(x => x.id === id);
-  if (!p) return;
-  prPacId = id;
-  document.getElementById('pr-vazio').style.display = 'none';
-  document.getElementById('pr-body').style.display  = 'block';
-  document.getElementById('pr-sub').textContent = p.nome;
-  document.getElementById('pr-avatar').textContent = p.nome[0].toUpperCase();
-  document.getElementById('pr-nome').textContent = p.nome;
-  document.getElementById('pr-info').textContent = `${fmtTel(p.tel)} · ${p.email || '—'}`;
-  document.getElementById('pr-esp').textContent  = p.esp || '—';
-  const finEl = document.getElementById('pr-fin');
-  finEl.textContent  = {pago:'Em dia', pendente:'Pendente', atrasado:'Atrasado'}[p.finstatus] || '—';
-  finEl.className    = 'bdg ' + ({pago:'bdg-grn', pendente:'bdg-yel', atrasado:'bdg-red'}[p.finstatus] || 'bdg-gy');
-  document.getElementById('pr-wa').onclick = () => window.open(waLink(p.tel, `Olá ${p.nome.split(' ')[0]}! 😊`), '_blank');
-  // Fill avaliacao
-  const av = p.avaliacao || {};
-  document.getElementById('pr-queixa').value    = av.queixa || '';
-  document.getElementById('pr-obs-clin').value  = av.obsClin || '';
-  document.getElementById('pr-alergia').value   = p.alergia || '';
-  document.getElementById('pr-doencas').value   = av.doencas || '';
-  document.getElementById('pr-meds').value      = av.meds || '';
-  document.getElementById('pr-historico').value = av.historico || '';
-  // Also set currentPacId for evolution modal
-  currentPacId = id;
-  prBuildOdont();
-  prRenderOrcLista();
-  prRenderEvol(p);
-}
-
-function prTab(tab, btn) {
-  document.querySelectorAll('#pr-body .itab').forEach(b => b.classList.remove('on'));
-  document.querySelectorAll('#pr-body .itp').forEach(p => p.classList.remove('on'));
-  btn.classList.add('on');
-  document.getElementById('pr-' + tab)?.classList.add('on');
-}
-
-async function salvarAvaliacaoPront() {
-  const p = PAC.find(x => x.id === prPacId); if (!p) return;
-  const av = {
-    queixa:   document.getElementById('pr-queixa').value,
-    obsClin:  document.getElementById('pr-obs-clin').value,
-    doencas:  document.getElementById('pr-doencas').value,
-    meds:     document.getElementById('pr-meds').value,
-    historico:document.getElementById('pr-historico').value,
-  };
-  const alergia = document.getElementById('pr-alergia').value;
-  showSpinner('Salvando...');
-  await DB.update('pacientes', prPacId, { avaliacao: av, alergia });
-  p.avaliacao = av; p.alergia = alergia;
-  hideSpinner();
-  showToast('Avaliação salva!', '✅');
-}
-
-// Odontograma do Prontuário
-function prBuildOdont() {
-  const wrap = document.getElementById('pr-odont-wrap'); if (!wrap) return;
-  const p = PAC.find(x => x.id === prPacId);
-  const com = (p?.odontograma || []).map(d => d.dente);
-  function row(dentes) {
-    return `<div style="display:flex;justify-content:center;gap:3px;margin-bottom:3px">` +
-      dentes.map(n => {
-        const t = com.includes(n);
-        return `<button onclick="prDente(${n})" style="width:32px;height:40px;border-radius:6px;
-          border:1.5px solid ${t?'var(--grn)':'var(--brd2)'};
-          background:${t?'var(--grn-l)':'var(--surf)'};cursor:pointer;font-size:9px;font-weight:700;
-          color:var(--tx2);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px">
-          <span style="font-size:11px">🦷</span>${n}</button>`;
-      }).join('') + '</div>';
+  if (!list.length) {
+    listaEl.innerHTML = '<div class="empty" style="padding:40px"><div class="empty-ico">📋</div><div class="empty-txt">Nenhum orçamento encontrado</div></div>';
+    return;
   }
-  wrap.innerHTML = `
-    <div style="text-align:center;font-size:10px;color:var(--tx3);margin-bottom:4px">◄ DIREITO — SUPERIOR — ESQUERDO ►</div>
-    <div style="display:flex;justify-content:center">${row([18,17,16,15,14,13,12,11])}<div style="width:2px;background:var(--brd2);margin:0 4px"></div>${row([21,22,23,24,25,26,27,28])}</div>
-    <div style="height:8px;border-bottom:1px dashed var(--brd2);margin:4px 0 6px"></div>
-    <div style="display:flex;justify-content:center">${row([48,47,46,45,44,43,42,41])}<div style="width:2px;background:var(--brd2);margin:0 4px"></div>${row([31,32,33,34,35,36,37,38])}</div>
-    <div style="text-align:center;font-size:10px;color:var(--tx3);margin-top:4px">◄ DIREITO — INFERIOR — ESQUERDO ►</div>`;
-  prRenderOdontLista();
-}
 
-function prDente(n) {
-  const p = PAC.find(x => x.id === prPacId);
-  const ex = (p?.odontograma || []).find(d => d.dente === n) || {};
-  const m = document.createElement('div');
-  m.className = 'ov on'; m.id = 'pr-dente-modal';
-  m.innerHTML = `<div class="mdl" style="width:400px">
-    <div class="mh"><div class="mt2">🦷 Dente ${n}</div><button class="cx" onclick="document.getElementById('pr-dente-modal').remove()">✕</button></div>
-    <div class="mb2">
-      <div class="fr fr1"><div class="fg"><label class="fl">Procedimento</label>
-        <select class="fsel" id="pd-proc">${PROCS.map(pr=>`<option value="${pr.nome}" ${pr.nome===ex.proc?'selected':''}>${pr.nome}</option>`).join('')}</select>
-      </div></div>
-      <div class="fr fr1"><div class="fg"><label class="fl">Condição</label>
-        <select class="fsel" id="pd-cond">
-          <option value="">Sem registro</option>
-          <option value="carie" ${ex.cond==='carie'?'selected':''}>Cárie</option>
-          <option value="restaurado" ${ex.cond==='restaurado'?'selected':''}>Restaurado</option>
-          <option value="extraido" ${ex.cond==='extraido'?'selected':''}>Extraído</option>
-          <option value="canal" ${ex.cond==='canal'?'selected':''}>Canal</option>
-          <option value="coroa" ${ex.cond==='coroa'?'selected':''}>Coroa</option>
-          <option value="implante" ${ex.cond==='implante'?'selected':''}>Implante</option>
-        </select>
-      </div></div>
-      <div class="fr fr1"><div class="fg"><label class="fl">Obs</label>
-        <input class="fi" id="pd-obs" value="${ex.obs||''}" placeholder="Observação...">
-      </div></div>
-    </div>
-    <div class="mf">
-      <button class="btn btn-sec" onclick="document.getElementById('pr-dente-modal').remove()">Cancelar</button>
-      <button class="btn btn-red btn-sm" onclick="prRemDente(${n})">🗑 Remover</button>
-      <button class="btn btn-pri" onclick="prSalvaDente(${n})">💾 Salvar</button>
-    </div></div>`;
-  document.body.appendChild(m);
-}
-
-async function prSalvaDente(n) {
-  const p = PAC.find(x => x.id === prPacId); if (!p) return;
-  if (!p.odontograma) p.odontograma = [];
-  const proc = document.getElementById('pd-proc')?.value || '';
-  const cond = document.getElementById('pd-cond')?.value || '';
-  const obs  = document.getElementById('pd-obs')?.value  || '';
-  p.odontograma = p.odontograma.filter(d => d.dente !== n);
-  if (proc || cond) p.odontograma.push({ dente:n, proc, cond, obs });
-  await DB.update('pacientes', prPacId, { odontograma: p.odontograma });
-  document.getElementById('pr-dente-modal')?.remove();
-  showToast(`Dente ${n} salvo!`, '✅');
-  prBuildOdont();
-}
-
-async function prRemDente(n) {
-  const p = PAC.find(x => x.id === prPacId); if (!p) return;
-  p.odontograma = (p.odontograma||[]).filter(d => d.dente !== n);
-  await DB.update('pacientes', prPacId, { odontograma: p.odontograma });
-  document.getElementById('pr-dente-modal')?.remove();
-  showToast(`Dente ${n} removido`, '🗑');
-  prBuildOdont();
-}
-
-function prRenderOdontLista() {
-  const p = PAC.find(x => x.id === prPacId);
-  const lista = p?.odontograma || [];
-  const condL = {carie:'🔴 Cárie',restaurado:'🟢 Restaurado',extraido:'⬛ Extraído',canal:'🟡 Canal',coroa:'👑 Coroa',implante:'🔵 Implante'};
-  const el = document.getElementById('pr-odont-lista'); if (!el) return;
-  el.innerHTML = lista.length
-    ? `<div class="sep">Registros</div>` + lista.map(d => `
-      <div class="li">
-        <div><b>Dente ${d.dente}</b> ${d.cond?`<span class="bdg bdg-blu">${condL[d.cond]||d.cond}</span>`:''}
-          ${d.proc?`<div style="font-size:12px;color:var(--tx3)">${d.proc}</div>`:''}
-        </div>
-        <button class="btn btn-xs btn-sec" onclick="prDente(${d.dente})">✏️</button>
-      </div>`).join('')
-    : '<div style="color:var(--tx3);font-size:13px;padding:8px 0">Nenhum registro</div>';
-}
-
-// Orçamento do Prontuário
-function prRenderOrcLista() {
-  const p = PAC.find(x => x.id === prPacId);
-  const orcs = ORCAMENTOS.filter(o => o.pac === p?.nome);
-  const sLbl = {aberto:'Em aberto', aprovado:'Aprovado', em_andamento:'Em andamento', finalizado:'Finalizado'};
-  const sCls = {aberto:'bdg-blu', aprovado:'bdg-grn', em_andamento:'bdg-yel', finalizado:'bdg-gy'};
-  const el = document.getElementById('pr-orc-lista'); if (!el) return;
-  el.innerHTML = orcs.length ? orcs.map(o => `
-    <div class="card" style="margin-bottom:8px">
-      <div class="ch" style="padding:10px 14px">
-        <div>
-          <div style="font-weight:700">${o.desc||o.descricao||'Orçamento'}</div>
-          <div style="font-size:12px;color:var(--tx3)">${fmtDate(o.data)} · ${(o.itens||[]).length} procedimento(s)</div>
-        </div>
-        <div style="display:flex;align-items:center;gap:7px;flex-wrap:wrap">
-          <span style="font-weight:800;color:var(--grn)">${fmtVal(o.total)}</span>
-          <span class="bdg ${sCls[o.status]||'bdg-gy'}">${sLbl[o.status]||o.status}</span>
-          ${o.status==='aberto'?`<button class="btn btn-xs btn-grn" onclick="prAprovarOrc(${o.id})">✓ Aprovar</button>`:''}
-          <button class="btn btn-xs btn-red" onclick="prDelOrc(${o.id})">🗑</button>
-        </div>
-      </div>
-    </div>`).join('')
-    : '<div style="color:var(--tx3);font-size:13px;padding:8px 0;text-align:center">Nenhum orçamento</div>';
-}
-
-function prNovoOrc() {
-  prOrcItens = [];
-  document.getElementById('pr-orc-form').style.display = 'block';
-  document.getElementById('pr-orc-desc').value = '';
-  document.getElementById('pr-orc-obs').value  = '';
-  document.getElementById('pr-orc-status').value = 'aberto';
-  prRenderItens();
-  document.getElementById('pr-orc-form').scrollIntoView({ behavior:'smooth' });
-}
-
-function prCancelarOrc() {
-  prOrcItens = [];
-  document.getElementById('pr-orc-form').style.display = 'none';
-}
-
-function prAddProc() {
-  if (PROCS.length === 0) { showToast('Cadastre procedimentos primeiro','⚠️'); return; }
-  prOrcItens.push({ proc: PROCS[0].nome, val: PROCS[0].val });
-  prRenderItens();
-}
-
-function prRenderItens() {
-  const total = prOrcItens.reduce((s, i) => s + Number(i.val||0), 0);
-  document.getElementById('pr-orc-count').textContent = prOrcItens.length;
-  document.getElementById('pr-orc-total').textContent = fmtVal(total);
-  const el = document.getElementById('pr-orc-itens'); if (!el) return;
-  el.innerHTML = prOrcItens.length ? prOrcItens.map((item, idx) => `
-    <div style="display:flex;gap:6px;align-items:center;margin-bottom:6px;flex-wrap:wrap">
-      <select class="fsel" style="flex:2;min-width:140px" onchange="prUpdateItem(${idx},'proc',this.options[this.selectedIndex].dataset.nome);prUpdateItem(${idx},'val',this.options[this.selectedIndex].dataset.val)">
-        ${PROCS.map(pr=>`<option data-nome="${pr.nome}" data-val="${pr.val}" ${pr.nome===item.proc?'selected':''}>${pr.nome} — ${fmtVal(pr.val)}</option>`).join('')}
-      </select>
-      <input class="fi" type="number" value="${item.val}" style="width:85px;flex-shrink:0" onchange="prUpdateItem(${idx},'val',this.value)">
-      <button class="btn btn-xs btn-red" onclick="prRemItem(${idx})">✕</button>
-    </div>`).join('')
-    : '<div style="color:var(--tx3);font-size:13px">Nenhum procedimento</div>';
-}
-
-function prUpdateItem(idx, field, val) {
-  if (!prOrcItens[idx]) return;
-  prOrcItens[idx][field] = field==='val' ? Number(val) : val;
-  const total = prOrcItens.reduce((s,i) => s+Number(i.val||0), 0);
-  document.getElementById('pr-orc-count').textContent = prOrcItens.length;
-  document.getElementById('pr-orc-total').textContent = fmtVal(total);
-}
-
-function prRemItem(idx) { prOrcItens.splice(idx,1); prRenderItens(); }
-
-async function prSalvarOrc() {
-  const p = PAC.find(x => x.id === prPacId);
-  if (!p) { showToast('Selecione um paciente','⚠️'); return; }
-  const total = prOrcItens.reduce((s,i) => s+Number(i.val||0), 0);
-  const payload = {
-    pac:    p.nome,
-    desc:   document.getElementById('pr-orc-desc').value.trim() || 'Orçamento',
-    status: document.getElementById('pr-orc-status').value,
-    obs:    document.getElementById('pr-orc-obs').value,
-    total,
-    itens:  prOrcItens.map(i => ({dente:'—', proc:i.proc, val:Number(i.val||0)})),
-    data:   todayStr()
-  };
-  showSpinner('Salvando orçamento...');
-  try {
-    const o = await DB.insert('orcamentos', payload);
-    if (o) ORCAMENTOS.push(o);
-    prCancelarOrc();
-    prRenderOrcLista();
-    showToast(`Orçamento de ${fmtVal(total)} criado!`, '✅');
-  } catch(e) {
-    console.error('Erro orçamento:', e);
-    showToast('Erro ao salvar. Tente novamente.', '❌');
-  } finally { hideSpinner(); }
-}
-
-async function prAprovarOrc(id) {
-  const o = ORCAMENTOS.find(x => x.id === id); if (!o) return;
-  await DB.update('orcamentos', id, { status:'aprovado' });
-  o.status = 'aprovado';
-  const ct = await DB.insert('contratos', {
-    pac: o.pac, tratamento: o.desc||o.descricao||'Tratamento',
-    valor: o.total, orc_id: id, status:'ativo', inicio:todayStr(), obs:o.obs||''
+  // Agrupar por paciente
+  const grupos = {};
+  list.forEach(o => {
+    if (!grupos[o.pac]) grupos[o.pac] = [];
+    grupos[o.pac].push(o);
   });
-  if (ct) CONTRATOS.push(ct);
-  showToast('Aprovado! Contrato criado.', '✅');
-  prRenderOrcLista();
+
+  const sLbl = {aberto:'Em aberto',aprovado:'Aprovado',em_andamento:'Em andamento',finalizado:'Finalizado',perdido:'Perdido'};
+  const sCls = {aberto:'bdg-blu',aprovado:'bdg-grn',em_andamento:'bdg-yel',finalizado:'bdg-gy',perdido:'bdg-red'};
+
+  listaEl.innerHTML = Object.entries(grupos).map(([pac, orcs]) => {
+    const p = PAC.find(x => x.nome === pac);
+    const totalGrupo = orcs.reduce((s,o)=>s+Number(o.total||0),0);
+    const slug = pac.replace(/\s+/g,'_').replace(/[^a-zA-Z0-9_]/g,'');
+    return `
+    <div style="border-bottom:1px solid var(--brd)">
+      <div onclick="orcToggle('${slug}')" style="display:flex;align-items:center;gap:14px;padding:14px 20px;cursor:pointer" onmouseover="this.style.background='var(--surf2)'" onmouseout="this.style.background=''">
+        <div style="width:38px;height:38px;border-radius:50%;background:var(--grad);display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800;color:#fff;flex-shrink:0">${pac[0].toUpperCase()}</div>
+        <div style="flex:1">
+          <div style="font-weight:700">${pac}</div>
+          <div style="font-size:12px;color:var(--tx3)">${orcs.length} orçamento(s)</div>
+        </div>
+        <div style="font-size:16px;font-weight:800;color:var(--blu)">${fmtVal(totalGrupo)}</div>
+        <button class="btn btn-xs btn-pri" onclick="event.stopPropagation();orcAbrirProntuarioPac(${p?.id||0},'${pac.replace(/'/g,"\\'")}')">＋ Orçamento</button>
+        <span id="orc-arrow-${slug}" style="color:var(--tx3)">▼</span>
+      </div>
+      <div id="orc-grp-${slug}" style="display:none;background:var(--surf2)">
+        ${orcs.map(o => `
+          <div style="display:flex;align-items:center;gap:12px;padding:12px 20px 12px 72px;border-top:1px solid var(--brd)">
+            <div style="flex:1">
+              <div style="font-weight:600;font-size:13.5px">${o.desc||o.descricao||'Orçamento'}</div>
+              <div style="font-size:12px;color:var(--tx3)">${fmtDate(o.data)}</div>
+            </div>
+            <span style="font-weight:700;color:var(--grn)">${fmtVal(o.total)}</span>
+            <span class="bdg ${sCls[o.status]||'bdg-gy'}">${sLbl[o.status]||o.status}</span>
+            <button class="btn btn-xs btn-sec" onclick="orcAbrirProntuarioPac(${p?.id||0},'${pac.replace(/'/g,"\\'")}')">📋 Prontuário</button>
+            <button class="btn btn-xs btn-red" onclick="orcDelDireto(${o.id})">🗑</button>
+          </div>`).join('')}
+      </div>
+    </div>`;
+  }).join('');
 }
 
-async function prDelOrc(id) {
+function orcToggle(slug) {
+  const el = document.getElementById('orc-grp-'+slug);
+  const ar = document.getElementById('orc-arrow-'+slug);
+  if (!el) return;
+  const open = el.style.display === 'block';
+  el.style.display = open ? 'none' : 'block';
+  if (ar) ar.textContent = open ? '▼' : '▲';
+}
+
+async function orcDelDireto(id) {
   if (!confirm('Remover orçamento?')) return;
   await DB.delete('orcamentos', id);
   ORCAMENTOS = ORCAMENTOS.filter(x => x.id !== id);
-  showToast('Removido', '🗑');
-  prRenderOrcLista();
+  showToast('Removido','🗑');
+  renderOrcamentos();
 }
 
-function prRenderEvol(p) {
-  const evol = p?.evol || [];
-  const el = document.getElementById('pr-evol-lista'); if (!el) return;
-  if (!evol.length) { el.innerHTML='<div style="color:var(--tx3);font-size:13px">Nenhuma evolução registrada</div>'; return; }
-  el.innerHTML = evol.slice().reverse().map((e,i) => `
-    <div class="tli">
-      <div class="tl-dot-wrap"><div class="tl-dot"></div>${i<evol.length-1?'<div class="tl-line"></div>':''}</div>
-      <div class="tl-body">
-        <div class="tl-date">${fmtDate(e.data)}</div>
-        <div class="tl-proc">${e.proc}</div>
-        <div class="tl-obs">${e.obs}</div>
-        ${e.prox?`<div style="font-size:12px;color:var(--tx3);margin-top:3px">📌 ${e.prox}</div>`:''}
+// ═══════════════════════════════════════
+// FIX 2: CONTRATOS — biblioteca de modelos
+// ═══════════════════════════════════════
+let modeloEditId = null;
+
+// Modelos padrão pré-configurados
+const MODELOS_PADRAO = [
+  {
+    titulo: 'Contrato de Prestação de Serviços Odontológicos',
+    tipo: 'servico',
+    corpo: `CONTRATO DE PRESTAÇÃO DE SERVIÇOS ODONTOLÓGICOS
+
+Pelo presente instrumento particular, de um lado:
+
+CONTRATADA: [CLINICA], clínica odontológica, doravante denominada simplesmente CONTRATADA.
+
+CONTRATANTE: [NOME], doravante denominado(a) simplesmente CONTRATANTE.
+
+As partes acima identificadas têm, entre si, justo e acertado o presente Contrato de Prestação de Serviços Odontológicos, que se regerá pelas cláusulas seguintes e pelas condições descritas no presente.
+
+OBJETO DO CONTRATO
+Cláusula 1ª. O presente contrato tem como objeto a prestação de serviços odontológicos ao CONTRATANTE, conforme tratamento indicado pelo profissional responsável.
+
+VALOR E FORMA DE PAGAMENTO
+Cláusula 2ª. O valor total dos serviços é de [VALOR], a ser pago conforme acordado entre as partes.
+
+OBRIGAÇÕES DO CONTRATANTE
+Cláusula 3ª. O CONTRATANTE se compromete a comparecer às consultas agendadas, seguir as orientações do profissional e efetuar os pagamentos nas datas acordadas.
+
+DISPOSIÇÕES GERAIS
+Cláusula 4ª. Este contrato entra em vigor na data de sua assinatura.
+
+Alta Floresta, [DATA].
+
+_________________________________
+CONTRATADA
+
+_________________________________
+CONTRATANTE`
+  },
+  {
+    titulo: 'Contrato de Prótese Dentária',
+    tipo: 'protese',
+    corpo: `CONTRATO DE CONFECÇÃO DE PRÓTESE DENTÁRIA
+
+Pelo presente instrumento:
+
+CONTRATADA: [CLINICA]
+CONTRATANTE: [NOME]
+
+OBJETO
+Cláusula 1ª. Confecção e instalação de prótese dentária conforme indicação clínica.
+
+VALOR
+Cláusula 2ª. Valor total: [VALOR].
+
+PRAZO
+Cláusula 3ª. O prazo para entrega será informado pelo profissional após moldagem.
+
+GARANTIA
+Cláusula 4ª. A prótese tem garantia de 1 (um) ano para defeitos de fabricação, excluindo quebras por mau uso.
+
+Alta Floresta, [DATA].
+
+_________________________________
+CONTRATADA
+
+_________________________________
+CONTRATANTE`
+  },
+  {
+    titulo: 'Termo de Parcelamento / Boleto',
+    tipo: 'boleto',
+    corpo: `TERMO DE ACORDO DE PARCELAMENTO
+
+CREDORA: [CLINICA]
+DEVEDOR(A): [NOME]
+
+Pelo presente instrumento, as partes acima identificadas acordam o parcelamento do débito referente a serviços odontológicos prestados, no valor total de [VALOR], conforme condições abaixo:
+
+- Valor total: [VALOR]
+- Forma de pagamento: parcelado conforme acordado
+- Data de início: [DATA]
+
+O não pagamento de qualquer parcela na data acordada implicará no vencimento antecipado das demais parcelas.
+
+Alta Floresta, [DATA].
+
+_________________________________
+CREDORA
+
+_________________________________
+DEVEDOR(A)`
+  }
+];
+
+function renderContratos() {
+  // Combinar modelos padrão + cadastrados
+  const todos = [...MODELOS_PADRAO.map((m,i) => ({...m, id:'padrao_'+i, padrao:true})), ...MODELOS_CONT];
+
+  document.getElementById('cont-count').textContent = MODELOS_CONT.length + ' modelo(s) próprio(s)';
+
+  const tipoLabel = {servico:'📋 Prestação de Serviço', protese:'🦷 Prótese', boleto:'🧾 Parcelamento', outros:'📄 Outros'};
+  const tipoCls   = {servico:'bdg-blu', protese:'bdg-grn', boleto:'bdg-yel', outros:'bdg-gy'};
+
+  // Grid modelos padrão
+  const grid = document.getElementById('cont-modelos-grid');
+  if (grid) grid.innerHTML = MODELOS_PADRAO.map((m, i) => `
+    <div class="card" style="border:1.5px solid var(--blu-l);cursor:pointer;transition:all .2s" onmouseover="this.style.borderColor='var(--blu)'" onmouseout="this.style.borderColor='var(--blu-l)'" onclick="usarModeloPadrao(${i})">
+      <div class="ch" style="background:var(--blu-p)">
+        <div style="font-size:13px;font-weight:700;color:var(--blu)">${m.titulo}</div>
+      </div>
+      <div class="cb" style="padding:12px 16px">
+        <span class="bdg ${tipoCls[m.tipo]||'bdg-gy'}">${tipoLabel[m.tipo]||m.tipo}</span>
+        <div style="font-size:12px;color:var(--tx3);margin-top:8px">Modelo padrão incluído · Clique para usar</div>
+      </div>
+    </div>`).join('');
+
+  // Lista modelos cadastrados
+  const lista = document.getElementById('cont-lista');
+  if (!lista) return;
+  if (!MODELOS_CONT.length) {
+    lista.innerHTML = `<div style="padding:32px;text-align:center;color:var(--tx3)">
+      <div style="font-size:32px;margin-bottom:8px">📝</div>
+      <div style="font-weight:600;margin-bottom:4px">Nenhum modelo próprio ainda</div>
+      <div style="font-size:13px">Use os modelos padrão acima ou crie o seu</div>
+    </div>`;
+    return;
+  }
+  lista.innerHTML = MODELOS_CONT.map(m => `
+    <div style="display:flex;align-items:center;gap:14px;padding:14px 20px;border-bottom:1px solid var(--brd)">
+      <div style="flex:1">
+        <div style="font-weight:700">${m.titulo}</div>
+        <span class="bdg ${tipoCls[m.tipo]||'bdg-gy'}" style="margin-top:4px">${tipoLabel[m.tipo]||m.tipo}</span>
+      </div>
+      <div style="display:flex;gap:6px">
+        <button class="btn btn-xs btn-pri" onclick="usarModeloCont(${m.id})">👁 Usar</button>
+        <button class="btn btn-xs btn-sec" onclick="editarModelo(${m.id})">✏️</button>
+        <button class="btn btn-xs btn-red" onclick="delModelo(${m.id})">🗑</button>
       </div>
     </div>`).join('');
 }
 
-// Abrir prontuário a partir de outros contextos
-function abrirProntDe(pacId) {
-  goTab('prontuario');
-  setTimeout(() => abrirPront(pacId), 150);
+function abrirModalModelo(id) {
+  modeloEditId = id || null;
+  const m = id ? MODELOS_CONT.find(x=>x.id===id) : null;
+  document.getElementById('m-cont-titulo').textContent = m ? 'Editar Modelo' : 'Novo Modelo de Contrato';
+  document.getElementById('cont-edit-id').value = id || '';
+  document.getElementById('cont-titulo').value  = m?.titulo || '';
+  document.getElementById('cont-tipo').value    = m?.tipo   || 'servico';
+  document.getElementById('cont-corpo').value   = m?.corpo  || '';
+  openModal('m-cont-modelo');
 }
 
-// ═══════════ CONTRATOS ═══════════
-function renderContratos() {
-  const q     = (document.getElementById('cont-search')?.value||'').toLowerCase();
-  const stFil = document.getElementById('cont-filter')?.value||'';
-  const list  = CONTRATOS.filter(ct => {
-    const mQ = !q || ct.pac.toLowerCase().includes(q);
-    const mS = !stFil || ct.status===stFil;
-    return mQ && mS;
-  });
-  const ativos     = CONTRATOS.filter(ct=>ct.status==='ativo').length;
-  const atrasados  = CONTRATOS.filter(ct=>ct.status==='atrasado').length;
-  const finalizados= CONTRATOS.filter(ct=>ct.status==='finalizado').length;
-  const totalValor = CONTRATOS.reduce((s,ct)=>s+Number(ct.valor||0),0);
-  document.getElementById('cont-kpis').innerHTML = `
-    <div class="sc sc-grad-b"><div class="sc-circle"></div><div class="sc-lbl">Valor Total</div><div class="sc-val">${fmtVal(totalValor)}</div></div>
-    <div class="sc sc-grad-g"><div class="sc-circle"></div><div class="sc-lbl">Ativos</div><div class="sc-val">${ativos}</div></div>
-    <div class="sc sc-red"><div class="sc-circle"></div><div class="sc-lbl">Atrasados</div><div class="sc-val">${atrasados}</div></div>
-    <div class="sc"><div class="sc-lbl">Finalizados</div><div class="sc-val">${finalizados}</div></div>`;
-  document.getElementById('cont-count').textContent = list.length;
-  document.getElementById('cont-tbody').innerHTML = list.length ? list.map(ct=>`<tr>
-    <td><b>${ct.pac}</b></td>
-    <td style="font-size:12.5px">${ct.tratamento||'—'}</td>
-    <td style="font-weight:700;color:var(--grn)">${fmtVal(ct.valor)}</td>
-    <td><span class="bdg ${ct.status==='ativo'?'bdg-grn':ct.status==='atrasado'?'bdg-red':'bdg-gy'}">${ct.status}</span></td>
-    <td style="font-size:12px;color:var(--tx3)">${fmtDate(ct.inicio)}</td>
-    <td style="display:flex;gap:5px">
-      <select class="fsel" style="padding:3px 6px;font-size:11px;border-radius:6px" onchange="contStatus(${ct.id},this.value)">
-        <option value="">Status...</option>
-        <option value="ativo">Ativo</option>
-        <option value="atrasado">Atrasado</option>
-        <option value="finalizado">Finalizado</option>
-      </select>
-      <button class="btn btn-xs btn-red" onclick="contDel(${ct.id})">🗑</button>
-    </td></tr>`).join('')
-    : '<tr><td colspan="6" class="empty"><div class="empty-ico">📄</div><div class="empty-txt">Nenhum contrato</div></td></tr>';
+function editarModelo(id) { abrirModalModelo(id); }
+
+async function salvarModelo() {
+  const titulo = document.getElementById('cont-titulo').value.trim();
+  const corpo  = document.getElementById('cont-corpo').value.trim();
+  if (!titulo || !corpo) { showToast('Preencha título e conteúdo','⚠️'); return; }
+  const payload = { titulo, tipo: document.getElementById('cont-tipo').value, corpo };
+  showSpinner('Salvando modelo...');
+  try {
+    if (modeloEditId) {
+      await DB.update('modelos_contratos', modeloEditId, payload);
+      const idx = MODELOS_CONT.findIndex(x=>x.id===modeloEditId);
+      if (idx>=0) MODELOS_CONT[idx] = {...MODELOS_CONT[idx], ...payload};
+      showToast('Modelo atualizado!','✅');
+    } else {
+      const m = await DB.insert('modelos_contratos', payload);
+      if (m) MODELOS_CONT.push(m);
+      showToast('Modelo salvo!','✅');
+    }
+  } catch(e) { showToast('Erro ao salvar','❌'); console.error(e); }
+  finally { hideSpinner(); closeModal('m-cont-modelo'); renderContratos(); }
 }
 
-async function contStatus(id, status) {
-  if (!status) return;
-  await DB.update('contratos', id, { status });
-  const ct = CONTRATOS.find(x=>x.id===id); if(ct) ct.status=status;
-  showToast('Status atualizado!','✅'); renderContratos();
-}
-async function contDel(id) {
-  if (!confirm('Remover contrato?')) return;
-  await DB.delete('contratos', id);
-  CONTRATOS = CONTRATOS.filter(x=>x.id!==id);
+async function delModelo(id) {
+  if (!confirm('Remover modelo?')) return;
+  await DB.delete('modelos_contratos', id);
+  MODELOS_CONT = MODELOS_CONT.filter(x=>x.id!==id);
   showToast('Removido','🗑'); renderContratos();
+}
+
+function usarModeloPadrao(idx) {
+  const m = MODELOS_PADRAO[idx]; if (!m) return;
+  abrirPreviewContrato(m);
+}
+
+function usarModeloCont(id) {
+  const m = MODELOS_CONT.find(x=>x.id===id); if (!m) return;
+  abrirPreviewContrato(m);
+}
+
+function abrirPreviewContrato(m) {
+  document.getElementById('prev-nome').value  = '';
+  document.getElementById('prev-valor').value = '';
+  document.getElementById('cont-preview-body').textContent = m.corpo;
+  // Store model for rendering
+  document.getElementById('m-cont-preview').dataset.corpo = m.corpo;
+  openModal('m-cont-preview');
+}
+
+function previewContrato() {
+  // Preview do modelo em edição
+  const corpo = document.getElementById('cont-corpo').value;
+  document.getElementById('prev-nome').value  = '';
+  document.getElementById('prev-valor').value = '';
+  document.getElementById('cont-preview-body').textContent = corpo;
+  document.getElementById('m-cont-preview').dataset.corpo = corpo;
+  openModal('m-cont-preview');
+}
+
+// Atualizar preview ao digitar nome/valor
+document.addEventListener('input', e => {
+  if (e.target.id === 'prev-nome' || e.target.id === 'prev-valor') {
+    const corpo = document.getElementById('m-cont-preview')?.dataset.corpo || '';
+    const clinica = document.getElementById('clinica-name')?.textContent || 'Clínica';
+    const nome   = document.getElementById('prev-nome')?.value  || '[NOME]';
+    const valor  = document.getElementById('prev-valor')?.value || '[VALOR]';
+    const data   = new Date().toLocaleDateString('pt-BR', {day:'2-digit',month:'long',year:'numeric'});
+    const filled = corpo
+      .replace(/\[NOME\]/g, nome)
+      .replace(/\[VALOR\]/g, valor)
+      .replace(/\[DATA\]/g, data)
+      .replace(/\[CLINICA\]/g, clinica);
+    const el = document.getElementById('cont-preview-body');
+    if (el) el.textContent = filled;
+  }
+});
+
+function imprimirContrato() {
+  const body = document.getElementById('cont-preview-body');
+  if (!body) return;
+  const conteudo = body.textContent;
+  const win = window.open('', '_blank');
+  const css = 'body{font-family:Georgia,serif;font-size:13.5px;line-height:1.9;color:#000;padding:48px;max-width:700px;margin:0 auto;white-space:pre-wrap}';
+  win.document.write('<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Contrato</title>'
+    + '<style>' + css + '</style>'
+    + '</head><body>' + conteudo + '</body></html>');
+  win.document.close();
+  win.print();
 }
 </script>
 <!-- Modal Follow-up -->
