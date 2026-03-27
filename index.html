@@ -694,6 +694,23 @@ button,select,input,textarea{font-family:inherit}
       </table>
     </div>
   </div>
+
+  <!-- Boletos vencidos/pendentes no dashboard -->
+  <div class="card" style="margin-top:18px">
+    <div class="ch">
+      <div class="ct">🧾 Boletos em Aberto</div>
+      <div style="display:flex;align-items:center;gap:10px">
+        <span class="bdg bdg-red" id="dash-bol-count">0</span>
+        <button class="btn btn-sec btn-sm" onclick="goTab('boletos')">Ver todos →</button>
+      </div>
+    </div>
+    <div style="padding:0">
+      <table class="tbl">
+        <thead><tr><th>Paciente</th><th>Descrição</th><th>Valor</th><th>Vencimento</th><th>Status</th><th>Ações</th></tr></thead>
+        <tbody id="dash-bol-body"></tbody>
+      </table>
+    </div>
+  </div>
 </div>
 
 <!-- AGENDA -->
@@ -1817,7 +1834,7 @@ function initApp() {
       <div style="font-weight:700">${clinica}</div>
     </div>
     ${isDemo ? '<div class="info-box yel" style="margin-top:12px">⚠️ Modo Demo: dados salvos só neste navegador. Configure o Supabase para dados na nuvem.</div>' : ''}`;
-  loadAll().then(() => { renderDash(); setupFinMes(); renderProcedimentos(); });
+  loadAll().then(() => { renderDash(); setupFinMes(); renderProcedimentos(); renderBoletos(); });
 }
 
 // ── SPINNER ──
@@ -2008,8 +2025,44 @@ function renderDash() {
   }).join('') || '<tr><td colspan="6" style="text-align:center;padding:18px;color:var(--tx3)">✅ Nenhum follow-up pendente</td></tr>';
   // ─────────────────────────────────────────────────────
 
-  const total=inad.length+agHoje.filter(a=>a.status==='aguardando').length+fuAtras;
+  const boletosVencidos = BOLETOS.filter(b => b.status === 'vencido').length;
+  const total=inad.length+agHoje.filter(a=>a.status==='aguardando').length+fuAtras+boletosVencidos;
   document.getElementById('notif-count').textContent=total||0;
+
+  // ── BOLETOS NO DASHBOARD ──────────────────────────
+  const hoje3 = todayStr();
+  const em5d = new Date(); em5d.setDate(em5d.getDate()+5);
+  const em5s = em5d.toISOString().split('T')[0];
+  // Atualiza status vencido
+  BOLETOS.forEach(b => { if(b.status==='pendente'&&b.vencimento<hoje3) b.status='vencido'; });
+  const bolAberto = BOLETOS.filter(b => b.status==='vencido' || (b.status==='pendente'&&b.vencimento<=em5s))
+    .sort((a,b) => (a.vencimento||'').localeCompare(b.vencimento||'')).slice(0,6);
+  const totalBolVenc = BOLETOS.filter(b=>b.status==='vencido').length;
+  const totalBolPend = BOLETOS.filter(b=>b.status==='pendente').length;
+  const dashBolCount = document.getElementById('dash-bol-count');
+  if(dashBolCount) {
+    dashBolCount.textContent = `${totalBolVenc} vencido(s) · ${totalBolPend} pendente(s)`;
+    dashBolCount.className = totalBolVenc > 0 ? 'bdg bdg-red' : 'bdg bdg-yel';
+  }
+  const dashBolBody = document.getElementById('dash-bol-body');
+  if(dashBolBody) dashBolBody.innerHTML = bolAberto.length ? bolAberto.map(b => {
+    const dias = diasParaVencer ? diasParaVencer(b.vencimento) : null;
+    const p = PAC.find(x=>x.nome===b.pac);
+    const tel = p?.tel||'';
+    const isVenc = b.status==='vencido';
+    const rowStyle = isVenc ? 'background:var(--red-l)' : 'background:var(--yel-l)';
+    return `<tr style="${rowStyle}">
+      <td><b>${b.pac}</b></td>
+      <td style="font-size:12px">${b.descricao||'—'}</td>
+      <td style="font-weight:700">${fmtVal(b.valor)}</td>
+      <td style="font-size:12px">${fmtDate(b.vencimento)}</td>
+      <td><span class="bdg ${isVenc?'bdg-red':'bdg-yel'}">${isVenc?'Vencido':'Vencendo'}</span></td>
+      <td style="display:flex;gap:4px">
+        <button class="btn btn-xs btn-grn" onclick="marcarBoletoPago(${b.id})">✓ Pago</button>
+        ${tel?`<a class="btn btn-xs btn-sec" href="${waLink(tel,'Olá '+b.pac.split(' ')[0]+'! Boleto de '+fmtVal(b.valor)+' venceu em '+fmtDate(b.vencimento)+'. Podemos conversar? 😊')}" target="_blank">💬</a>`:''}
+      </td>
+    </tr>`;
+  }).join('') : '<tr><td colspan="6" style="text-align:center;padding:16px;color:var(--tx3)">✅ Nenhum boleto vencido ou próximo do vencimento</td></tr>';
 }
 
 // ════════════════════ AGENDA ════════════════════
