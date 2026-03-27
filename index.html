@@ -1834,7 +1834,24 @@ function initApp() {
       <div style="font-weight:700">${clinica}</div>
     </div>
     ${isDemo ? '<div class="info-box yel" style="margin-top:12px">⚠️ Modo Demo: dados salvos só neste navegador. Configure o Supabase para dados na nuvem.</div>' : ''}`;
-  loadAll().then(() => { renderDash(); setupFinMes(); renderProcedimentos(); renderBoletos(); });
+  loadAll().then(() => { 
+    renderDash(); 
+    setupFinMes(); 
+    renderProcedimentos(); 
+    renderBoletos(); 
+    renderFollowup(); 
+    renderOrcamentos(); 
+    renderPacientes(); 
+    renderFinanceiro(); 
+    renderProntuario(); 
+    renderContratos(); 
+    renderAtendimento(); 
+    renderOrtodontia(); 
+    renderEstoque(); 
+    renderReceituario(); 
+    renderCampanhas(); 
+    renderPermissoes(); 
+  });
 }
 
 // ── SPINNER ──
